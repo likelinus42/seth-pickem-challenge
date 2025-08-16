@@ -59,8 +59,9 @@
     }
     .hero::after{content:""; position:absolute; inset:0; background:rgba(3,8,22,.55);}
     .hero .container{position:relative; z-index:1}
-    .pill{height:40px; margin:0 auto 20px; display:block}
-    .hero .actions{display:flex; gap:12px; justify-content:center; flex-wrap:wrap}
+    .pill{height:40px; margin:0 auto 24px; display:block}
+    .hero h1{margin:0 0 24px;}
+    .hero .actions{display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:24px;}
 
     /* Sections */
     .section{padding:56px 0}
@@ -79,19 +80,19 @@
 </head>
 
 <body>
-  <!-- HERO (no top header on initial load) -->
+  <!-- HERO -->
   <section class="hero">
     <div class="container">
       <img src="logo-pill.png" class="pill" alt="NFL Pick'em Challenge">
 
-      <h1 class="h1" style="margin:10px 0 12px;">
+      <h1 class="h1">
         Pick winners. Win weekly.<br/>
         <span class="highlight">Chase greatness</span> all season.
       </h1>
 
       <div class="actions">
-        <a href="#join" class="btn btn-primary body">Sign Up</a>
-        <a href="#pools" class="btn btn-ghost body">Learn More</a>
+        <a href="#join" class="btn btn-primary body-lg">Sign Up</a>
+        <a href="#pools" class="btn btn-ghost body-lg">Learn More</a>
       </div>
     </div>
   </section>
