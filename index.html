@@ -28,7 +28,7 @@
     header h1{margin:0; font-size:28px; color:var(--accent)}
     header p{margin:6px 0 0; color:var(--muted)}
 
-    /* HERO as full-width background (desktop only for now) */
+    /* HERO as full-width background (desktop-first) */
     .hero{
       position:relative;
       text-align:center;
@@ -43,19 +43,20 @@
       background:rgba(3,8,22,.55);
     }
     .hero .container{position:relative; z-index:1}
-    .hero p.tag{color:#a7ffbf; font-weight:700; letter-spacing:.04em; font-size:12px; margin:0 0 6px}
+    .pill{height:40px; margin:0 auto 20px; display:block}
     .hero h1{font-size:42px; line-height:1.2; margin:10px 0 12px}
+    .hero h1 .highlight{color:#26CB4D}
     .hero p.sub{color:var(--text); max-width:780px; margin:10px auto 24px}
     .hero .actions{display:flex; gap:12px; justify-content:center; flex-wrap:wrap}
 
-    /* Stats Row */
+    /* Sections */
     .section{padding:56px 0}
-    .stats{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin:-40px auto 0; /* overlap hero a bit */}
+    .stats{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin:-40px auto 0}
     .stat{background:#0d1526; border:1px solid var(--line); border-radius:14px; padding:16px; text-align:center}
     .stat .kpi{font-size:22px; font-weight:700}
     .stat .label{font-size:12px; color:var(--muted)}
 
-    /* Simple responsive tweaks (no image swap yet) */
+    /* Simple responsive tweaks (no mobile hero swap yet) */
     @media (max-width: 900px){
       .hero h1{font-size:34px}
     }
@@ -63,6 +64,7 @@
       .hero{padding:88px 16px 110px}
       .hero h1{font-size:26px}
       .stats{grid-template-columns:1fr; margin-top:16px}
+      .pill{height:34px}
     }
   </style>
 </head>
@@ -76,11 +78,17 @@
     </div>
   </header>
 
-  <!-- HERO (full-width background) -->
+  <!-- HERO -->
   <section class="hero">
     <div class="container">
-      <p class="tag">NFL PICK’EM CHALLENGE</p>
-      <h1>Pick winners. Win weekly.<br/>Chase greatness all season.</h1>
+      <!-- Pill image -->
+      <img src="logo-pill.png" class="pill" alt="NFL Pick'em Challenge">
+
+      <h1>
+        Pick winners. Win weekly.<br/>
+        <span class="highlight">Chase greatness</span> all season.
+      </h1>
+
       <p class="sub">
         Join the <strong>Otter Club</strong> ($20) or the <strong>Shark Club</strong> ($50).
         Weekly payouts for 18 weeks + season prizes.
@@ -109,4 +117,9 @@
           <div class="label">Top season prize (Shark)</div>
         </div>
       </div>
-    </di
+    </div>
+  </section>
+
+  <!-- More sections coming next: Pools, Calculator, How It Works, Join, FAQ -->
+</body>
+</html>
