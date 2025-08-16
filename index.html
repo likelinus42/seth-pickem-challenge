@@ -10,7 +10,12 @@
   <style>
     :root{
       /* colors */
-      --bg:#030816; --text:#e6ecf3; --muted:#9AA8BE; --line:#1a1f2c; --accent:#26CB4D;
+      --bg:#030816; 
+      --text:#e6ecf3; 
+      --muted:#9AA8BE; 
+      --line:#1a1f2c; 
+      --accent:#26CB4D;
+      --offwhite:#F9FAFB;
 
       /* font weights */
       --fw-regular:400; --fw-medium:500; --fw-semibold:600; --fw-bold:700;
@@ -47,10 +52,13 @@
     .btn{display:inline-block; padding:12px 18px; border-radius:10px; text-decoration:none; transition:.2s}
     .btn-primary{background:var(--accent); color:#071b0c; font-weight:var(--fw-bold)}
     .btn-primary:hover{transform:translateY(-1px)}
-    .btn-ghost{border:1px solid var(--line); color:var(--text)}
-    .btn-ghost:hover{background:#0b1424}
+    .btn-ghost{
+      border:1px solid var(--offwhite); /* updated stroke */
+      color:var(--offwhite);            /* text matches offwhite */
+    }
+    .btn-ghost:hover{background:rgba(249,250,251,0.08)} /* faint offwhite overlay */
 
-    /* HERO (full-bleed at top, fixed height) */
+    /* HERO */
     .hero{
       position:relative; text-align:center;
       height:640px; /* lock desktop height */
