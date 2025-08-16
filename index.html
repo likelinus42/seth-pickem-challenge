@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <!-- Urbanist font -->
-  <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- FontAwesome -->
   <script src="https://kit.fontawesome.com/91492d4fbf.js" crossorigin="anonymous"></script>
@@ -17,19 +17,23 @@
       --bg:#030816; --text:#e6ecf3; --muted:#9AA8BE; --line:#1a1f2c;
       --accent:#26CB4D; --accent-hover:#1FA13E; --accent-active:#188534;
       --navy:#0B2545; --offwhite:#F9FAFB; --neutral-200:#E5E7EB; --ring:#8EE4A2;
+      /* figma card border (lighter than --line) */
+      --border-soft: rgba(229,231,235,0.30);
 
       /* font weights */
-      --fw-regular:400; --fw-medium:500; --fw-semibold:600; --fw-bold:700;
+      --fw-light:300; --fw-regular:400; --fw-medium:500; --fw-semibold:600; --fw-bold:700;
 
       /* line heights */
-      --lh-tight:1.2; --lh-snug:1.25; --lh-normal:1.5;
+      --lh-tight:1.2; --lh-snug:1.10; --lh-normal:1.4; --lh-body:1.4;
 
-      /* responsive sizes */
+      /* sizes */
       --fs-h1: clamp(2.25rem, 6vw, 4rem);
       --fs-h2: clamp(1.75rem, 4vw, 3rem);
       --fs-h3: clamp(1.5rem, 3.2vw, 2.5rem);
-      --fs-h4: clamp(1.125rem, 2vw, 1.5rem);
-      --fs-body-lg: 1.25rem; --fs-body: 1rem; --fs-caption: 0.875rem;
+      --fs-h4: 24px;                 /* fixed per Figma */
+      --fs-body-lg: 20px;
+      --fs-body: 16px;
+      --fs-utility: 14px;
     }
 
     *{box-sizing:border-box}
@@ -42,15 +46,18 @@
     .h2{ font-size:var(--fs-h2); line-height:var(--lh-tight); font-weight:var(--fw-bold);}
     .h3{ font-size:var(--fs-h3); line-height:var(--lh-tight); font-weight:var(--fw-semibold);}
     .h4{ font-size:var(--fs-h4); line-height:var(--lh-snug); font-weight:var(--fw-semibold);}
-    .body-lg{ font-size:var(--fs-body-lg); line-height:var(--lh-normal); font-weight:var(--fw-medium);}
-    .body{ font-size:var(--fs-body); line-height:var(--lh-normal); font-weight:var(--fw-regular);}
-    .caption{ font-size:var(--fs-caption); line-height:1.4; font-weight:var(--fw-medium); color:var(--muted);}
+    .body-lg{ font-size:var(--fs-body-lg); line-height:var(--lh-body); font-weight:var(--fw-medium);}
+    .body{ font-size:var(--fs-body); line-height:var(--lh-body); font-weight:var(--fw-regular);}
+    .utility{ font-size:var(--fs-utility); line-height:1.1; font-weight:var(--fw-light);}
+    .caption{ font-size:var(--fs-utility); line-height:1.1; font-weight:var(--fw-medium); color:var(--muted);}
     .highlight{color:var(--accent)}
 
     /* Buttons */
-    .btn{display:inline-block; padding:12px 18px; border-radius:12px; text-decoration:none;
-         transition:background-color .18s ease,color .18s ease,border-color .18s ease,transform .08s ease;
-         cursor:pointer; user-select:none; border:1px solid transparent;}
+    .btn{
+      display:inline-block; padding:12px 18px; border-radius:12px; text-decoration:none;
+      transition:background-color .18s ease,color .18s ease,border-color .18s ease,transform .08s ease;
+      cursor:pointer; user-select:none; border:1px solid transparent;
+    }
     .btn-primary{ background:var(--accent); color:var(--navy); font-weight:var(--fw-bold);}
     .btn-primary:hover{ background:var(--accent-hover);}
     .btn-primary:active{ background:var(--accent-active); transform:translateY(1px);}
@@ -78,27 +85,55 @@
     .hero h1{margin:0 0 24px;}
     .hero .actions{ display:flex; gap:24px; justify-content:center; flex-wrap:wrap; margin-top:24px;}
 
-    /* Stats */
-    .stats{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin:-40px auto 0}
-    .stat{background:#0d1526; border:1px solid var(--line); border-radius:14px; padding:16px; text-align:center}
-    .stat .kpi{font-weight:var(--fw-bold)}
-    .stat .label{color:var(--muted)}
+    /* ---------- BENEFITS (3 cards) - Figma-accurate ---------- */
+    .benefits-wrap{padding:48px 0 24px;}
+    .benefits{display:flex; gap:32px; justify-content:center; flex-wrap:wrap;}
+    .benefit-card{
+      width:240px; height:161px;
+      padding:24px; border:1px solid var(--border-soft); border-radius:16px;
+      display:flex; flex-direction:column; align-items:center; gap:24px;
+      background:#0D1526;
+    }
+    .benefit-icon{
+      width:40px; height:40px; display:flex; align-items:center; justify-content:center;
+      color:var(--accent); font-size:32px; line-height:32px;
+    }
+    .benefit-text{ display:flex; flex-direction:column; align-items:center; gap:8px; width:192px; }
+    .benefit-value{ font-size:24px; line-height:110%; font-weight:var(--fw-semibold); text-align:center; color:#FFFFFF; }
+    .benefit-label{ font-size:14px; line-height:110%; font-weight:var(--fw-light); text-align:center; color:rgba(255,255,255,0.8); }
 
-    /* Pools */
+    /* ---------- POOLS (cards) - Figma-accurate ---------- */
     .pools{padding:80px 0}
-    .pool-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:24px; margin-top:40px;}
-    .card{background:#0d1526; border:1px solid var(--line); border-radius:16px; padding:24px; display:flex; flex-direction:column; justify-content:space-between;}
-    .card-header{display:flex; align-items:center; justify-content:space-between; margin-bottom:16px;}
-    .card-header-left{display:flex; align-items:center; gap:12px;}
-    .card-header img{width:48px; height:48px; border-radius:8px;}
-    .badge{padding:4px 12px; border:1px solid var(--line); border-radius:20px; font-size:var(--fs-caption); color:var(--muted);}
-    .price{font-size:var(--fs-body-lg); font-weight:var(--fw-bold); color:var(--accent);}
-    .price small{font-size:var(--fs-caption); color:var(--muted); font-weight:var(--fw-medium);}
-    .features{margin:16px 0; list-style:none; padding:0;}
-    .features li{margin-bottom:8px; display:flex; align-items:center; gap:8px;}
-    .card .btn{margin-top:auto; width:100%; text-align:center;}
+    .pool-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:24px; margin-top:40px;}
+    .card{
+      border:2px solid var(--border-soft); border-radius:16px; background:#0D1526;
+      padding:24px; display:flex; flex-direction:column; align-items:flex-start; gap:32px;
+      min-width:224px; height:446px;    /* matches figma height */
+    }
 
-    /* Join */
+    /* header row */
+    .card-header{display:flex; align-items:center; justify-content:space-between; gap:32px; width:100%; height:48px;}
+    .card-header-left{display:flex; align-items:center; gap:16px; margin:0 auto 0 0;}
+    .card-header img{width:48px; height:48px; border-radius:8px;}
+    .card-title{font-weight:var(--fw-bold); font-size:20px; line-height:140%; color:var(--offwhite); display:flex; align-items:center;}
+    .badge{padding:4px 16px; border:1px solid var(--border-soft); border-radius:32px; font-size:16px; line-height:140%; color:#FFFFFF;}
+
+    /* content column */
+    .card-content{display:flex; flex-direction:column; gap:32px; width:100%;}
+    .card-desc{color:#E5E7EB; display:flex; align-items:center;}
+    .price-row{display:flex; align-items:baseline; gap:6px;}
+    .price{font-size:40px; line-height:110%; font-weight:var(--fw-semibold); color:var(--accent);}
+    .price small{font-size:16px; line-height:140%; color:rgba(255,255,255,0.55);}
+
+    /* features */
+    .features{display:flex; flex-direction:column; gap:8px; padding:0; margin:0; list-style:none;}
+    .feature{display:flex; align-items:center; gap:4px; color:rgba(249,250,251,0.7);}
+    .feature i{font-size:12px; color:var(--accent); width:15px; height:15px; display:flex; align-items:center; justify-content:center;}
+
+    /* card button full width, 52px tall */
+    .card .btn{align-self:stretch; height:52px; display:flex; align-items:center; justify-content:center;}
+
+    /* Join (Airtable) */
     #join{padding:80px 0;}
     .embed-wrap{max-width:860px; margin:0 auto; border:1px solid var(--line); border-radius:16px; overflow:hidden; background:#0d1526;}
     .embed-wrap iframe{width:100%; height:900px; border:0; background:#0d1526;}
@@ -107,7 +142,6 @@
     @media (max-width:720px){
       .hero{height:auto; padding:88px 16px 110px;}
       .pill{height:34px}
-      .stats{grid-template-columns:1fr; margin-top:16px}
       .embed-wrap iframe{height:1100px;}
     }
   </style>
@@ -126,16 +160,38 @@
     </div>
   </section>
 
-  <!-- Stats Row -->
-  <div class="container">
-    <div class="stats">
-      <div class="stat"><div class="kpi h4">18</div><div class="label caption">Weekly winners</div></div>
-      <div class="stat"><div class="kpi h4">500+</div><div class="label caption">Total members goal</div></div>
-      <div class="stat"><div class="kpi h4">$2,800</div><div class="label caption">Top season prize (Shark)</div></div>
-    </div>
-  </div>
+  <!-- BENEFITS (3 cards) -->
+  <section class="benefits-wrap">
+    <div class="container">
+      <div class="benefits">
+        <div class="benefit-card">
+          <div class="benefit-icon"><i class="fa-regular fa-calendar-days"></i></div>
+          <div class="benefit-text">
+            <div class="benefit-value">18</div>
+            <div class="benefit-label">Weeks</div>
+          </div>
+        </div>
 
-  <!-- Pools -->
+        <div class="benefit-card">
+          <div class="benefit-icon"><i class="fa-solid fa-users"></i></div>
+          <div class="benefit-text">
+            <div class="benefit-value">500</div>
+            <div class="benefit-label">Max Players</div>
+          </div>
+        </div>
+
+        <div class="benefit-card">
+          <div class="benefit-icon"><i class="fa-regular fa-trophy"></i></div>
+          <div class="benefit-text">
+            <div class="benefit-value">$17,500</div>
+            <div class="benefit-label">Max Payouts</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- POOLS -->
   <section id="pools" class="pools">
     <div class="container">
       <h2 class="h2" style="text-align:center;">Choose Your Pool</h2>
@@ -146,43 +202,53 @@
       <div class="pool-grid">
         <!-- Otter Club -->
         <div class="card">
-          <div>
-            <div class="card-header">
-              <div class="card-header-left">
-                <img src="otter-icon.webp" alt="Otter Club logo">
-                <div class="h4">Otter Club</div>
-              </div>
-              <span class="badge">Casual</span>
+          <div class="card-header">
+            <div class="card-header-left">
+              <img src="otter-icon.webp" alt="Otter Club logo">
+              <div class="card-title">Otter Club</div>
             </div>
-            <p class="body">Straight-up picks. No spreads, just winners and losers. Rack up points for correct picks.</p>
-            <p class="price">$20 <small>entry fee</small></p>
+            <span class="badge">Casual</span>
+          </div>
+
+          <div class="card-content">
+            <p class="body card-desc">Straight-up picks. No spreads, just winners and losers. Rack up points for correct picks.</p>
+            <div class="price-row">
+              <div class="price">$20</div>
+              <small>entry fee</small>
+            </div>
             <ul class="features">
-              <li><i class="fa-solid fa-chevron-right" style="color:var(--accent);"></i> Beginner-friendly</li>
-              <li><i class="fa-solid fa-chevron-right" style="color:var(--accent);"></i> Simple set-and-go picks</li>
-              <li><i class="fa-solid fa-chevron-right" style="color:var(--accent);"></i> Up to $5,000 in payouts</li>
+              <li class="feature"><i class="fa-solid fa-chevron-right"></i> Beginner-friendly</li>
+              <li class="feature"><i class="fa-solid fa-chevron-right"></i> Simple set-and-go picks</li>
+              <li class="feature"><i class="fa-solid fa-chevron-right"></i> Up to $5,000 in payouts</li>
             </ul>
           </div>
+
           <a href="#join" class="btn btn-primary body-lg">Sign Up</a>
         </div>
 
         <!-- Shark Club -->
         <div class="card">
-          <div>
-            <div class="card-header">
-              <div class="card-header-left">
-                <img src="shark-icon.webp" alt="Shark Club logo">
-                <div class="h4">Shark Club</div>
-              </div>
-              <span class="badge">Advanced</span>
+          <div class="card-header">
+            <div class="card-header-left">
+              <img src="shark-icon.webp" alt="Shark Club logo">
+              <div class="card-title">Shark Club</div>
             </div>
-            <p class="body">Play against the spread. Perfect for seasoned players that want more of a challenge.</p>
-            <p class="price">$50 <small>entry fee</small></p>
+            <span class="badge">Advanced</span>
+          </div>
+
+          <div class="card-content">
+            <p class="body card-desc">Play against the spread. Perfect for seasoned players that want more of a challenge.</p>
+            <div class="price-row">
+              <div class="price">$50</div>
+              <small>entry fee</small>
+            </div>
             <ul class="features">
-              <li><i class="fa-solid fa-chevron-right" style="color:var(--accent);"></i> For savvy pros</li>
-              <li><i class="fa-solid fa-chevron-right" style="color:var(--accent);"></i> Beat the line, not just the team</li>
-              <li><i class="fa-solid fa-chevron-right" style="color:var(--accent);"></i> Up to $12,500 in payouts</li>
+              <li class="feature"><i class="fa-solid fa-chevron-right"></i> For savvy pros</li>
+              <li class="feature"><i class="fa-solid fa-chevron-right"></i> Beat the line, not just the team</li>
+              <li class="feature"><i class="fa-solid fa-chevron-right"></i> Up to $12,500 in payouts</li>
             </ul>
           </div>
+
           <a href="#join" class="btn btn-primary body-lg">Sign Up</a>
         </div>
       </div>
