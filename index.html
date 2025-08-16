@@ -1,69 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Seth's Pick'em Challenge</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Urbanist font -->
   <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;600;700&display=swap" rel="stylesheet">
+
   <style>
-  :root{
-    --bg:#030816; --text:#e6ecf3; --muted:#9AA8BE; --line:#1a1f2c; --accent:#26CB4D;
-  }
-  *{box-sizing:border-box}
-  body{margin:0; background:var(--bg); color:var(--text); font-family:'Urbanist',sans-serif}
-  .container{max-width:1100px; margin:0 auto; padding:0 20px}
-  .btn{display:inline-block; padding:12px 18px; border-radius:10px; text-decoration:none; transition:.2s}
-  .btn-primary{background:var(--accent); color:#071b0c; font-weight:700}
-  .btn-primary:hover{transform:translateY(-1px)}
-  .btn-ghost{border:1px solid var(--line); color:var(--text)}
-  .btn-ghost:hover{background:#0b1424}
-  header{border-bottom:1px solid var(--line)}
-  /* HERO */
-  .hero{position:relative; text-align:center; padding:72px 0}
-  .hero h1{font-size:32px; line-height:1.15; margin:12px 0}
-  .hero p.tag{color:#a7ffbf; font-weight:700; letter-spacing:.04em; font-size:12px}
-  .hero p.sub{color:var(--muted); max-width:780px; margin:10px auto 24px}
-  .hero .actions{display:flex; gap:12px; justify-content:center; flex-wrap:wrap}
-  .hero-img{width:100%; max-width:1000px; margin:28px auto 0; border-radius:16px; display:block; opacity:.9}
-  /* STATS ROW */
-  .stats{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin:28px auto 0}
-  .stat{background:#0d1526; border:1px solid var(--line); border-radius:14px; padding:16px}
-  .stat .kpi{font-size:22px; font-weight:700}
-  .stat .label{font-size:12px; color:var(--muted)}
-  /* MOBILE */
-  @media (max-width: 720px){
-    .hero{padding:56px 0}
-    .hero h1{font-size:26px}
-    .stats{grid-template-columns:1fr}
-  }
-</style>
+    :root{
+      --bg:#030816; --text:#e6ecf3; --muted:#9AA8BE; --line:#1a1f2c; --accent:#26CB4D;
+    }
+    *{box-sizing:border-box}
+    body{margin:0; background:var(--bg); color:var(--text); font-family:'Urbanist',sans-serif}
+    .container{max-width:1100px; margin:0 auto; padding:0 20px}
+
+    /* Buttons */
+    .btn{display:inline-block; padding:12px 18px; border-radius:10px; text-decoration:none; transition:.2s}
+    .btn-primary{background:var(--accent); color:#071b0c; font-weight:700}
+    .btn-primary:hover{transform:translateY(-1px)}
+    .btn-ghost{border:1px solid var(--line); color:var(--text)}
+    .btn-ghost:hover{background:#0b1424}
+
+    /* Header */
+    header{border-bottom:1px solid var(--line)}
+    header .container{padding:18px 0; text-align:center}
+    header h1{margin:0; font-size:28px; color:var(--accent)}
+    header p{margin:6px 0 0; color:var(--muted)}
+
+    /* HERO as full-width background (desktop only for now) */
+    .hero{
+      position:relative;
+      text-align:center;
+      padding:120px 20px 140px; /* extra bottom space for composition */
+      background: url('hero-stadium-desktop.webp') center/cover no-repeat;
+      color:#fff;
+    }
+    /* Dark overlay to keep text readable */
+    .hero::after{
+      content:"";
+      position:absolute; inset:0;
+      background:rgba(3,8,22,.55);
+    }
+    .hero .container{position:relative; z-index:1}
+    .hero p.tag{color:#a7ffbf; font-weight:700; letter-spacing:.04em; font-size:12px; margin:0 0 6px}
+    .hero h1{font-size:42px; line-height:1.2; margin:10px 0 12px}
+    .hero p.sub{color:var(--text); max-width:780px; margin:10px auto 24px}
+    .hero .actions{display:flex; gap:12px; justify-content:center; flex-wrap:wrap}
+
+    /* Stats Row */
+    .section{padding:56px 0}
+    .stats{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin:-40px auto 0; /* overlap hero a bit */}
+    .stat{background:#0d1526; border:1px solid var(--line); border-radius:14px; padding:16px; text-align:center}
+    .stat .kpi{font-size:22px; font-weight:700}
+    .stat .label{font-size:12px; color:var(--muted)}
+
+    /* Simple responsive tweaks (no image swap yet) */
+    @media (max-width: 900px){
+      .hero h1{font-size:34px}
+    }
+    @media (max-width: 720px){
+      .hero{padding:88px 16px 110px}
+      .hero h1{font-size:26px}
+      .stats{grid-template-columns:1fr; margin-top:16px}
+    }
+  </style>
 </head>
+
 <body>
   <!-- HEADER -->
   <header>
-    <div class="container" style="padding:18px 0; text-align:center">
-      <h1 style="margin:0; font-size:28px; color:var(--accent)">NFL Pick’em Challenge</h1>
-      <p style="margin:6px 0 0; color:var(--muted)">Pick winners. Win weekly. Chase greatness all season.</p>
+    <div class="container">
+      <h1>NFL Pick’em Challenge</h1>
+      <p>Pick winners. Win weekly. Chase greatness all season.</p>
     </div>
   </header>
 
-  <!-- HERO -->
+  <!-- HERO (full-width background) -->
   <section class="hero">
     <div class="container">
       <p class="tag">NFL PICK’EM CHALLENGE</p>
       <h1>Pick winners. Win weekly.<br/>Chase greatness all season.</h1>
-      <p class="sub">Join the <strong>Otter Club</strong> ($20) or the <strong>Shark Club</strong> ($50). Weekly payouts for 18 weeks + season prizes.</p>
-
+      <p class="sub">
+        Join the <strong>Otter Club</strong> ($20) or the <strong>Shark Club</strong> ($50).
+        Weekly payouts for 18 weeks + season prizes.
+      </p>
       <div class="actions">
         <a href="#join" class="btn btn-primary">Sign Up</a>
         <a href="#pools" class="btn btn-ghost">Learn More</a>
       </div>
-
-      <img class="hero-img" src="hero-stadium-desktop.webp" alt="NFL stadium hero image">
-
-
     </div>
+  </section>
 
-    <!-- Stats Row -->
+  <!-- STATS -->
+  <section class="section">
     <div class="container">
       <div class="stats">
         <div class="stat">
@@ -79,11 +109,4 @@
           <div class="label">Top season prize (Shark)</div>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- More sections will go here next (Pool Cards, Calculator, How It Works, Join Form, FAQ) -->
-</body>
-
-
-</html>
+    </di
