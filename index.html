@@ -152,6 +152,56 @@
       margin-top:auto; /* pushes button to bottom with gap above */
     }
 
+    /* ---------- PAYOUTS CALCULATOR ---------- */
+.calculator{padding:80px 0}
+
+.calc-tabs{display:flex; gap:12px; justify-content:center; margin-bottom:16px}
+.tab{
+  background:transparent; color:var(--offwhite); border:1px solid var(--offwhite);
+  padding:8px 16px; border-radius:999px; cursor:pointer; transition:.18s;
+}
+.tab:hover{background:var(--neutral-200); color:var(--navy); border-color:var(--neutral-200)}
+.tab.active{background:var(--accent); color:var(--navy); border-color:var(--accent)}
+
+.calc-card{
+  border:1px solid var(--border-soft); border-radius:16px;
+  background:var(--bg); padding:24px; display:flex; flex-direction:column; gap:24px;
+}
+
+.calc-controls{
+  display:grid; grid-template-columns:1.5fr .75fr .75fr; gap:24px;
+}
+@media (max-width:900px){
+  .calc-controls{grid-template-columns:1fr}
+}
+.control{display:flex; flex-direction:column; gap:8px}
+.control-row{display:flex; gap:12px; align-items:center}
+#members{flex:1}
+#membersNumber{width:110px; padding:10px 12px; background:#0d1526; color:var(--offwhite); border:1px solid var(--border-soft); border-radius:10px}
+
+.kpi{font-size:24px; font-weight:600}
+
+.breakdown{display:grid; grid-template-columns:1fr 1fr; gap:24px}
+@media (max-width:900px){ .breakdown{grid-template-columns:1fr} }
+
+.break-card{
+  border:1px solid var(--border-soft); border-radius:16px;
+  background:var(--bg); padding:16px 16px 8px;
+}
+.break-head{display:flex; align-items:center; gap:10px; margin-bottom:6px}
+.break-head i{color:var(--accent); font-size:22px}
+
+.payout-list{list-style:none; margin:0; padding:0}
+.payout-list li{
+  display:flex; justify-content:space-between; align-items:center;
+  border-top:1px solid var(--line); padding:10px 4px;
+}
+.payout-list li:first-child{border-top:none}
+.payout-list .place{display:flex; align-items:center; gap:8px}
+.payout-list .pct{color:var(--muted)}
+.payout-list .muted{color:var(--muted)}
+
+
     /* Join (Airtable) */
     #join{padding:80px 0;}
     .embed-wrap{max-width:860px; margin:0 auto; border:1px solid var(--line); border-radius:16px; overflow:hidden; background:#0d1526;}
@@ -253,6 +303,73 @@
 }
 
 
+  <!-- PAYOUTS CALCULATOR -->
+<section id="calculator" class="calculator">
+  <div class="container">
+    <div class="grid-12">
+      <div class="col-span-8-centered">
+        <h2 class="h2" style="text-align:center;">Payouts Calculator</h2>
+        <p class="body" style="text-align:center; color:var(--muted); max-width:720px; margin:12px auto 28px;">
+          Adjust members and pool to see how season and weekly prizes scale. Weekly payouts are shown <em>per week</em> (×18).
+        </p>
+
+        <!-- Pool toggle -->
+        <div class="calc-tabs" role="tablist" aria-label="Choose pool">
+          <button id="tab-otter" class="tab active" role="tab" aria-selected="true" aria-controls="calc-panel">Otter Club</button>
+          <button id="tab-shark" class="tab" role="tab" aria-selected="false" aria-controls="calc-panel">Shark Club</button>
+        </div>
+
+        <div id="calc-panel" class="calc-card" role="region" aria-labelledby="tab-otter">
+          <!-- Controls -->
+          <div class="calc-controls">
+            <div class="control">
+              <label class="utility" for="members">Total Members</label>
+              <div class="control-row">
+                <input id="members" type="range" min="0" max="250" step="1" value="140" />
+                <input id="membersNumber" type="number" min="0" max="250" step="1" value="140" />
+              </div>
+              <div class="utility" id="bucketNote" style="opacity:.8;"></div>
+            </div>
+
+            <div class="control">
+              <label class="utility">Entry Fee</label>
+              <div class="kpi" id="entryFee">$20</div>
+            </div>
+
+            <div class="control">
+              <label class="utility">Total Prize Pool</label>
+              <div class="kpi" id="totalPool">$2,800</div>
+            </div>
+          </div>
+
+          <!-- Breakdown -->
+          <div class="breakdown">
+            <div class="break-card">
+              <div class="break-head">
+                <i class="fa-solid fa-trophy"></i>
+                <h3 class="h4" style="margin:0;">Season Payouts</h3>
+              </div>
+              <ul class="payout-list" id="seasonList"></ul>
+            </div>
+
+            <div class="break-card">
+              <div class="break-head">
+                <i class="fa-solid fa-calendar-week"></i>
+                <h3 class="h4" style="margin:0;">Weekly Payouts</h3>
+              </div>
+              <div class="utility" style="opacity:.8; margin-bottom:8px;">(per week × 18 weeks)</div>
+              <ul class="payout-list" id="weeklyList"></ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
   <!-- Join (Airtable embed) -->
   <section id="join">
     <div class="container">
@@ -270,6 +387,130 @@
       </div>
     </div>
   </section>
+
+  <script>
+  // Entry fees by pool
+  const ENTRY_FEES = { otter: 20, shark: 50 };
+
+  // Global split
+  const SPLIT = { season: 0.80, weekly: 0.20 };
+
+  // Member buckets (inclusive ranges)
+  const BUCKETS = [
+    { range: '1–20',   min: 1,   max: 20,  season: [0.70, 0.30],            weekly: [1.00] },
+    { range: '21–50',  min: 21,  max: 50,  season: [0.65, 0.25, 0.10],      weekly: [1.00] },
+    { range: '51–100', min: 51,  max: 100, season: [0.50, 0.25, 0.15, 0.10],weekly: [0.70, 0.30] },
+    { range: '101–250',min: 101, max: 250, season: [0.50, 0.20, 0.15, 0.10, 0.05], weekly: [0.65, 0.25, 0.10] },
+  ];
+
+  // DOM helpers
+  const $ = (s) => document.querySelector(s);
+  const fmt = (n) => n.toLocaleString('en-US', { style:'currency', currency:'USD', maximumFractionDigits:0 });
+
+  // Elements
+  const tabOtter = $('#tab-otter');
+  const tabShark = $('#tab-shark');
+  const members = $('#members');
+  const membersNumber = $('#membersNumber');
+  const entryFeeEl = $('#entryFee');
+  const totalPoolEl = $('#totalPool');
+  const bucketNote = $('#bucketNote');
+  const seasonList = $('#seasonList');
+  const weeklyList = $('#weeklyList');
+
+  let currentPool = 'otter';
+
+  function findBucket(m){
+    return BUCKETS.find(b => m >= b.min && m <= b.max) || null;
+  }
+
+  function suffix(n){
+    const v = n % 100;
+    if (v >= 11 && v <= 13) return 'th';
+    switch (n % 10) { case 1: return 'st'; case 2: return 'nd'; case 3: return 'rd'; default: return 'th'; }
+  }
+
+  function syncMembers(val){
+    const v = Math.max(0, Math.min(250, parseInt(val || 0, 10)));
+    members.value = v;
+    membersNumber.value = v;
+  }
+
+  function render(){
+    const m = parseInt(members.value, 10) || 0;
+    const entryFee = ENTRY_FEES[currentPool];
+    const totalPool = entryFee * m;
+    entryFeeEl.textContent = fmt(entryFee);
+    totalPoolEl.textContent = fmt(totalPool);
+
+    const b = findBucket(m);
+    bucketNote.textContent = (m < 1) ? 'Enter at least 1 member to see payout splits.' :
+                             (b ? `Using ${b.range} members payout schedule` : 'No payout schedule for this size');
+
+    // Pots
+    const seasonPot = totalPool * SPLIT.season;
+    const weeklyTotal = totalPool * SPLIT.weekly;
+    const weeklyPerWeek = weeklyTotal / 18;
+
+    // Season list
+    seasonList.innerHTML = '';
+    if (m < 1 || !b) {
+      const li = document.createElement('li');
+      li.innerHTML = `<span class="muted">No payouts</span><strong>${fmt(0)}</strong>`;
+      seasonList.appendChild(li);
+    } else {
+      b.season.forEach((pct, i) => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <span class="place">${i+1}<sup>${suffix(i+1)}</sup> Place <span class="pct">(${Math.round(pct*100)}%)</span></span>
+          <strong>${fmt(seasonPot * pct)}</strong>
+        `;
+        seasonList.appendChild(li);
+      });
+    }
+
+    // Weekly list (per week)
+    weeklyList.innerHTML = '';
+    if (m < 1 || !b) {
+      const li = document.createElement('li');
+      li.innerHTML = `<span class="muted">No payouts</span><strong>${fmt(0)}</strong>`;
+      weeklyList.appendChild(li);
+    } else {
+      b.weekly.forEach((pct, i) => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <span class="place">${i+1}<sup>${suffix(i+1)}</sup> Place <span class="pct">(${Math.round(pct*100)}%)</span></span>
+          <strong>${fmt(weeklyPerWeek * pct)}</strong>
+        `;
+        weeklyList.appendChild(li);
+      });
+    }
+  }
+
+  // Events
+  members.addEventListener('input', e => { syncMembers(e.target.value); render(); });
+  membersNumber.addEventListener('input', e => { syncMembers(e.target.value); render(); });
+
+  tabOtter.addEventListener('click', ()=>{
+    currentPool = 'otter';
+    tabOtter.classList.add('active'); tabOtter.setAttribute('aria-selected','true');
+    tabShark.classList.remove('active'); tabShark.setAttribute('aria-selected','false');
+    render();
+  });
+
+  tabShark.addEventListener('click', ()=>{
+    currentPool = 'shark';
+    tabShark.classList.add('active'); tabShark.setAttribute('aria-selected','true');
+    tabOtter.classList.remove('active'); tabOtter.setAttribute('aria-selected','false');
+    render();
+  });
+
+  // Init
+  syncMembers(members.value);
+  render();
+</script>
+
+
 
 </body>
 </html>
