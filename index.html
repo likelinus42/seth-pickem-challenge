@@ -152,54 +152,103 @@
       margin-top:auto; /* pushes button to bottom with gap above */
     }
 
-    /* ---------- PAYOUTS CALCULATOR ---------- */
+/* ---------- PAYOUTS CALCULATOR (UI polish) ---------- */
 .calculator{padding:80px 0}
 
-.calc-tabs{display:flex; gap:12px; justify-content:center; margin-bottom:16px}
-.tab{
-  background:transparent; color:var(--offwhite); border:1px solid var(--offwhite);
-  padding:8px 16px; border-radius:999px; cursor:pointer; transition:.18s;
+:root{
+  --panel:#0d1526;
+  --brandBlue:#69A7FF;     /* used for dollar amounts in panels (mock’s blue) */
 }
-.tab:hover{background:var(--neutral-200); color:var(--navy); border-color:var(--neutral-200)}
-.tab.active{background:var(--accent); color:var(--navy); border-color:var(--accent)}
 
+/* Segmented control */
+.segmented{
+  display:flex; gap:0; padding:2px;
+  background:var(--panel);
+  border:1px solid var(--border-soft);
+  border-radius:14px; 
+  margin:0 auto 20px; max-width:640px;
+}
+.segmented .tab{
+  flex:1; border:none; border-radius:12px;
+  background:transparent; color:#E5E7EB; 
+  padding:10px 16px; font-weight:600; cursor:pointer; transition:.18s;
+}
+.segmented .tab.active{
+  background:#1a1f2c; border:1px solid var(--border-soft);
+  color:var(--offwhite);
+}
+
+/* Card container */
 .calc-card{
   border:1px solid var(--border-soft); border-radius:16px;
-  background:var(--bg); padding:24px; display:flex; flex-direction:column; gap:24px;
+  background:transparent; padding:24px; display:flex; flex-direction:column; gap:24px;
 }
 
-.calc-controls{
-  display:grid; grid-template-columns:1.5fr .75fr .75fr; gap:24px;
+/* KPI row */
+.kpi-row{
+  display:grid; grid-template-columns:1fr 1fr 1fr; gap:24px;
 }
-@media (max-width:900px){
-  .calc-controls{grid-template-columns:1fr}
-}
-.control{display:flex; flex-direction:column; gap:8px}
-.control-row{display:flex; gap:12px; align-items:center}
-#members{flex:1}
-#membersNumber{width:110px; padding:10px 12px; background:#0d1526; color:var(--offwhite); border:1px solid var(--border-soft); border-radius:10px}
+@media (max-width:900px){ .kpi-row{grid-template-columns:1fr} }
 
-.kpi{font-size:24px; font-weight:600}
-
-.breakdown{display:grid; grid-template-columns:1fr 1fr; gap:24px}
-@media (max-width:900px){ .breakdown{grid-template-columns:1fr} }
-
-.break-card{
+.kpi-card{
   border:1px solid var(--border-soft); border-radius:16px;
-  background:var(--bg); padding:16px 16px 8px;
+  background:var(--panel); padding:20px;
 }
-.break-head{display:flex; align-items:center; gap:10px; margin-bottom:6px}
-.break-head i{color:var(--accent); font-size:22px}
+.kpi-label{opacity:.9; margin-bottom:10px}
+.kpi-value{font-size:32px; font-weight:600}
+.kpi-value.dim{color:#9AA8BE}
+.kpi-value.accent{color:var(--accent)}
 
-.payout-list{list-style:none; margin:0; padding:0}
-.payout-list li{
-  display:flex; justify-content:space-between; align-items:center;
-  border-top:1px solid var(--line); padding:10px 4px;
+/* Slider look */
+.slider-wrap{display:flex; align-items:center; gap:14px}
+#members{
+  -webkit-appearance:none; appearance:none; width:100%; height:8px; border-radius:8px;
+  background:#132033; outline:none;
 }
-.payout-list li:first-child{border-top:none}
-.payout-list .place{display:flex; align-items:center; gap:8px}
-.payout-list .pct{color:var(--muted)}
-.payout-list .muted{color:var(--muted)}
+#members::-webkit-slider-thumb{
+  -webkit-appearance:none; appearance:none; width:16px; height:16px; border-radius:50%;
+  background:var(--accent); border:2px solid #0a1b2e; cursor:pointer;
+}
+#members::-moz-range-thumb{
+  width:16px; height:16px; border-radius:50%; background:var(--accent); border:2px solid #0a1b2e; cursor:pointer;
+}
+/* numeric input next to slider */
+#membersNumber{width:84px; padding:10px 12px; background:var(--bg); color:var(--offwhite);
+  border:1px solid var(--border-soft); border-radius:10px; text-align:right}
+
+/* Breakdown surface */
+.break-surface{
+  border:1px solid var(--border-soft); border-radius:16px; padding:20px;
+  background:transparent; display:flex; flex-direction:column; gap:16px;
+}
+.break-header{display:flex; align-items:center; gap:10px; margin-bottom:4px}
+.break-header i{color:var(--accent); font-size:20px}
+
+/* Panels */
+.panel{
+  border:1px solid var(--border-soft); border-radius:14px;
+  background:var(--panel); padding:18px;
+}
+.panel-title{opacity:.95; letter-spacing:.02em; margin-bottom:10px}
+.panel-sub{opacity:.75; margin:-6px 0 10px}
+
+/* Payout lists – grid, centered columns */
+.payout-list{
+  list-style:none; margin:0; padding:6px 0;
+  display:grid; grid-template-columns:repeat(auto-fit, minmax(120px, 1fr)); gap:18px;
+}
+.payout-list li{
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px;
+  text-align:center; padding:8px 6px;
+  border:none; /* remove dividers */
+}
+.payout-list .place{font-size:14px; color:#C7D0DE}
+.payout-list .pct{display:none}                 /* hide % text per mock */
+.payout-list strong{font-size:22px; color:var(--brandBlue); font-weight:700}
+
+/* bucket note at bottom */
+.bucket-note{opacity:.8; margin-top:4px}
+
 
 
     /* Join (Airtable) */
@@ -303,63 +352,71 @@
 }
 
 
-  <!-- PAYOUTS CALCULATOR -->
 <section id="calculator" class="calculator">
   <div class="container">
     <div class="grid-12">
       <div class="col-span-8-centered">
+
         <h2 class="h2" style="text-align:center;">Payouts Calculator</h2>
         <p class="body" style="text-align:center; color:var(--muted); max-width:720px; margin:12px auto 28px;">
-          Adjust members and pool to see how season and weekly prizes scale. Weekly payouts are shown <em>per week</em> (×18).
+          The larger the player pool the larger the prizes. Use the calculator
+          below to see how prizes scale with more members.
         </p>
 
-        <!-- Pool toggle -->
-        <div class="calc-tabs" role="tablist" aria-label="Choose pool">
+        <!-- Segmented tabs -->
+        <div class="calc-tabs segmented" role="tablist" aria-label="Choose pool">
           <button id="tab-otter" class="tab active" role="tab" aria-selected="true" aria-controls="calc-panel">Otter Club</button>
           <button id="tab-shark" class="tab" role="tab" aria-selected="false" aria-controls="calc-panel">Shark Club</button>
         </div>
 
         <div id="calc-panel" class="calc-card" role="region" aria-labelledby="tab-otter">
-          <!-- Controls -->
-          <div class="calc-controls">
-            <div class="control">
-              <label class="utility" for="members">Total Members</label>
-              <div class="control-row">
+          <!-- KPI row -->
+          <div class="kpi-row">
+            <!-- Members -->
+            <div class="kpi-card">
+              <div class="kpi-label utility">Total Members</div>
+              <div class="slider-wrap">
                 <input id="members" type="range" min="0" max="250" step="1" value="140" />
-                <input id="membersNumber" type="number" min="0" max="250" step="1" value="140" />
+                <div class="slider-value" id="membersNumberWrap">
+                  <input id="membersNumber" type="number" min="0" max="250" step="1" value="140" />
+                </div>
               </div>
-              <div class="utility" id="bucketNote" style="opacity:.8;"></div>
             </div>
 
-            <div class="control">
-              <label class="utility">Entry Fee</label>
-              <div class="kpi" id="entryFee">$20</div>
+            <!-- Entry Fee -->
+            <div class="kpi-card">
+              <div class="kpi-label utility">Entry Fee</div>
+              <div class="kpi-value dim" id="entryFee">$20</div>
             </div>
 
-            <div class="control">
-              <label class="utility">Total Prize Pool</label>
-              <div class="kpi" id="totalPool">$2,800</div>
+            <!-- Total Pool -->
+            <div class="kpi-card">
+              <div class="kpi-label utility">Total Prize Pool</div>
+              <div class="kpi-value accent" id="totalPool">$2,800</div>
             </div>
           </div>
 
-          <!-- Breakdown -->
-          <div class="breakdown">
-            <div class="break-card">
-              <div class="break-head">
-                <i class="fa-solid fa-trophy"></i>
-                <h3 class="h4" style="margin:0;">Season Payouts</h3>
-              </div>
+          <!-- Prize Breakdown -->
+          <div class="break-surface">
+            <div class="break-header">
+              <i class="fa-solid fa-calculator"></i>
+              <span class="h4">Prize Breakdown</span>
+            </div>
+
+            <!-- Season panel -->
+            <div class="panel">
+              <div class="panel-title utility">Season&nbsp;&nbsp;Payouts</div>
               <ul class="payout-list" id="seasonList"></ul>
             </div>
 
-            <div class="break-card">
-              <div class="break-head">
-                <i class="fa-solid fa-calendar-week"></i>
-                <h3 class="h4" style="margin:0;">Weekly Payouts</h3>
-              </div>
-              <div class="utility" style="opacity:.8; margin-bottom:8px;">(per week × 18 weeks)</div>
+            <!-- Weekly panel -->
+            <div class="panel">
+              <div class="panel-title utility">Weekly&nbsp;&nbsp;Payouts</div>
+              <div class="panel-sub utility">(per week × 18 weeks)</div>
               <ul class="payout-list" id="weeklyList"></ul>
             </div>
+
+            <div class="bucket-note utility" id="bucketNote"></div>
           </div>
         </div>
 
@@ -367,7 +424,6 @@
     </div>
   </div>
 </section>
-
 
 
   <!-- Join (Airtable embed) -->
