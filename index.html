@@ -4,24 +4,19 @@
   <meta charset="UTF-8" />
   <title>Seth's Pick'em Challenge</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <!-- Urbanist font -->
   <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome -->
+  <script src="https://kit.fontawesome.com/91492d4fbf.js" crossorigin="anonymous"></script>
 
   <style>
     :root{
       /* colors */
-      --bg:#030816;
-      --text:#e6ecf3;
-      --muted:#9AA8BE;
-      --line:#1a1f2c;
-
-      --accent:#26CB4D;          /* Primary default fill */
-      --accent-hover:#1FA13E;    /* Primary hover */
-      --accent-active:#188534;   /* Primary active */
-      --navy:#0B2545;            /* Dark text on green */
-      --offwhite:#F9FAFB;        /* Secondary text + stroke */
-      --neutral-200:#E5E7EB;     /* Secondary hover fill */
-      --ring:#8EE4A2;            /* Focus ring */
+      --bg:#030816; --text:#e6ecf3; --muted:#9AA8BE; --line:#1a1f2c;
+      --accent:#26CB4D; --accent-hover:#1FA13E; --accent-active:#188534;
+      --navy:#0B2545; --offwhite:#F9FAFB; --neutral-200:#E5E7EB; --ring:#8EE4A2;
 
       /* font weights */
       --fw-regular:400; --fw-medium:500; --fw-semibold:600; --fw-bold:700;
@@ -29,142 +24,101 @@
       /* line heights */
       --lh-tight:1.2; --lh-snug:1.25; --lh-normal:1.5;
 
-      /* responsive sizes using clamp(min, vw, max) */
-      --fs-h1: clamp(2.25rem, 6vw, 4rem);    /* 36–64px */
-      --fs-h2: clamp(1.75rem, 4vw, 3rem);    /* 28–48px */
-      --fs-h3: clamp(1.5rem, 3.2vw, 2.5rem); /* 24–40px */
-      --fs-h4: clamp(1.125rem, 2vw, 1.5rem); /* 18–24px */
-      --fs-body-lg: 1.25rem;                 /* 20px */
-      --fs-body: 1rem;                       /* 16px */
-      --fs-caption: 0.875rem;                /* 14px */
+      /* responsive sizes */
+      --fs-h1: clamp(2.25rem, 6vw, 4rem);
+      --fs-h2: clamp(1.75rem, 4vw, 3rem);
+      --fs-h3: clamp(1.5rem, 3.2vw, 2.5rem);
+      --fs-h4: clamp(1.125rem, 2vw, 1.5rem);
+      --fs-body-lg: 1.25rem; --fs-body: 1rem; --fs-caption: 0.875rem;
     }
 
     *{box-sizing:border-box}
+    html{scroll-behavior:smooth;}
     body{margin:0; background:var(--bg); color:var(--text); font-family:'Urbanist',sans-serif}
     .container{max-width:1100px; margin:0 auto; padding:0 20px}
 
-    /* Type classes */
-    .h1{ font-size:var(--fs-h1); line-height:var(--lh-tight); font-weight:var(--fw-bold); }
-    .h2{ font-size:var(--fs-h2); line-height:var(--lh-tight); font-weight:var(--fw-bold); }
-    .h3{ font-size:var(--fs-h3); line-height:var(--lh-tight); font-weight:var(--fw-semibold); }
-    .h4{ font-size:var(--fs-h4); line-height:var(--lh-snug); font-weight:var(--fw-semibold); }
-
-    .body-lg{ font-size:var(--fs-body-lg); line-height:var(--lh-normal); font-weight:var(--fw-medium); }
-    .body{ font-size:var(--fs-body); line-height:var(--lh-normal); font-weight:var(--fw-regular); }
-    .caption{ font-size:var(--fs-caption); line-height:1.4; font-weight:var(--fw-medium); color:var(--muted); }
+    /* Type */
+    .h1{ font-size:var(--fs-h1); line-height:var(--lh-tight); font-weight:var(--fw-bold);}
+    .h2{ font-size:var(--fs-h2); line-height:var(--lh-tight); font-weight:var(--fw-bold);}
+    .h3{ font-size:var(--fs-h3); line-height:var(--lh-tight); font-weight:var(--fw-semibold);}
+    .h4{ font-size:var(--fs-h4); line-height:var(--lh-snug); font-weight:var(--fw-semibold);}
+    .body-lg{ font-size:var(--fs-body-lg); line-height:var(--lh-normal); font-weight:var(--fw-medium);}
+    .body{ font-size:var(--fs-body); line-height:var(--lh-normal); font-weight:var(--fw-regular);}
+    .caption{ font-size:var(--fs-caption); line-height:1.4; font-weight:var(--fw-medium); color:var(--muted);}
     .highlight{color:var(--accent)}
 
-    /* Base button */
-    .btn{
-      display:inline-block;
-      padding:12px 18px;
-      border-radius:12px;
-      text-decoration:none;
-      transition:background-color .18s ease, color .18s ease, border-color .18s ease, transform .08s ease;
-      cursor:pointer;
-      user-select:none;
-      border:1px solid transparent; /* allows focus ring gap to render evenly */
-    }
+    /* Buttons */
+    .btn{display:inline-block; padding:12px 18px; border-radius:12px; text-decoration:none;
+         transition:background-color .18s ease,color .18s ease,border-color .18s ease,transform .08s ease;
+         cursor:pointer; user-select:none; border:1px solid transparent;}
+    .btn-primary{ background:var(--accent); color:var(--navy); font-weight:var(--fw-bold);}
+    .btn-primary:hover{ background:var(--accent-hover);}
+    .btn-primary:active{ background:var(--accent-active); transform:translateY(1px);}
+    .btn-primary:focus-visible{ outline:2px solid var(--ring); outline-offset:2px;}
 
-    /* Primary (filled green) */
-    .btn-primary{
-      background:var(--accent);
-      color:var(--navy);
-      font-weight:var(--fw-bold);
-    }
-    .btn-primary:hover{ background:var(--accent-hover); }
-    .btn-primary:active{ background:var(--accent-active); transform:translateY(1px); }
-    .btn-primary:focus-visible{
-      outline:2px solid var(--ring);   /* ring stroke */
-      outline-offset:2px;              /* 2px gap */
-    }
+    .btn-secondary{ background:transparent; color:var(--offwhite); border-color:var(--offwhite);}
+    .btn-secondary:hover{ background:var(--neutral-200); color:var(--navy); border-color:var(--neutral-200);}
+    .btn-secondary:active{ background:var(--offwhite); color:var(--navy); border-color:var(--offwhite); transform:translateY(1px);}
+    .btn-secondary:focus-visible{ outline:2px solid var(--ring); outline-offset:2px;}
 
-    /* Secondary (outlined) */
-    .btn-secondary{
-      background:transparent;
-      color:var(--offwhite);
-      border-color:var(--offwhite);    /* 1px inside stroke */
-    }
-    .btn-secondary:hover{
-      background:var(--neutral-200);
-      color:var(--navy);
-      border-color:var(--neutral-200);
-    }
-    .btn-secondary:active{
-      background:var(--offwhite);
-      color:var(--navy);
-      border-color:var(--offwhite);
-      transform:translateY(1px);
-    }
-    .btn-secondary:focus-visible{
-      outline:2px solid var(--ring);   /* ring stroke */
-      outline-offset:2px;              /* 2px gap */
-    }
+    .btn-text{ background:transparent; color:rgba(229,231,235,0.6); border-color:transparent; padding:8px 4px; border-radius:8px;}
+    .btn-text:hover{ color:#E5E7EB;}
+    .btn-text:active{ color:var(--offwhite); transform:translateY(1px);}
+    .btn-text:focus-visible{ outline:2px solid var(--ring); outline-offset:2px;}
 
-    /* Text button */
-    .btn-text{
-      background:transparent;
-      color:rgba(229,231,235,0.6);     /* #E5E7EB at 60% */
-      border-color:transparent;
-      padding:8px 4px;                 /* minimal touch target padding */
-      border-radius:8px;
-    }
-    .btn-text:hover{ color:#E5E7EB; }
-    .btn-text:active{ color:var(--offwhite); transform:translateY(1px); }
-    .btn-text:focus-visible{
-      outline:2px solid var(--ring);
-      outline-offset:2px;
-    }
-
-    /* HERO (full-bleed at top, fixed height) */
+    /* HERO */
     .hero{
-      position:relative; text-align:center;
-      height:640px; /* desktop height */
+      position:relative; text-align:center; height:640px;
       background:url('hero-stadium-desktop.webp') center/cover no-repeat;
-      color:#fff;
-      display:flex;
-      align-items:center;  /* vertical center */
-      justify-content:center; /* horizontal center */
+      display:flex; align-items:center; justify-content:center;
     }
     .hero::after{content:""; position:absolute; inset:0; background:rgba(3,8,22,.55);}
     .hero .container{position:relative; z-index:1; text-align:center}
     .pill{height:40px; margin:0 auto 24px; display:block}
     .hero h1{margin:0 0 24px;}
-    .hero .actions{
-      display:flex;
-      gap:24px;                 /* space between Sign Up & Learn More */
-      justify-content:center;
-      flex-wrap:wrap;
-      margin-top:24px;
-    }
+    .hero .actions{ display:flex; gap:24px; justify-content:center; flex-wrap:wrap; margin-top:24px;}
 
-    /* Sections */
-    .section{padding:56px 0}
+    /* Stats */
     .stats{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin:-40px auto 0}
     .stat{background:#0d1526; border:1px solid var(--line); border-radius:14px; padding:16px; text-align:center}
     .stat .kpi{font-weight:var(--fw-bold)}
     .stat .label{color:var(--muted)}
 
-    /* Small tweaks */
+    /* Pools */
+    .pools{padding:80px 0}
+    .pool-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:24px; margin-top:40px;}
+    .card{background:#0d1526; border:1px solid var(--line); border-radius:16px; padding:24px; display:flex; flex-direction:column; justify-content:space-between;}
+    .card-header{display:flex; align-items:center; justify-content:space-between; margin-bottom:16px;}
+    .card-header-left{display:flex; align-items:center; gap:12px;}
+    .card-header img{width:48px; height:48px; border-radius:8px;}
+    .badge{padding:4px 12px; border:1px solid var(--line); border-radius:20px; font-size:var(--fs-caption); color:var(--muted);}
+    .price{font-size:var(--fs-body-lg); font-weight:var(--fw-bold); color:var(--accent);}
+    .price small{font-size:var(--fs-caption); color:var(--muted); font-weight:var(--fw-medium);}
+    .features{margin:16px 0; list-style:none; padding:0;}
+    .features li{margin-bottom:8px; display:flex; align-items:center; gap:8px;}
+    .card .btn{margin-top:auto; width:100%; text-align:center;}
+
+    /* Join */
+    #join{padding:80px 0;}
+    .embed-wrap{max-width:860px; margin:0 auto; border:1px solid var(--line); border-radius:16px; overflow:hidden; background:#0d1526;}
+    .embed-wrap iframe{width:100%; height:900px; border:0; background:#0d1526;}
+
+    /* Mobile tweaks */
     @media (max-width:720px){
       .hero{height:auto; padding:88px 16px 110px;}
       .pill{height:34px}
       .stats{grid-template-columns:1fr; margin-top:16px}
+      .embed-wrap iframe{height:1100px;}
     }
   </style>
 </head>
-
 <body>
+
   <!-- HERO -->
   <section class="hero">
     <div class="container">
-      <img src="logo-pill.png" class="pill" alt="NFL Pick'em Challenge">
-
-      <h1 class="h1">
-        Pick winners. Win weekly.<br/>
-        <span class="highlight">Chase greatness</span> all season.
-      </h1>
-
+      <img class="pill" src="logo-pill.png" alt="NFL Pick'em Challenge">
+      <h1 class="h1">Pick winners. Win weekly.<br><span class="highlight">Chase greatness</span> all season.</h1>
       <div class="actions">
         <a href="#join" class="btn btn-primary body-lg">Sign Up</a>
         <a href="#pools" class="btn btn-secondary body-lg">Learn More</a>
@@ -172,26 +126,86 @@
     </div>
   </section>
 
-  <!-- STATS -->
-  <section class="section">
+  <!-- Stats Row -->
+  <div class="container">
+    <div class="stats">
+      <div class="stat"><div class="kpi h4">18</div><div class="label caption">Weekly winners</div></div>
+      <div class="stat"><div class="kpi h4">500+</div><div class="label caption">Total members goal</div></div>
+      <div class="stat"><div class="kpi h4">$2,800</div><div class="label caption">Top season prize (Shark)</div></div>
+    </div>
+  </div>
+
+  <!-- Pools -->
+  <section id="pools" class="pools">
     <div class="container">
-      <div class="stats">
-        <div class="stat">
-          <div class="body-lg kpi">18</div>
-          <div class="caption label">Weekly winners</div>
+      <h2 class="h2" style="text-align:center;">Choose Your Pool</h2>
+      <p class="body" style="text-align:center; color:var(--muted); max-width:700px; margin:12px auto 40px;">
+        Two ways to play based on your comfort level. Join one or both to increase your chances of winning hard, cold cash!
+      </p>
+
+      <div class="pool-grid">
+        <!-- Otter Club -->
+        <div class="card">
+          <div>
+            <div class="card-header">
+              <div class="card-header-left">
+                <img src="otter-icon.webp" alt="Otter Club logo">
+                <div class="h4">Otter Club</div>
+              </div>
+              <span class="badge">Casual</span>
+            </div>
+            <p class="body">Straight-up picks. No spreads, just winners and losers. Rack up points for correct picks.</p>
+            <p class="price">$20 <small>entry fee</small></p>
+            <ul class="features">
+              <li><i class="fa-solid fa-chevron-right" style="color:var(--accent);"></i> Beginner-friendly</li>
+              <li><i class="fa-solid fa-chevron-right" style="color:var(--accent);"></i> Simple set-and-go picks</li>
+              <li><i class="fa-solid fa-chevron-right" style="color:var(--accent);"></i> Up to $5,000 in payouts</li>
+            </ul>
+          </div>
+          <a href="#join" class="btn btn-primary body-lg">Sign Up</a>
         </div>
-        <div class="stat">
-          <div class="body-lg kpi">500+</div>
-          <div class="caption label">Total members goal</div>
-        </div>
-        <div class="stat">
-          <div class="body-lg kpi">$2,800</div>
-          <div class="caption label">Top season prize (Shark)</div>
+
+        <!-- Shark Club -->
+        <div class="card">
+          <div>
+            <div class="card-header">
+              <div class="card-header-left">
+                <img src="shark-icon.webp" alt="Shark Club logo">
+                <div class="h4">Shark Club</div>
+              </div>
+              <span class="badge">Advanced</span>
+            </div>
+            <p class="body">Play against the spread. Perfect for seasoned players that want more of a challenge.</p>
+            <p class="price">$50 <small>entry fee</small></p>
+            <ul class="features">
+              <li><i class="fa-solid fa-chevron-right" style="color:var(--accent);"></i> For savvy pros</li>
+              <li><i class="fa-solid fa-chevron-right" style="color:var(--accent);"></i> Beat the line, not just the team</li>
+              <li><i class="fa-solid fa-chevron-right" style="color:var(--accent);"></i> Up to $12,500 in payouts</li>
+            </ul>
+          </div>
+          <a href="#join" class="btn btn-primary body-lg">Sign Up</a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- More sections coming next: Pools, Calculator, How It Works, Join, FAQ -->
+  <!-- Join (Airtable embed) -->
+  <section id="join">
+    <div class="container">
+      <h2 class="h2" style="text-align:center;">Ready to Join?</h2>
+      <p class="body" style="text-align:center; color:var(--muted); max-width:720px; margin:12px auto 28px;">
+        Fill out the form below to lock in your spot. You can join Otter, Shark, or both.
+      </p>
+      <div class="embed-wrap">
+        <iframe 
+          class="airtable-embed"
+          src="https://airtable.com/embed/appjd8ASIv6Wa7cSN/pagKh4VOGMg5EHfAi/form"
+          title="NFL Pick'em Challenge Signup"
+          loading="lazy">
+        </iframe>
+      </div>
+    </div>
+  </section>
+
 </body>
 </html>
