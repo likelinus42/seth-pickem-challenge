@@ -50,18 +50,27 @@
     .btn-ghost{border:1px solid var(--line); color:var(--text)}
     .btn-ghost:hover{background:#0b1424}
 
-    /* HERO (full-bleed at top) */
+    /* HERO (full-bleed at top, fixed height) */
     .hero{
       position:relative; text-align:center;
-      padding:120px 20px 140px;
+      height:640px; /* lock desktop height */
       background:url('hero-stadium-desktop.webp') center/cover no-repeat;
       color:#fff;
+      display:flex;
+      align-items:center; /* vertical center */
+      justify-content:center; /* horizontal center */
     }
     .hero::after{content:""; position:absolute; inset:0; background:rgba(3,8,22,.55);}
-    .hero .container{position:relative; z-index:1}
+    .hero .container{position:relative; z-index:1; text-align:center}
     .pill{height:40px; margin:0 auto 24px; display:block}
     .hero h1{margin:0 0 24px;}
-    .hero .actions{display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:24px;}
+    .hero .actions{
+      display:flex; 
+      gap:24px; /* button spacing */
+      justify-content:center; 
+      flex-wrap:wrap; 
+      margin-top:24px;
+    }
 
     /* Sections */
     .section{padding:56px 0}
@@ -72,7 +81,7 @@
 
     /* Small tweaks */
     @media (max-width:720px){
-      .hero{padding:88px 16px 110px}
+      .hero{height:auto; padding:88px 16px 110px;} /* let height adjust on mobile */
       .pill{height:34px}
       .stats{grid-template-columns:1fr; margin-top:16px}
     }
