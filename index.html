@@ -41,7 +41,7 @@
     .body-lg{ font-size:var(--fs-body-lg); line-height:var(--lh-normal); font-weight:var(--fw-medium); }
     .body{ font-size:var(--fs-body); line-height:var(--lh-normal); font-weight:var(--fw-regular); }
     .caption{ font-size:var(--fs-caption); line-height:1.4; font-weight:var(--fw-medium); color:var(--muted); }
-    .eyebrow{ font-size:0.75rem; font-weight:var(--fw-bold); text-transform:uppercase; letter-spacing:.06em; color:#a7ffbf; }
+    .highlight{color:var(--accent)}
 
     /* Buttons */
     .btn{display:inline-block; padding:12px 18px; border-radius:10px; text-decoration:none; transition:.2s}
@@ -50,13 +50,7 @@
     .btn-ghost{border:1px solid var(--line); color:var(--text)}
     .btn-ghost:hover{background:#0b1424}
 
-    /* Header */
-    header{border-bottom:1px solid var(--line)}
-    header .container{padding:18px 0; text-align:center}
-    header .title{color:var(--accent)}
-    header .sub{color:var(--muted)}
-
-    /* HERO (desktop-first) */
+    /* HERO (full-bleed at top) */
     .hero{
       position:relative; text-align:center;
       padding:120px 20px 140px;
@@ -66,9 +60,7 @@
     .hero::after{content:""; position:absolute; inset:0; background:rgba(3,8,22,.55);}
     .hero .container{position:relative; z-index:1}
     .pill{height:40px; margin:0 auto 20px; display:block}
-    .hero .sub{max-width:780px; margin:10px auto 24px}
     .hero .actions{display:flex; gap:12px; justify-content:center; flex-wrap:wrap}
-    .highlight{color:var(--accent)}
 
     /* Sections */
     .section{padding:56px 0}
@@ -87,29 +79,15 @@
 </head>
 
 <body>
-  <!-- HEADER -->
-  <header>
-    <div class="container">
-      <div class="h4 title">NFL Pick’em Challenge</div>
-      <div class="caption sub">Pick winners. Win weekly. Chase greatness all season.</div>
-    </div>
-  </header>
-
-  <!-- HERO -->
+  <!-- HERO (no top header on initial load) -->
   <section class="hero">
     <div class="container">
       <img src="logo-pill.png" class="pill" alt="NFL Pick'em Challenge">
-      <div class="eyebrow" style="margin-bottom:6px;">NFL Pick’em Challenge</div>
 
       <h1 class="h1" style="margin:10px 0 12px;">
         Pick winners. Win weekly.<br/>
         <span class="highlight">Chase greatness</span> all season.
       </h1>
-
-      <p class="body sub">
-        Join the <strong>Otter Club</strong> ($20) or the <strong>Shark Club</strong> ($50).
-        Weekly payouts for 18 weeks + season prizes.
-      </p>
 
       <div class="actions">
         <a href="#join" class="btn btn-primary body">Sign Up</a>
