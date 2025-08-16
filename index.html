@@ -5,19 +5,47 @@
   <title>Seth's Pick'em Challenge</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <!-- Urbanist font -->
-  <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
     :root{
+      /* colors */
       --bg:#030816; --text:#e6ecf3; --muted:#9AA8BE; --line:#1a1f2c; --accent:#26CB4D;
+
+      /* font weights */
+      --fw-regular:400; --fw-medium:500; --fw-semibold:600; --fw-bold:700;
+
+      /* line heights */
+      --lh-tight:1.2; --lh-snug:1.25; --lh-normal:1.5;
+
+      /* responsive sizes using clamp(min, vw, max) */
+      --fs-h1: clamp(2.25rem, 6vw, 4rem);    /* 36–64px */
+      --fs-h2: clamp(1.75rem, 4vw, 3rem);    /* 28–48px */
+      --fs-h3: clamp(1.5rem, 3.2vw, 2.5rem); /* 24–40px */
+      --fs-h4: clamp(1.125rem, 2vw, 1.5rem); /* 18–24px */
+      --fs-body-lg: 1.25rem;                 /* 20px */
+      --fs-body: 1rem;                       /* 16px */
+      --fs-caption: 0.875rem;                /* 14px */
     }
+
     *{box-sizing:border-box}
     body{margin:0; background:var(--bg); color:var(--text); font-family:'Urbanist',sans-serif}
     .container{max-width:1100px; margin:0 auto; padding:0 20px}
 
+    /* Type classes */
+    .h1{ font-size:var(--fs-h1); line-height:var(--lh-tight); font-weight:var(--fw-bold); }
+    .h2{ font-size:var(--fs-h2); line-height:var(--lh-tight); font-weight:var(--fw-bold); }
+    .h3{ font-size:var(--fs-h3); line-height:var(--lh-tight); font-weight:var(--fw-semibold); }
+    .h4{ font-size:var(--fs-h4); line-height:var(--lh-snug); font-weight:var(--fw-semibold); }
+
+    .body-lg{ font-size:var(--fs-body-lg); line-height:var(--lh-normal); font-weight:var(--fw-medium); }
+    .body{ font-size:var(--fs-body); line-height:var(--lh-normal); font-weight:var(--fw-regular); }
+    .caption{ font-size:var(--fs-caption); line-height:1.4; font-weight:var(--fw-medium); color:var(--muted); }
+    .eyebrow{ font-size:0.75rem; font-weight:var(--fw-bold); text-transform:uppercase; letter-spacing:.06em; color:#a7ffbf; }
+
     /* Buttons */
     .btn{display:inline-block; padding:12px 18px; border-radius:10px; text-decoration:none; transition:.2s}
-    .btn-primary{background:var(--accent); color:#071b0c; font-weight:700}
+    .btn-primary{background:var(--accent); color:#071b0c; font-weight:var(--fw-bold)}
     .btn-primary:hover{transform:translateY(-1px)}
     .btn-ghost{border:1px solid var(--line); color:var(--text)}
     .btn-ghost:hover{background:#0b1424}
@@ -25,46 +53,35 @@
     /* Header */
     header{border-bottom:1px solid var(--line)}
     header .container{padding:18px 0; text-align:center}
-    header h1{margin:0; font-size:28px; color:var(--accent)}
-    header p{margin:6px 0 0; color:var(--muted)}
+    header .title{color:var(--accent)}
+    header .sub{color:var(--muted)}
 
-    /* HERO as full-width background (desktop-first) */
+    /* HERO (desktop-first) */
     .hero{
-      position:relative;
-      text-align:center;
-      padding:120px 20px 140px; /* extra bottom space for composition */
-      background: url('hero-stadium-desktop.webp') center/cover no-repeat;
+      position:relative; text-align:center;
+      padding:120px 20px 140px;
+      background:url('hero-stadium-desktop.webp') center/cover no-repeat;
       color:#fff;
     }
-    /* Dark overlay to keep text readable */
-    .hero::after{
-      content:"";
-      position:absolute; inset:0;
-      background:rgba(3,8,22,.55);
-    }
+    .hero::after{content:""; position:absolute; inset:0; background:rgba(3,8,22,.55);}
     .hero .container{position:relative; z-index:1}
     .pill{height:40px; margin:0 auto 20px; display:block}
-    .hero h1{font-size:42px; line-height:1.2; margin:10px 0 12px}
-    .hero h1 .highlight{color:#26CB4D}
-    .hero p.sub{color:var(--text); max-width:780px; margin:10px auto 24px}
+    .hero .sub{max-width:780px; margin:10px auto 24px}
     .hero .actions{display:flex; gap:12px; justify-content:center; flex-wrap:wrap}
+    .highlight{color:var(--accent)}
 
     /* Sections */
     .section{padding:56px 0}
     .stats{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin:-40px auto 0}
     .stat{background:#0d1526; border:1px solid var(--line); border-radius:14px; padding:16px; text-align:center}
-    .stat .kpi{font-size:22px; font-weight:700}
-    .stat .label{font-size:12px; color:var(--muted)}
+    .stat .kpi{font-weight:var(--fw-bold)}
+    .stat .label{color:var(--muted)}
 
-    /* Simple responsive tweaks (no mobile hero swap yet) */
-    @media (max-width: 900px){
-      .hero h1{font-size:34px}
-    }
-    @media (max-width: 720px){
+    /* Small tweaks */
+    @media (max-width:720px){
       .hero{padding:88px 16px 110px}
-      .hero h1{font-size:26px}
-      .stats{grid-template-columns:1fr; margin-top:16px}
       .pill{height:34px}
+      .stats{grid-template-columns:1fr; margin-top:16px}
     }
   </style>
 </head>
@@ -73,29 +90,30 @@
   <!-- HEADER -->
   <header>
     <div class="container">
-      <h1>NFL Pick’em Challenge</h1>
-      <p>Pick winners. Win weekly. Chase greatness all season.</p>
+      <div class="h4 title">NFL Pick’em Challenge</div>
+      <div class="caption sub">Pick winners. Win weekly. Chase greatness all season.</div>
     </div>
   </header>
 
   <!-- HERO -->
   <section class="hero">
     <div class="container">
-      <!-- Pill image -->
       <img src="logo-pill.png" class="pill" alt="NFL Pick'em Challenge">
+      <div class="eyebrow" style="margin-bottom:6px;">NFL Pick’em Challenge</div>
 
-      <h1>
+      <h1 class="h1" style="margin:10px 0 12px;">
         Pick winners. Win weekly.<br/>
         <span class="highlight">Chase greatness</span> all season.
       </h1>
 
-      <p class="sub">
+      <p class="body sub">
         Join the <strong>Otter Club</strong> ($20) or the <strong>Shark Club</strong> ($50).
         Weekly payouts for 18 weeks + season prizes.
       </p>
+
       <div class="actions">
-        <a href="#join" class="btn btn-primary">Sign Up</a>
-        <a href="#pools" class="btn btn-ghost">Learn More</a>
+        <a href="#join" class="btn btn-primary body">Sign Up</a>
+        <a href="#pools" class="btn btn-ghost body">Learn More</a>
       </div>
     </div>
   </section>
@@ -105,16 +123,16 @@
     <div class="container">
       <div class="stats">
         <div class="stat">
-          <div class="kpi">18</div>
-          <div class="label">Weekly winners</div>
+          <div class="body-lg kpi">18</div>
+          <div class="caption label">Weekly winners</div>
         </div>
         <div class="stat">
-          <div class="kpi">500+</div>
-          <div class="label">Total members goal</div>
+          <div class="body-lg kpi">500+</div>
+          <div class="caption label">Total members goal</div>
         </div>
         <div class="stat">
-          <div class="kpi">$2,800</div>
-          <div class="label">Top season prize (Shark)</div>
+          <div class="body-lg kpi">$2,800</div>
+          <div class="caption label">Top season prize (Shark)</div>
         </div>
       </div>
     </div>
