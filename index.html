@@ -10,12 +10,18 @@
   <style>
     :root{
       /* colors */
-      --bg:#030816; 
-      --text:#e6ecf3; 
-      --muted:#9AA8BE; 
-      --line:#1a1f2c; 
-      --accent:#26CB4D;
-      --offwhite:#F9FAFB;
+      --bg:#030816;
+      --text:#e6ecf3;
+      --muted:#9AA8BE;
+      --line:#1a1f2c;
+
+      --accent:#26CB4D;          /* Primary default fill */
+      --accent-hover:#1FA13E;    /* Primary hover */
+      --accent-active:#188534;   /* Primary active */
+      --navy:#0B2545;            /* Dark text on green */
+      --offwhite:#F9FAFB;        /* Secondary text + stroke */
+      --neutral-200:#E5E7EB;     /* Secondary hover fill */
+      --ring:#8EE4A2;            /* Focus ring */
 
       /* font weights */
       --fw-regular:400; --fw-medium:500; --fw-semibold:600; --fw-bold:700;
@@ -48,24 +54,76 @@
     .caption{ font-size:var(--fs-caption); line-height:1.4; font-weight:var(--fw-medium); color:var(--muted); }
     .highlight{color:var(--accent)}
 
-    /* Buttons */
-    .btn{display:inline-block; padding:12px 18px; border-radius:10px; text-decoration:none; transition:.2s}
-    .btn-primary{background:var(--accent); color:#071b0c; font-weight:var(--fw-bold)}
-    .btn-primary:hover{transform:translateY(-1px)}
-    .btn-ghost{
-      border:1px solid var(--offwhite); /* updated stroke */
-      color:var(--offwhite);            /* text matches offwhite */
+    /* Base button */
+    .btn{
+      display:inline-block;
+      padding:12px 18px;
+      border-radius:12px;
+      text-decoration:none;
+      transition:background-color .18s ease, color .18s ease, border-color .18s ease, transform .08s ease;
+      cursor:pointer;
+      user-select:none;
+      border:1px solid transparent; /* allows focus ring gap to render evenly */
     }
-    .btn-ghost:hover{background:rgba(249,250,251,0.08)} /* faint offwhite overlay */
 
-    /* HERO */
+    /* Primary (filled green) */
+    .btn-primary{
+      background:var(--accent);
+      color:var(--navy);
+      font-weight:var(--fw-bold);
+    }
+    .btn-primary:hover{ background:var(--accent-hover); }
+    .btn-primary:active{ background:var(--accent-active); transform:translateY(1px); }
+    .btn-primary:focus-visible{
+      outline:2px solid var(--ring);   /* ring stroke */
+      outline-offset:2px;              /* 2px gap */
+    }
+
+    /* Secondary (outlined) */
+    .btn-secondary{
+      background:transparent;
+      color:var(--offwhite);
+      border-color:var(--offwhite);    /* 1px inside stroke */
+    }
+    .btn-secondary:hover{
+      background:var(--neutral-200);
+      color:var(--navy);
+      border-color:var(--neutral-200);
+    }
+    .btn-secondary:active{
+      background:var(--offwhite);
+      color:var(--navy);
+      border-color:var(--offwhite);
+      transform:translateY(1px);
+    }
+    .btn-secondary:focus-visible{
+      outline:2px solid var(--ring);   /* ring stroke */
+      outline-offset:2px;              /* 2px gap */
+    }
+
+    /* Text button */
+    .btn-text{
+      background:transparent;
+      color:rgba(229,231,235,0.6);     /* #E5E7EB at 60% */
+      border-color:transparent;
+      padding:8px 4px;                 /* minimal touch target padding */
+      border-radius:8px;
+    }
+    .btn-text:hover{ color:#E5E7EB; }
+    .btn-text:active{ color:var(--offwhite); transform:translateY(1px); }
+    .btn-text:focus-visible{
+      outline:2px solid var(--ring);
+      outline-offset:2px;
+    }
+
+    /* HERO (full-bleed at top, fixed height) */
     .hero{
       position:relative; text-align:center;
-      height:640px; /* lock desktop height */
+      height:640px; /* desktop height */
       background:url('hero-stadium-desktop.webp') center/cover no-repeat;
       color:#fff;
       display:flex;
-      align-items:center; /* vertical center */
+      align-items:center;  /* vertical center */
       justify-content:center; /* horizontal center */
     }
     .hero::after{content:""; position:absolute; inset:0; background:rgba(3,8,22,.55);}
@@ -73,10 +131,10 @@
     .pill{height:40px; margin:0 auto 24px; display:block}
     .hero h1{margin:0 0 24px;}
     .hero .actions{
-      display:flex; 
-      gap:24px; /* button spacing */
-      justify-content:center; 
-      flex-wrap:wrap; 
+      display:flex;
+      gap:24px;                 /* space between Sign Up & Learn More */
+      justify-content:center;
+      flex-wrap:wrap;
       margin-top:24px;
     }
 
@@ -89,7 +147,7 @@
 
     /* Small tweaks */
     @media (max-width:720px){
-      .hero{height:auto; padding:88px 16px 110px;} /* let height adjust on mobile */
+      .hero{height:auto; padding:88px 16px 110px;}
       .pill{height:34px}
       .stats{grid-template-columns:1fr; margin-top:16px}
     }
@@ -109,7 +167,7 @@
 
       <div class="actions">
         <a href="#join" class="btn btn-primary body-lg">Sign Up</a>
-        <a href="#pools" class="btn btn-ghost body-lg">Learn More</a>
+        <a href="#pools" class="btn btn-secondary body-lg">Learn More</a>
       </div>
     </div>
   </section>
