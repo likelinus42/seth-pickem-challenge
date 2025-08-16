@@ -17,7 +17,6 @@
       --bg:#030816; --text:#e6ecf3; --muted:#9AA8BE; --line:#1a1f2c;
       --accent:#26CB4D; --accent-hover:#1FA13E; --accent-active:#188534;
       --navy:#0B2545; --offwhite:#F9FAFB; --neutral-200:#E5E7EB; --ring:#8EE4A2;
-      /* figma card border (lighter than --line) */
       --border-soft: rgba(229,231,235,0.30);
 
       /* font weights */
@@ -30,10 +29,13 @@
       --fs-h1: clamp(2.25rem, 6vw, 4rem);
       --fs-h2: clamp(1.75rem, 4vw, 3rem);
       --fs-h3: clamp(1.5rem, 3.2vw, 2.5rem);
-      --fs-h4: 24px;                 /* fixed per Figma */
+      --fs-h4: 24px;
       --fs-body-lg: 20px;
       --fs-body: 16px;
       --fs-utility: 14px;
+
+      /* grid */
+      --gutter:24px;
     }
 
     *{box-sizing:border-box}
@@ -85,11 +87,21 @@
     .hero h1{margin:0 0 24px;}
     .hero .actions{ display:flex; gap:24px; justify-content:center; flex-wrap:wrap; margin-top:24px;}
 
-    /* ---------- BENEFITS (3 cards) - Figma-accurate ---------- */
+    /* ---------- LIGHT 12-COL GRID UTILITIES ---------- */
+    .grid-12{ display:grid; grid-template-columns:repeat(12, minmax(0,1fr)); gap:var(--gutter); }
+    .col-span-8-centered{ grid-column:3 / span 8; }
+    @media (max-width: 900px){
+      .grid-12{ grid-template-columns:repeat(6, minmax(0,1fr)); }
+      .col-span-8-centered{ grid-column:1 / -1; } /* full width on tablet/phone */
+    }
+
+    /* ---------- BENEFITS (3 cards) ---------- */
     .benefits-wrap{padding:48px 0 24px;}
-    .benefits{display:flex; gap:32px; justify-content:center; flex-wrap:wrap;}
+    .benefits-grid{ display:grid; grid-template-columns:repeat(3, 1fr); gap:32px; }
+    @media (max-width: 900px){ .benefits-grid{ grid-template-columns:1fr; gap:16px; } }
+
     .benefit-card{
-      width:240px; height:161px;
+      width:100%; height:161px;
       padding:24px; border:1px solid var(--border-soft); border-radius:16px;
       display:flex; flex-direction:column; align-items:center; gap:24px;
       background:#0D1526;
@@ -102,13 +114,15 @@
     .benefit-value{ font-size:24px; line-height:110%; font-weight:var(--fw-semibold); text-align:center; color:#FFFFFF; }
     .benefit-label{ font-size:14px; line-height:110%; font-weight:var(--fw-light); text-align:center; color:rgba(255,255,255,0.8); }
 
-    /* ---------- POOLS (cards) - Figma-accurate ---------- */
+    /* ---------- POOLS (cards) ---------- */
     .pools{padding:80px 0}
-    .pool-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:24px; margin-top:40px;}
+    .pool-inner{ display:grid; grid-template-columns:repeat(2, 1fr); gap:24px; }
+    @media (max-width: 900px){ .pool-inner{ grid-template-columns:1fr; } }
+
     .card{
       border:2px solid var(--border-soft); border-radius:16px; background:#0D1526;
       padding:24px; display:flex; flex-direction:column; align-items:flex-start; gap:32px;
-      min-width:224px; height:446px;    /* matches figma height */
+      min-width:224px; height:446px;
     }
 
     /* header row */
@@ -160,96 +174,104 @@
     </div>
   </section>
 
-  <!-- BENEFITS (3 cards) -->
+  <!-- BENEFITS in an 8-column centered block -->
   <section class="benefits-wrap">
     <div class="container">
-      <div class="benefits">
-        <div class="benefit-card">
-          <div class="benefit-icon"><i class="fa-regular fa-calendar-days"></i></div>
-          <div class="benefit-text">
-            <div class="benefit-value">18</div>
-            <div class="benefit-label">Weeks</div>
-          </div>
-        </div>
+      <div class="grid-12">
+        <div class="col-span-8-centered">
+          <div class="benefits-grid">
+            <div class="benefit-card">
+              <div class="benefit-icon"><i class="fa-regular fa-calendar-days"></i></div>
+              <div class="benefit-text">
+                <div class="benefit-value">18</div>
+                <div class="benefit-label">Weeks</div>
+              </div>
+            </div>
 
-        <div class="benefit-card">
-          <div class="benefit-icon"><i class="fa-solid fa-users"></i></div>
-          <div class="benefit-text">
-            <div class="benefit-value">500</div>
-            <div class="benefit-label">Max Players</div>
-          </div>
-        </div>
+            <div class="benefit-card">
+              <div class="benefit-icon"><i class="fa-solid fa-users"></i></div>
+              <div class="benefit-text">
+                <div class="benefit-value">500</div>
+                <div class="benefit-label">Max Players</div>
+              </div>
+            </div>
 
-        <div class="benefit-card">
-          <div class="benefit-icon"><i class="fa-regular fa-trophy"></i></div>
-          <div class="benefit-text">
-            <div class="benefit-value">$17,500</div>
-            <div class="benefit-label">Max Payouts</div>
+            <div class="benefit-card">
+              <div class="benefit-icon"><i class="fa-regular fa-trophy"></i></div>
+              <div class="benefit-text">
+                <div class="benefit-value">$17,500</div>
+                <div class="benefit-label">Max Payouts</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- POOLS -->
+  <!-- POOLS in an 8-column centered block -->
   <section id="pools" class="pools">
     <div class="container">
-      <h2 class="h2" style="text-align:center;">Choose Your Pool</h2>
-      <p class="body" style="text-align:center; color:var(--muted); max-width:700px; margin:12px auto 40px;">
-        Two ways to play based on your comfort level. Join one or both to increase your chances of winning hard, cold cash!
-      </p>
+      <div class="grid-12">
+        <div class="col-span-8-centered">
+          <h2 class="h2" style="text-align:center;">Choose Your Pool</h2>
+          <p class="body" style="text-align:center; color:var(--muted); max-width:700px; margin:12px auto 40px;">
+            Two ways to play based on your comfort level. Join one or both to increase your chances of winning hard, cold cash!
+          </p>
 
-      <div class="pool-grid">
-        <!-- Otter Club -->
-        <div class="card">
-          <div class="card-header">
-            <div class="card-header-left">
-              <img src="otter-icon.webp" alt="Otter Club logo">
-              <div class="card-title">Otter Club</div>
+          <div class="pool-inner">
+            <!-- Otter Club -->
+            <div class="card">
+              <div class="card-header">
+                <div class="card-header-left">
+                  <img src="otter-icon.webp" alt="Otter Club logo">
+                  <div class="card-title">Otter Club</div>
+                </div>
+                <span class="badge">Casual</span>
+              </div>
+
+              <div class="card-content">
+                <p class="body card-desc">Straight-up picks. No spreads, just winners and losers. Rack up points for correct picks.</p>
+                <div class="price-row">
+                  <div class="price">$20</div>
+                  <small>entry fee</small>
+                </div>
+                <ul class="features">
+                  <li class="feature"><i class="fa-solid fa-chevron-right"></i> Beginner-friendly</li>
+                  <li class="feature"><i class="fa-solid fa-chevron-right"></i> Simple set-and-go picks</li>
+                  <li class="feature"><i class="fa-solid fa-chevron-right"></i> Up to $5,000 in payouts</li>
+                </ul>
+              </div>
+
+              <a href="#join" class="btn btn-primary body-lg">Sign Up</a>
             </div>
-            <span class="badge">Casual</span>
-          </div>
 
-          <div class="card-content">
-            <p class="body card-desc">Straight-up picks. No spreads, just winners and losers. Rack up points for correct picks.</p>
-            <div class="price-row">
-              <div class="price">$20</div>
-              <small>entry fee</small>
+            <!-- Shark Club -->
+            <div class="card">
+              <div class="card-header">
+                <div class="card-header-left">
+                  <img src="shark-icon.webp" alt="Shark Club logo">
+                  <div class="card-title">Shark Club</div>
+                </div>
+                <span class="badge">Advanced</span>
+              </div>
+
+              <div class="card-content">
+                <p class="body card-desc">Play against the spread. Perfect for seasoned players that want more of a challenge.</p>
+                <div class="price-row">
+                  <div class="price">$50</div>
+                  <small>entry fee</small>
+                </div>
+                <ul class="features">
+                  <li class="feature"><i class="fa-solid fa-chevron-right"></i> For savvy pros</li>
+                  <li class="feature"><i class="fa-solid fa-chevron-right"></i> Beat the line, not just the team</li>
+                  <li class="feature"><i class="fa-solid fa-chevron-right"></i> Up to $12,500 in payouts</li>
+                </ul>
+              </div>
+
+              <a href="#join" class="btn btn-primary body-lg">Sign Up</a>
             </div>
-            <ul class="features">
-              <li class="feature"><i class="fa-solid fa-chevron-right"></i> Beginner-friendly</li>
-              <li class="feature"><i class="fa-solid fa-chevron-right"></i> Simple set-and-go picks</li>
-              <li class="feature"><i class="fa-solid fa-chevron-right"></i> Up to $5,000 in payouts</li>
-            </ul>
           </div>
-
-          <a href="#join" class="btn btn-primary body-lg">Sign Up</a>
-        </div>
-
-        <!-- Shark Club -->
-        <div class="card">
-          <div class="card-header">
-            <div class="card-header-left">
-              <img src="shark-icon.webp" alt="Shark Club logo">
-              <div class="card-title">Shark Club</div>
-            </div>
-            <span class="badge">Advanced</span>
-          </div>
-
-          <div class="card-content">
-            <p class="body card-desc">Play against the spread. Perfect for seasoned players that want more of a challenge.</p>
-            <div class="price-row">
-              <div class="price">$50</div>
-              <small>entry fee</small>
-            </div>
-            <ul class="features">
-              <li class="feature"><i class="fa-solid fa-chevron-right"></i> For savvy pros</li>
-              <li class="feature"><i class="fa-solid fa-chevron-right"></i> Beat the line, not just the team</li>
-              <li class="feature"><i class="fa-solid fa-chevron-right"></i> Up to $12,500 in payouts</li>
-            </ul>
-          </div>
-
-          <a href="#join" class="btn btn-primary body-lg">Sign Up</a>
         </div>
       </div>
     </div>
