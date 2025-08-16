@@ -179,108 +179,79 @@
     </div>
   </section>
 
-  <!-- BENEFITS (8-column centered) -->
-  <section class="benefits-wrap">
-    <div class="container">
-      <div class="grid-12">
-        <div class="col-span-8-centered">
-          <div class="benefits-grid">
-            <div class="benefit-card">
-              <div class="benefit-icon"><i class="fa-regular fa-calendar-days"></i></div>
-              <div class="benefit-text">
-                <div class="benefit-value">18</div>
-                <div class="benefit-label">Weeks</div>
-              </div>
-            </div>
+  /* ---------- BENEFITS (3 cards) ---------- */
+.benefits-wrap{padding:48px 0 24px;}
+.benefits-grid{
+  width:100%;
+  display:grid;
+  grid-template-columns:repeat(3, minmax(0,1fr));
+  gap:32px;
+}
+@media (max-width: 900px){
+  .benefits-grid{ grid-template-columns:1fr; gap:16px; }
+}
+.benefit-card{
+  width:100%;
+  height:161px;
+  padding:24px;
+  border:1px solid var(--border-soft);
+  border-radius:16px;
+  display:flex; flex-direction:column; align-items:center; gap:24px;
+  background:var(--bg);                 /* transparent look, same as page */
+}
+.benefit-icon{
+  width:40px; height:40px;
+  display:flex; align-items:center; justify-content:center;
+  color:var(--accent); font-size:32px; line-height:32px;
+}
+.benefit-text{ display:flex; flex-direction:column; align-items:center; gap:8px; width:192px; }
+.benefit-value{ font-size:24px; line-height:110%; font-weight:600; text-align:center; color:#fff; }
+.benefit-label{ font-size:14px; line-height:110%; font-weight:300; text-align:center; color:rgba(255,255,255,.8); }
 
-            <div class="benefit-card">
-              <div class="benefit-icon"><i class="fa-solid fa-users"></i></div>
-              <div class="benefit-text">
-                <div class="benefit-value">500</div>
-                <div class="benefit-label">Max Players</div>
-              </div>
-            </div>
 
-            <div class="benefit-card">
-              <div class="benefit-icon"><i class="fa-regular fa-trophy"></i></div>
-              <div class="benefit-text">
-                <div class="benefit-value">$17,500</div>
-                <div class="benefit-label">Max Payouts</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+/* ---------- POOLS (cards) ---------- */
+.pools{padding:80px 0}
+.pool-inner{
+  width:100%;
+  display:grid;
+  grid-template-columns:repeat(2, minmax(0,1fr));
+  gap:24px;
+  align-items:stretch;
+}
+@media (max-width: 900px){ .pool-inner{ grid-template-columns:1fr; } }
 
-  <!-- POOLS (8-column centered) -->
-  <section id="pools" class="pools">
-    <div class="container">
-      <div class="grid-12">
-        <div class="col-span-8-centered">
-          <h2 class="h2" style="text-align:center;">Choose Your Pool</h2>
-          <p class="body" style="text-align:center; color:var(--muted); max-width:700px; margin:12px auto 40px;">
-            Two ways to play based on your comfort level. Join one or both to increase your chances of winning hard, cold cash!
-          </p>
+.card{
+  width:100%;
+  border:2px solid var(--border-soft);
+  border-radius:16px;
+  background:var(--bg);                 /* transparent look, same as page */
+  padding:24px 24px 32px;               /* extra bottom padding */
+  display:flex; flex-direction:column; align-items:flex-start; gap:32px;
+  /* remove fixed height so the button never overflows */
+}
 
-          <div class="pool-inner">
-            <!-- Otter Club -->
-            <div class="card">
-              <div class="card-header">
-                <div class="card-header-left">
-                  <img src="otter-icon.webp" alt="Otter Club logo">
-                  <div class="card-title">Otter Club</div>
-                </div>
-                <span class="badge">Casual</span>
-              </div>
+.card-header{display:flex; align-items:center; justify-content:space-between; gap:32px; width:100%; height:48px;}
+.card-header-left{display:flex; align-items:center; gap:16px; margin:0 auto 0 0;}
+.card-header img{width:48px; height:48px; border-radius:8px;}
+.card-title{font-weight:700; font-size:20px; line-height:140%; color:var(--offwhite); display:flex; align-items:center;}
+.badge{padding:4px 16px; border:1px solid var(--border-soft); border-radius:32px; font-size:16px; line-height:140%; color:#fff;}
 
-              <div class="card-content">
-                <p class="body card-desc">Straight-up picks. No spreads, just winners and losers. Rack up points for correct picks.</p>
-                <div class="price-row">
-                  <div class="price">$20</div>
-                  <small>entry fee</small>
-                </div>
-                <ul class="features">
-                  <li class="feature"><i class="fa-solid fa-chevron-right"></i> Beginner-friendly</li>
-                  <li class="feature"><i class="fa-solid fa-chevron-right"></i> Simple set-and-go picks</li>
-                  <li class="feature"><i class="fa-solid fa-chevron-right"></i> Up to $5,000 in payouts</li>
-                </ul>
-              </div>
+.card-content{display:flex; flex-direction:column; gap:32px; width:100%;}
+.card-desc{color:#E5E7EB; display:flex; align-items:center;}
+.price-row{display:flex; align-items:baseline; gap:6px;}
+.price{font-size:40px; line-height:110%; font-weight:600; color:var(--accent);}
+.price small{font-size:16px; line-height:140%; color:rgba(255,255,255,.55);}
 
-              <a href="#join" class="btn btn-primary body-lg">Sign Up</a>
-            </div>
+.features{display:flex; flex-direction:column; gap:8px; padding:0; margin:0; list-style:none;}
+.feature{display:flex; align-items:center; gap:4px; color:rgba(249,250,251,.7);}
+.feature i{font-size:12px; color:var(--accent); width:15px; height:15px; display:flex; align-items:center; justify-content:center;}
 
-            <!-- Shark Club -->
-            <div class="card">
-              <div class="card-header">
-                <div class="card-header-left">
-                  <img src="shark-icon.webp" alt="Shark Club logo">
-                  <div class="card-title">Shark Club</div>
-                </div>
-                <span class="badge">Advanced</span>
-              </div>
+.card .btn{
+  align-self:stretch; height:52px;
+  display:flex; align-items:center; justify-content:center;
+  margin-top:auto;                      /* stick to bottom INSIDE the card */
+}
 
-              <div class="card-content">
-                <p class="body card-desc">Play against the spread. Perfect for seasoned players that want more of a challenge.</p>
-                <div class="price-row">
-                  <div class="price">$50</div>
-                  <small>entry fee</small>
-                </div>
-                <ul class="features">
-                  <li class="feature"><i class="fa-solid fa-chevron-right"></i> For savvy pros</li>
-                  <li class="feature"><i class="fa-solid fa-chevron-right"></i> Beat the line, not just the team</li>
-                  <li class="feature"><i class="fa-solid fa-chevron-right"></i> Up to $12,500 in payouts</li>
-                </ul>
-              </div>
-
-              <a href="#join" class="btn btn-primary body-lg">Sign Up</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
   <!-- Join (Airtable embed) -->
   <section id="join">
