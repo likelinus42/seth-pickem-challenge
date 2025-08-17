@@ -1,650 +1,672 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Seth's Pick'em Challenge</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Seth's Pick’em Challenge</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-<script src="https://kit.fontawesome.com/91492d4fbf.js" crossorigin="anonymous"></script>
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/91492d4fbf.js" crossorigin="anonymous"></script>
 
-<style>
-/* =============== THEME =============== */
-:root{
-  --bg:#030816;
-  --surface:#0b2545;
-  --text:#e6ecf3;
-  --off:#F9FAFB;
-  --off60:rgba(249,250,251,.6);
-  --off70:rgba(249,250,251,.7);
-  --muted:#9AA8BE;
-  --line:#E5E7EB4D;         /* 30% opacity */
-  --line-raw:#E5E7EB;
-  --accent:#26CB4D;
-  --accent2:#1E74DE;
-  --ink:#0B2545;
-  --content: 1100px;         /* overall container */
-  --col8: 816px;             /* “8-column” inner width you wanted */
-}
-*{box-sizing:border-box}
-html,body{margin:0;background:var(--bg);color:var(--text);font-family:'Urbanist',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+  <style>
+    :root{
+      --bg:#030816;
+      --text:#e6ecf3;
+      --off:#F9FAFB;
+      --muted:#9AA8BE;
+      --line:#E5E7EB4D; /* 30% */
+      --line-solid:#E5E7EB; /* for borders needing 100% when mixed down */
+      --accent:#26CB4D;
+      --ink:#0B2545;
+      --blue:#1E74DE;
+      --container:1280px;
+      --gap:24px;
+    }
 
-/* Utilities */
-.container{max-width:var(--content); margin:0 auto; padding:0 20px}
-.center{text-align:center}
-.mt-24{margin-top:24px}
-.mt-32{margin-top:32px}
-.mt-40{margin-top:40px}
-.mt-48{margin-top:48px}
-.mt-64{margin-top:64px}
-.mb-24{margin-bottom:24px}
-.mb-32{margin-bottom:32px}
-.mb-48{margin-bottom:48px}
-.gap-16{gap:16px}
-.gap-24{gap:24px}
-.gap-32{gap:32px}
-.gap-48{gap:48px}
+    *{box-sizing:border-box}
+    html,body{margin:0; padding:0; background:var(--bg); color:var(--text); font-family:'Urbanist',system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+    img{max-width:100%; display:block}
 
-/* Type scale (Desktop) */
-.h1{font-weight:700;font-size:64px;line-height:1.1}
-.h2{font-weight:700;font-size:48px;line-height:1.1}
-.h3{font-weight:600;font-size:40px;line-height:1.1}
-.h4{font-weight:600;font-size:24px;line-height:1.1}
-.body-lg{font-weight:500;font-size:20px;line-height:1.4}
-.body-lg-bold{font-weight:700;font-size:20px;line-height:1.4}
-.body{font-weight:400;font-size:16px;line-height:1.4}
-.utility{font-weight:300;font-size:14px;line-height:1.1}
-.section-intro{margin-top:16px;color:var(--off60);}
+    .container{max-width:var(--container); margin:0 auto; padding:0 20px}
+    .section{padding:64px 0}
+    .section .header{display:flex; flex-direction:column; align-items:center; gap:16px; margin-bottom:32px}
+    .section .title{font-weight:700; font-size:48px; line-height:1.1; color:var(--off)}
+    .section .intro{font-weight:500; font-size:20px; line-height:1.4; text-align:center; color:rgba(249,250,251,.6); max-width:608px}
 
-/* Buttons */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;
-     padding:12px 16px;border-radius:8px;text-decoration:none;cursor:pointer;user-select:none;
-     transition:transform .12s ease; }
-.btn:active{transform:translateY(1px)}
-.btn-primary{background:var(--accent);color:var(--ink);font-weight:700}
-.btn-primary:hover{background:#1FA13E}
-.btn-primary:active{background:#188534}
-.btn-secondary{background:transparent;color:var(--off);border:1px solid var(--off)}
-.btn-secondary:hover{background:#E5E7EB;color:var(--ink)}
-.btn-secondary:active{background:#F9FAFB;color:var(--ink)}
-.btn-text{background:transparent;color:rgba(229,231,235,.6)}
-.btn-text:hover{color:#E5E7EB}
+    /* Buttons */
+    .btn{display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:12px 16px; border-radius:8px; font-weight:700; font-size:20px; line-height:1.4; text-decoration:none; cursor:pointer; transition:transform .15s ease, background .15s ease, opacity .15s ease, border-color .15s ease}
+    .btn-primary{background:var(--accent); color:var(--ink)}
+    .btn-primary:hover{transform:translateY(-1px)}
+    .btn-ghost{border:1px solid var(--off); color:var(--off); background:transparent}
+    .btn-ghost:hover{opacity:.9}
 
-/* ------------ HERO ------------ */
-.hero{
-  position:relative;min-height:640px;display:flex;align-items:center;justify-content:center;
-  background: url('hero-stadium-desktop.webp') center / cover no-repeat;
-}
-.hero-overlay{position:absolute;inset:0;background:linear-gradient(to bottom, rgba(3,8,22,.2), rgba(3,8,22,.55))}
-.hero-inner{position:relative;z-index:1; width:100%;}
-.hero-wrap{
-  max-width:var(--col8); margin:0 auto; text-align:center; padding:72px 20px;
-  display:flex; flex-direction:column; align-items:center; gap:24px;
-}
-.hero-tag{display:inline-block}
-.hero h1{margin:0}
-.hero .actions{display:flex;gap:24px;justify-content:center;flex-wrap:wrap}
+    /* -------------------------------------------------- NAV (appears on scroll) */
+    .site-nav{
+      position:fixed; inset:0 0 auto 0; height:84px; z-index:1000;
+      display:flex; align-items:center; justify-content:center;
+      background:#030816; border-bottom:2px solid rgba(229,231,235,.3);
+      transform:translateY(-100%); opacity:0; pointer-events:none;
+      transition:transform .25s ease, opacity .25s ease;
+    }
+    .site-nav.nav--visible{ transform:translateY(0); opacity:1; pointer-events:auto; }
 
-/* pill image */
-.logo-pill{height:40px}
+    .nav-inner{ width:100%; max-width:var(--container); padding:8px 48px; display:flex; align-items:center; justify-content:space-between; gap:24px }
+    .nav-brand{
+      font-weight:900; font-size:18px; line-height:1.4; letter-spacing:.005em; color:var(--off); white-space:nowrap;
+    }
+    .nav-menu{ display:flex; align-items:center; gap:8px; }
+    .nav-link{
+      appearance:none; border:none; background:transparent; color:rgba(229,231,235,.6);
+      padding:12px 16px; border-radius:8px; font-weight:700; font-size:20px; line-height:1.4; cursor:pointer; text-decoration:none;
+    }
+    .nav-link:hover{ color:var(--off); background:rgba(229,231,235,.08) }
+    .nav-cta{ margin-left:auto } /* helps maintain spacing at wide widths */
 
-/* ------------ BENEFITS (3-up) ------------ */
-.benefits{display:flex;justify-content:center}
-.benefits-wrap{max-width:var(--col8);display:flex;gap:24px;justify-content:space-between}
-.b-card{
-  width:240px;height:161px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;
-  border:1px solid var(--line);border-radius:16px;background:transparent;
-}
-.b-card i{color:var(--accent);font-size:32px}
-.b-value{font-size:24px;font-weight:600}
-.b-label{color:var(--off70)}
+    /* -------------------------------------------------- HERO */
+    .hero{position:relative; min-height:640px; display:flex; align-items:center; justify-content:center; text-align:center; overflow:hidden}
+    .hero img.bg{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.9; filter:saturate(95%)}
+    .hero .content{position:relative; z-index:1; display:flex; flex-direction:column; align-items:center; gap:24px}
+    .hero .pill{width:264px; height:auto}
+    .hero h1{font-size:64px; line-height:1.1; color:var(--off); margin:0}
+    .hero h1 .accent{color:var(--accent)}
+    .hero .actions{display:flex; gap:24px}
 
-/* ------------ POOL CARDS ------------ */
-.pool-wrap{max-width:var(--col8); margin:0 auto; display:grid; grid-template-columns:repeat(2, 396px); gap:24px; justify-content:center}
-.pool-card{
-  border:1px solid var(--line); border-radius:16px; padding:24px; display:flex; flex-direction:column; gap:32px; background:transparent;
-}
-.pool-header{display:flex;align-items:center;justify-content:space-between;gap:32px}
-.pool-title{display:flex;align-items:center;gap:16px}
-.pool-title img{width:48px;height:48px;border-radius:8px}
-.pill{border:1px solid var(--line); border-radius:32px; padding:4px 16px; color:#fff}
-.pool-desc{color:#E5E7EB}
-.price-row{display:flex;align-items:baseline;gap:6px}
-.price{color:var(--accent);font-size:40px;font-weight:600}
-.price-sub{color:rgba(255,255,255,.55)}
-.features{display:flex;flex-direction:column;gap:8px}
-.feature{display:flex;align-items:center;gap:4px;color:rgba(249,250,251,.7)}
-.feature i{color:var(--accent);font-size:12px}
-.pool-card .btn{width:100%}
+    /* -------------------------------------------------- BENEFITS */
+    .benefits .row{display:grid; grid-template-columns:repeat(3, 1fr); gap:24px; justify-items:center}
+    .benefit{
+      width:240px; height:161px; padding:24px; border:1px solid rgba(229,231,235,.3); border-radius:16px;
+      display:flex; flex-direction:column; align-items:center; gap:24px; background:transparent;
+    }
+    .benefit i{font-size:32px; color:var(--accent)}
+    .benefit .val{font-weight:600; font-size:24px; line-height:1.1; color:#fff}
+    .benefit .lab{font-weight:300; font-size:14px; line-height:1.1; color:rgba(255,255,255,.8)}
 
-/* ------------ SECTION HEADER (shared) ------------ */
-.section{padding:64px 0}
-.section .header{display:flex;flex-direction:column;align-items:center;gap:16px}
+    /* -------------------------------------------------- POOLS */
+    .pools .cards{
+      display:grid; grid-template-columns: repeat(2, minmax(395px,1fr)); gap:32px; max-width:912px; margin:0 auto;
+    }
+    .pool-card{
+      border:2px solid rgba(229,231,235,.3); border-radius:16px; background:transparent; padding:24px;
+      display:flex; flex-direction:column; gap:32px;
+    }
+    .pool-card .header{display:flex; align-items:center; justify-content:space-between; gap:32px}
+    .pool-card .brand{display:flex; align-items:center; gap:16px}
+    .pool-logo{width:48px; height:48px; border-radius:8px; object-fit:cover; display:block; flex:0 0 48px}
+    .pool-card h3{margin:0; font-weight:700; font-size:20px; line-height:1.4; color:var(--off)}
+    .pool-card .pill{border:1px solid rgba(229,231,235,.3); padding:4px 16px; border-radius:32px; color:#fff; opacity:.85}
+    .pool-card .desc{color:#E5E7EB; opacity:.8}
+    .pool-card .price{display:flex; align-items:baseline; gap:6px}
+    .pool-card .price .amt{color:var(--accent); font-weight:600; font-size:40px; line-height:1.1}
+    .pool-card .price .meta{color:rgba(255,255,255,.55)}
+    .features{display:flex; flex-direction:column; gap:8px}
+    .feature{display:flex; align-items:center; gap:6px; color:rgba(249,250,251,.7)}
+    .feature i{font-size:12px; color:var(--accent)}
+    .pool-card .cta{margin-top:auto; display:flex}
+    .pool-card .cta .btn{width:100%}
 
-/* =============== PAYOUTS CALCULATOR =============== */
-.calc{max-width:var(--col8); margin:0 auto; display:flex;flex-direction:column; gap:48px}
+    /* -------------------------------------------------- CALCULATOR (scoped) */
+    .calc .section{padding-top:64px}
+    .calc .content{display:flex; flex-direction:column; align-items:center; gap:48px}
+    /* Toggle */
+    .calc .toggle{display:flex; width:816px; height:48px; border-radius:12px; overflow:hidden}
+    .calc .toggle button{flex:1 1 50%; padding:12px 16px; font-weight:700; font-size:20px; line-height:1.4; border:none; cursor:pointer; transition:background .2s}
+    .calc .toggle .is-active{background:rgba(229,231,235,.3); color:var(--off)}
+    .calc .toggle .is-inactive{background:transparent; outline:2px solid rgba(229,231,235,.3); color:var(--off)}
 
-/* Toggle (two segments) */
-.toggle{display:flex;width:100%;height:48px}
-.toggle .seg{
-  display:flex;align-items:center;justify-content:center;gap:8px;
-  width:50%; height:48px; font-weight:700; font-size:20px; line-height:28px;
-  border-radius:12px 0 0 12px; border:none; cursor:pointer; color:var(--off);
-  background:rgba(229,231,235,.3);
-}
-.toggle .seg.right{border:2px solid var(--line); background:transparent; border-left:none; border-radius:0 12px 12px 0}
-.toggle .seg.active{background:rgba(229,231,235,.3); border:none}
-.toggle .seg:not(.active).right{border:2px solid var(--line)}
+    /* Info cards */
+    .calc .info-cards{display:flex; gap:48px; justify-content:center}
+    .calc .info-card{
+      width:240px; height:133px; padding:24px; border:1px solid rgba(229,231,235,.3);
+      border-radius:16px; background:transparent; display:flex; flex-direction:column; justify-content:space-between; align-items:center;
+    }
+    .calc .info-card .label{font-size:16px; line-height:1.4; color:#fff}
+    .calc .info-card .value{font-weight:600; font-size:40px; line-height:1.1; color:rgba(229,231,235,.3)}
+    .calc .info-card.total .value{color:var(--accent)}
+    .calc .members .value{font-weight:700; font-size:20px; color:rgba(255,255,255,.8)}
 
-/* Info cards row */
-.info-row{display:flex;gap:48px; align-items:flex-start}
-.info-card{
-  width:240px;height:133px;border:1px solid var(--line);border-radius:16px;
-  display:flex;flex-direction:column;justify-content:space-between;align-items:center;padding:24px;background:transparent;
-}
-.info-card .label{font-size:16px}
-.info-card .value.h3{color:rgba(229,231,235,.3)}
-.info-card.total .value.h3{color:var(--accent);}
+    /* Slider: thumb stays inside filled track */
+    .calc .slider-wrap{display:flex; align-items:center; gap:16px}
+    .calc input[type="range"]{
+      -webkit-appearance:none; appearance:none; width:150px; height:12px; border-radius:20px; background:rgba(61,66,74,.2);
+      position:relative; overflow:hidden; outline:none;
+    }
+    .calc input[type="range"]::-webkit-slider-runnable-track{height:12px; background:transparent}
+    .calc input[type="range"]::-moz-range-track{height:12px; background:transparent}
+    .calc input[type="range"]::-webkit-slider-thumb{
+      -webkit-appearance:none; appearance:none; width:24px; height:24px; border-radius:50%;
+      background:#0B2545; border:4px solid var(--accent); margin-top:-6px; position:relative; z-index:2;
+    }
+    .calc input[type="range"]::-moz-range-thumb{
+      width:24px; height:24px; border-radius:50%; background:#0B2545; border:4px solid var(--accent); position:relative; z-index:2;
+    }
+    .calc input[type="range"]::before{
+      content:""; position:absolute; inset:0; border-radius:20px;
+      background:linear-gradient(180deg, rgba(255,255,255,.1) 0%, rgba(255,255,255,0) 100%),
+                 linear-gradient(270deg, var(--accent) 2.48%, #6DDD88 100%);
+      transform-origin:left center; transform:scaleX(var(--fill, .001)); z-index:1;
+    }
 
-/* Slider block (inside first info-card) */
-.slider-box{display:flex;align-items:center;gap:16px;width:196px;height:28px;margin:0 auto}
-.range{ -webkit-appearance:none; appearance:none; width:150px; height:12px; border-radius:20px; outline:none; cursor:pointer;
-  background:
-    linear-gradient(90deg, #26CB4D 0%, #6DDD88 100%) 0/0% 100% no-repeat,   /* progress fill (width set in JS) */
-    rgba(229,231,235,.3);                                /* inactive overlay */
-  position:relative;
-}
-.range::before{ /* base track tint underneath */
-  content:""; position:absolute; inset:0; border-radius:20px; background:rgba(61,66,74,.2); z-index:-1;
-}
-.range::-webkit-slider-thumb{
-  -webkit-appearance:none; appearance:none; width:20px; height:20px; border-radius:50%;
-  background:#0B2545; border:2px solid var(--accent);
-}
-.range::-moz-range-thumb{
-  width:20px;height:20px;border-radius:50%;background:#0B2545;border:2px solid var(--accent);
-}
-.member-count{min-width:36px;text-align:center;font-weight:700;font-size:20px;color:rgba(255,255,255,.8)}
+    /* Prize Breakdown framing (outer has stroke) */
+    .calc .breakdown{border:1px solid rgba(229,231,235,.3); border-radius:16px; padding:16px; display:flex; flex-direction:column; align-items:center; gap:48px; width:816px}
+    .calc .breakdown .header{display:flex; align-items:center; gap:16px}
+    .calc .breakdown .header .icon{font-size:32px; color:var(--accent)}
+    .calc .breakdown .header .h4{font-weight:600; font-size:24px; line-height:1.1; color:var(--off)}
 
-/* Prize breakdown outer container – has stroke */
-.breakdown{
-  border:1px solid var(--line); border-radius:16px; padding:16px; display:flex;flex-direction:column; align-items:center; gap:48px;
-}
-.breakdown .head{display:flex; align-items:center; gap:16px; height:40px; justify-content:center}
-.breakdown .head i{font-size:32px;color:var(--accent)}
-.breakdown .head .title{font-size:24px; font-weight:600}
+    /* Season/Weekly panels (no stroke) */
+    .calc .panel{width:784px; border-radius:16px; background:rgba(11,37,69,.2); padding:16px; display:flex; flex-direction:column; align-items:center; gap:24px}
+    .calc .panel .label{font:700 20px/1.4 'Urbanist',sans-serif; color:rgba(249,250,251,.8)}
+    .calc .prizes{display:flex; align-items:center; gap:8px; justify-content:center; height:80px}
+    .calc .prize{width:136px; padding:8px; display:flex; flex-direction:column; align-items:center; gap:16px}
+    .calc .prize .place{font:400 16px/1.4 'Urbanist',sans-serif; color:rgba(249,250,251,.7); text-align:center}
+    .calc .prize .amt{font:600 24px/1.1 'Urbanist',sans-serif; color:var(--blue); text-align:center}
+    .calc .divider{width:56px; height:0; border-top:1px solid rgba(229,231,235,.3); transform:rotate(90deg)}
 
-/* Season/Weekly boxes (fill, no stroke) */
-.paybox{
-  width:784px; min-height:164px; border-radius:16px; padding:16px; display:flex; flex-direction:column;align-items:center;gap:24px;
-  background: rgba(11,37,69,.2);
-}
-.paybox .label{font-weight:700;font-size:20px;line-height:28px;color:rgba(249,250,251,.8);text-align:center;width:752px}
-.payouts{
-  width:752px; height:80px; display:flex; align-items:center; justify-content:center; gap:8px;
-}
-.slot{
-  width:136px; height:80px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px;
-}
-.slot .place{color:var(--off70); font-size:16px}
-.slot .amt{color:var(--accent2); font-size:24px; font-weight:600; line-height:26px}
-.sep{
-  width:1px; height:64px; background:var(--line);
-}
+    /* -------------------------------------------------- HOW IT WORKS */
+    .how{background:rgba(30,41,59,.3)}
+    .how .steps{display:flex; flex-direction:column; gap:48px; max-width:816px; margin:0 auto}
+    .how .step{display:flex; gap:24px; padding:16px}
+    .how .step i{font-size:32px; color:var(--accent)}
+    .how .step h4{margin:6px 0 0; font-weight:600; font-size:24px; color:var(--off)}
+    .how .step p{margin:0; color:rgba(249,250,251,.7); font:500 16px/1.4 'Urbanist',sans-serif}
 
-/* ------------ HOW IT WORKS ------------ */
-.hiw{background:rgba(30,41,59,.3)}
-.hiw .steps{max-width:816px;margin:0 auto;display:flex;flex-direction:column;gap:48px}
-.step{display:flex;gap:24px;padding:16px}
-.step i{color:var(--accent);font-size:32px}
-.step .step-body{padding-top:6px;display:flex;flex-direction:column;gap:16px}
-.step .h4{margin:0}
-.step .body-lg{font-weight:400;color:rgba(249,250,251,.7)}
+    /* -------------------------------------------------- JOIN */
+    #join .frame{max-width:816px; margin:0 auto; border:1px solid rgba(229,231,235,.3); border-radius:16px; overflow:hidden}
+    #join iframe{display:block; width:100%; height:720px; border:0; background:transparent}
 
-/* ------------ JOIN (Airtable) ------------ */
-.join-embed{max-width:var(--col8);margin:0 auto;border:1px solid var(--line);border-radius:16px;overflow:hidden}
+    /* -------------------------------------------------- FAQ */
+    .faq .list{max-width:816px; margin:0 auto}
+    .faq .item{border-bottom:1px solid rgba(229,231,235,.3)}
+    .faq .item:last-child{border-bottom:none}
+    .faq .q{display:flex; align-items:center; gap:12px; padding:24px; cursor:pointer}
+    .faq .q i{color:var(--accent)}
+    .faq .chev{margin-left:auto; color:rgba(229,231,235,.3); transition:transform .2s ease}
+    .faq .item.open .chev{transform:rotate(180deg)}
+    .faq .a{padding:0 24px 24px; display:none; color:rgba(249,250,251,.78)}
+    .faq .item.open .a{display:block}
 
-/* ------------ FAQ ------------ */
-.faq{max-width:var(--col8);margin:0 auto}
-.accordion{border:1px solid var(--line);border-radius:16px;overflow:hidden}
-.q{display:flex;align-items:center;gap:12px;padding:24px;cursor:pointer;user-select:none}
-.q i{color:var(--accent)}
-.q .chev{margin-left:auto;color:rgba(229,231,235,.3);transition:transform .18s ease}
-.item{border-bottom:1px solid var(--line)}
-.item:last-child{border-bottom:none}
-.a{padding:0 24px 24px 48px;display:none;color:rgba(249,250,251,.8)}
-.item.open .a{display:block}
-.item.open .q .chev{transform:rotate(180deg)}
+    /* -------------------------------------------------- ABOUT */
+    .about{position:relative; padding:64px 0 96px}
+    .about .bg{position:absolute; left:0; right:0; bottom:0; height:520px; background:url('footer-tunnel-desktop.webp') center/cover no-repeat; opacity:.82}
+    .about .content{position:relative; z-index:1; display:grid; grid-template-columns:72px 1fr; gap:24px; max-width:816px; margin:0 auto}
+    .about .avatar{width:56px; height:56px; border-radius:50%; object-fit:cover}
+    .about h3{margin:0; font-size:32px; font-weight:700; color:var(--off)}
+    .about p{margin:8px 0 24px; color:rgba(249,250,251,.85); font-size:18px; line-height:1.6}
+    .about .share{display:inline-flex; align-items:center; gap:8px; padding:12px 16px; border:1px solid var(--off); border-radius:8px; color:var(--off); background:transparent}
+    .copyright{padding:24px 0; text-align:center; color:rgba(249,250,251,.7)}
 
-/* ------------ ABOUT ------------ */
-.about{
-  position:relative; overflow:hidden;
-  background: url('footer-tunnel-desktop.webp') center top / cover no-repeat;
-}
-.about-overlay{position:absolute;inset:0;background:linear-gradient(to top, rgba(3,8,22,.75) 0%, rgba(3,8,22,.5) 40%, rgba(3,8,22,.35) 60%, rgba(3,8,22,.2) 100%)}
-.about .inner{
-  position:relative; z-index:1; padding:112px 20px 160px;
-  max-width:var(--col8); margin:0 auto; display:flex; flex-direction:column; gap:24px;
-}
-.about .row{display:flex; gap:16px; align-items:flex-start}
-.about .avatar{width:56px;height:56px;border-radius:50%}
-.copyright{color:rgba(249,250,251,.7);text-align:center;padding:24px}
-
-/* ------------ MOBILE TWEAKS ------------ */
-@media (max-width: 720px){
-  .h1{font-size:40px}
-  .h2{font-size:32px}
-  .pool-wrap{grid-template-columns:1fr}
-  .benefits-wrap{flex-direction:column;align-items:center}
-  .b-card,.info-card{width:100%}
-  .calc,.paybox,.breakdown{width:100%}
-  .paybox,.breakdown{max-width:100%}
-  .payouts{width:100%}
-  .slot{flex:1}
-}
-</style>
+    /* -------------------------------------------------- MISC */
+    html{scroll-behavior:smooth}
+    @media (max-width: 980px){
+      .benefits .row{grid-template-columns:1fr}
+      .pools .cards{grid-template-columns:1fr; max-width:560px}
+      .calc .toggle, .calc .breakdown, .calc .panel{width:100%}
+    }
+  </style>
 </head>
 <body>
 
-<!-- ================= HERO ================= -->
-<section class="hero" id="top">
-  <div class="hero-overlay"></div>
-  <div class="hero-inner">
-    <div class="hero-wrap">
-      <img class="logo-pill" src="logo-pill.png" alt="NFL Pick’em Challenge" />
-      <h1 class="h1">Pick winners. Win weekly.<br/><span style="color:var(--accent)">Chase greatness</span> all season.</h1>
+  <!-- Sticky Nav (appears after scrolling) -->
+  <header class="site-nav" role="navigation" aria-label="Main">
+    <div class="nav-inner">
+      <div class="nav-brand">NFL PICK’EM CHALLENGE</div>
+      <nav class="nav-menu" aria-label="Primary">
+        <a class="nav-link" href="#pools">Pools</a>
+        <a class="nav-link" href="#calculator">Calculator</a>
+        <a class="nav-link" href="#how">How it Works</a>
+        <a class="nav-link" href="#join">Join</a>
+        <a class="nav-link" href="#faq">FAQ</a>
+      </nav>
+      <a class="btn btn-primary nav-cta" href="#join">Sign Up</a>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <img class="bg" src="hero-stadium-desktop.webp" alt="" />
+    <div class="content container">
+      <img class="pill" src="logo-pill.png" alt="NFL Pick’em Challenge" />
+      <h1>Pick winners. Win weekly. <span class="accent">Chase greatness</span> all season.</h1>
       <div class="actions">
-        <a href="#join" class="btn btn-primary body-lg-bold">Sign Up</a>
-        <a href="#pools" class="btn btn-secondary body-lg-bold">Learn More</a>
+        <a href="#join" class="btn btn-primary">Sign Up</a>
+        <a href="#pools" class="btn btn-ghost">Learn More</a>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ================= BENEFITS ================= -->
-<section class="section benefits">
-  <div class="benefits-wrap">
-    <div class="b-card">
-      <i class="fa-regular fa-calendar-days"></i>
-      <div class="b-value">18</div>
-      <div class="b-label">Weeks</div>
+  <!-- BENEFITS -->
+  <section class="section benefits container" id="benefits">
+    <div class="header">
+      <h2 class="title">Why Join</h2>
+      <p class="intro">Weekly winners, big season prizes, and a community that loves football.</p>
     </div>
-    <div class="b-card">
-      <i class="fa-solid fa-users"></i>
-      <div class="b-value">500</div>
-      <div class="b-label">Max Players</div>
-    </div>
-    <div class="b-card">
-      <i class="fa-regular fa-trophy"></i>
-      <div class="b-value">$17,500</div>
-      <div class="b-label">Max Payouts</div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= POOLS ================= -->
-<section id="pools" class="section">
-  <div class="container header">
-    <h2 class="h2">Choose Your Pool</h2>
-    <p class="section-intro body-lg">Two ways to play based on your comfort level. Join one or both to increase your chances of winning hard, cold cash!</p>
-  </div>
-
-  <div class="pool-wrap">
-    <!-- Otter -->
-    <article class="pool-card">
-      <div class="pool-header">
-        <div class="pool-title">
-          <img src="otter-logo.webp" alt="Otter Club" />
-          <div class="h4">Otter Club</div>
-        </div>
-        <div class="pill utility">Casual</div>
-      </div>
-      <p class="pool-desc body">Straight-up picks. No spreads, just winners and losers. Rack up points for correct picks.</p>
-      <div class="price-row"><div class="price">$20</div><div class="price-sub body">entry fee</div></div>
-      <div class="features">
-        <div class="feature"><i class="fa-solid fa-check"></i> Beginner-friendly</div>
-        <div class="feature"><i class="fa-solid fa-check"></i> Simple set-and-go picks</div>
-        <div class="feature"><i class="fa-solid fa-check"></i> Up to $5,000 in payouts</div>
-      </div>
-      <a href="#join" class="btn btn-primary body-lg-bold">Sign Up</a>
-    </article>
-
-    <!-- Shark -->
-    <article class="pool-card">
-      <div class="pool-header">
-        <div class="pool-title">
-          <img src="shark-logo.webp" alt="Shark Club" />
-          <div class="h4">Shark Club</div>
-        </div>
-        <div class="pill utility">Advanced</div>
-      </div>
-      <p class="pool-desc body">Play against the spread. Perfect for seasoned players that want more of a challenge.</p>
-      <div class="price-row"><div class="price">$50</div><div class="price-sub body">entry fee</div></div>
-      <div class="features">
-        <div class="feature"><i class="fa-solid fa-check"></i> For savvy pros</div>
-        <div class="feature"><i class="fa-solid fa-check"></i> Beat the line, not just the team</div>
-        <div class="feature"><i class="fa-solid fa-check"></i> Up to $12,500 in payouts</div>
-      </div>
-      <a href="#join" class="btn btn-primary body-lg-bold">Sign Up</a>
-    </article>
-  </div>
-</section>
-
-<!-- ================= CALCULATOR ================= -->
-<section class="section">
-  <div class="container header">
-    <h2 class="h2">Payouts Calculator</h2>
-    <p class="section-intro body-lg">The larger the player pool the larger the prizes. Use the calculator below to see how prizes scale with more members.</p>
-  </div>
-
-  <div class="calc" id="calc">
-    <!-- Toggle -->
-    <div class="toggle" role="tablist" aria-label="Choose pool">
-      <button id="seg-otter" class="seg left active" aria-selected="true">Otter Club</button>
-      <button id="seg-shark" class="seg right" aria-selected="false">Shark Club</button>
-    </div>
-
-    <!-- Info cards -->
-    <div class="info-row">
-      <!-- Members -->
-      <div class="info-card">
-        <div class="label body">Total Members</div>
-        <div class="slider-box">
-          <input id="members" class="range" type="range" min="0" max="250" step="1" value="140" />
-          <div id="memberOut" class="member-count body-lg-bold">140</div>
-        </div>
-      </div>
-
-      <!-- Entry fee -->
-      <div class="info-card">
-        <div class="label body">Entry Fee</div>
-        <div class="value h3" id="feeOut">$20</div>
-      </div>
-
-      <!-- Total prize pool -->
-      <div class="info-card total">
-        <div class="label body">Total Prize Pool</div>
-        <div class="value h3" id="poolOut">$2,800</div>
-      </div>
-    </div>
-
-    <!-- Breakdown -->
-    <div class="breakdown">
-      <div class="head">
-        <i class="fa-regular fa-calculator"></i>
-        <div class="title">Prize Breakdown</div>
-      </div>
-
-      <!-- Season -->
-      <div class="paybox" aria-labelledby="seasonLabel">
-        <div id="seasonLabel" class="label">Season&nbsp;Payouts</div>
-        <div class="payouts" id="seasonRow">
-          <!-- 5 slots -->
-          <div class="slot"><div class="place">1st Place</div><div class="amt" id="s1">$0</div></div>
-          <div class="sep"></div>
-          <div class="slot"><div class="place">2nd Place</div><div class="amt" id="s2">$0</div></div>
-          <div class="sep"></div>
-          <div class="slot"><div class="place">3rd Place</div><div class="amt" id="s3">$0</div></div>
-          <div class="sep"></div>
-          <div class="slot"><div class="place">4th Place</div><div class="amt" id="s4">$0</div></div>
-          <div class="sep"></div>
-          <div class="slot"><div class="place">5th Place</div><div class="amt" id="s5">$0</div></div>
-        </div>
-      </div>
-
-      <!-- Weekly -->
-      <div class="paybox" aria-labelledby="weeklyLabel">
-        <div id="weeklyLabel" class="label">Weekly&nbsp;Payouts</div>
-        <div class="payouts" id="weeklyRow">
-          <!-- 3 slots -->
-          <div class="slot"><div class="place">1st Place</div><div class="amt" id="w1">$0</div></div>
-          <div class="sep"></div>
-          <div class="slot"><div class="place">2nd Place</div><div class="amt" id="w2">$0</div></div>
-          <div class="sep"></div>
-          <div class="slot"><div class="place">3rd Place</div><div class="amt" id="w3">$0</div></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= HOW IT WORKS ================= -->
-<section class="section hiw" id="how">
-  <div class="container header">
-    <h2 class="h2">How It Works</h2>
-    <p class="section-intro body-lg">New to Pick’em or just need a refresher? Here’s how to get started in three simple steps. Join, play, win.</p>
-  </div>
-
-  <div class="steps">
-    <div class="step">
-      <i class="fa-regular fa-circle-1"></i>
-      <div class="step-body">
-        <div class="h4">Join a Pool</div>
-        <div class="body-lg">Choose between Otter Club ($20, straight-up winners) and Shark Club ($50, against the spread), or join both for more action. After signing up, you’ll receive an email with your Sleeper invite link and Venmo details. Pay your entry fee via Venmo before kickoff of the first regular season game to secure your spot!</div>
-      </div>
-    </div>
-
-    <div class="step">
-      <i class="fa-regular fa-circle-2"></i>
-      <div class="step-body">
-        <div class="h4">Make Your Picks Each Week</div>
-        <div class="body-lg">Log in to Sleeper and open your pool to make picks before each game’s kickoff, with Thursday games locking first. In Otter Club, you’ll pick the outright winner, while in Shark Club you’ll pick against the spread. For the best experience, use the Sleeper app, available on both Apple and Android devices.</div>
-      </div>
-    </div>
-
-    <div class="step">
-      <i class="fa-regular fa-circle-3"></i>
-      <div class="step-body">
-        <div class="h4">Win Weekly & Season Prizes</div>
-        <div class="body-lg">Once your picks are locked in, you can sit back, relax, and enjoy the games! Sleeper updates in real time with the winning teams and automatically tracks your score. Each week, the top three finishers are announced, and the overall leaderboard shows how you stack up across the entire season.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= JOIN ================= -->
-<section id="join" class="section">
-  <div class="container header">
-    <h2 class="h2">Ready to Join?</h2>
-    <p class="section-intro body-lg">Lock in your spot for the season. Fill out the form below to sign up and get your invite to the Otter Club, Shark Club, or both.</p>
-  </div>
-  <div class="join-embed">
-    <iframe class="airtable-embed" src="https://airtable.com/embed/appjd8ASIv6Wa7cSN/pagKh4VOGMg5EHfAi/form" frameborder="0" width="100%" height="600" style="background: transparent;"></iframe>
-  </div>
-</section>
-
-<!-- ================= FAQ ================= -->
-<section class="section">
-  <div class="container header">
-    <h2 class="h2">FAQ</h2>
-    <p class="section-intro body-lg">Got questions? We’ve got answers. Everything you need to know about how to sign up and play Pick’em Challenge.</p>
-  </div>
-
-  <div class="faq">
-    <div class="accordion" id="faq">
-      <!-- Q1 -->
-      <div class="item">
-        <div class="q" data-item>
-          <i class="fa-regular fa-circle-question"></i>
-          <div class="body-lg">Can I play in both pools?</div>
-          <i class="fa-regular fa-chevron-down chev"></i>
-        </div>
-        <div class="a body">Yes! You can join either Otter Club (Straight picks), Shark Club (Spread picks), or both. Playing in both doubles your chances to win weekly and season-long prizes.</div>
-      </div>
-      <!-- Q2 -->
-      <div class="item">
-        <div class="q" data-item>
-          <i class="fa-regular fa-circle-question"></i>
-          <div class="body-lg">How do payouts work?</div>
-          <i class="fa-regular fa-chevron-down chev"></i>
-        </div>
-        <div class="a body">Each pool’s total entry fees are split 20% for weekly winners and 80% for season-long standings. Payout amounts increase as more members join.</div>
-      </div>
-      <!-- Q3 -->
-      <div class="item">
-        <div class="q" data-item>
-          <i class="fa-regular fa-circle-question"></i>
-          <div class="body-lg">Do I need a Sleeper account to play?</div>
-          <i class="fa-regular fa-chevron-down chev"></i>
-        </div>
-        <div class="a body">Yes. Sleeper is the platform we use to host both pools, manage picks, and track standings. If you don’t have an account, you can sign up for free at <a href="https://www.sleeper.com" target="_blank" rel="noopener" style="color:var(--off);text-decoration:underline;">sleeper.com</a>.</div>
-      </div>
-      <!-- Q4 -->
-      <div class="item">
-        <div class="q" data-item>
-          <i class="fa-regular fa-circle-question"></i>
-          <div class="body-lg">How do I make picks?</div>
-          <i class="fa-regular fa-chevron-down chev"></i>
-        </div>
-        <div class="a body">
-          Log in to Sleeper and open the pool you’ve joined.
-          <ul>
-            <li>In Otter Club (Straight), pick the outright winner of each game. You earn a point for every correct prediction.</li>
-            <li>In Shark Club (Spread), pick against the listed point spread. You earn a point if your pick “covers” the spread based on Sleeper’s game lines.</li>
-          </ul>
-          You can change any pick up until that game’s scheduled kickoff — Thursday Night Football locks first each week.
-        </div>
-      </div>
-      <!-- Q5 -->
-      <div class="item">
-        <div class="q" data-item>
-          <i class="fa-regular fa-circle-question"></i>
-          <div class="body-lg">How are ties decided?</div>
-          <i class="fa-regular fa-chevron-down chev"></i>
-        </div>
-        <div class="a body">Weekly ties use Sleeper’s tiebreaker: guessing the total points scored in the Monday Night game. Whoever is closest to the actual total wins, regardless of whether the guess is over or under. In the event there is still a tie, Sleeper will use the overall point total to determine the winner.</div>
-      </div>
-      <!-- Q6 -->
-      <div class="item">
-        <div class="q" data-item>
-          <i class="fa-regular fa-circle-question"></i>
-          <div class="body-lg">When will winners be paid?</div>
-          <i class="fa-regular fa-chevron-down chev"></i>
-        </div>
-        <div class="a body">Weekly winners are paid after all games for that week have concluded. Season-long payouts are made after the final regular season game.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= ABOUT ================= -->
-<section class="section about" id="about">
-  <div class="about-overlay"></div>
-  <div class="inner">
     <div class="row">
-      <img class="avatar" src="seth-avatar.webp" alt="Seth avatar" />
-      <div>
-        <h3 class="h2" style="margin:0 0 8px 0;">About the Commissioner</h3>
-        <p class="body-lg" style="max-width:720px;margin:0">I’m Seth, your commissioner for the NFL Pick’em Challenge. I’m based in Southern California, a lifelong Chicago Bears fan, and I’ve been running these pools since 2024. I love football and enjoy bringing people together to compete, celebrate wins, and make every game more exciting.</p>
+      <div class="benefit">
+        <i class="fa-regular fa-calendar-days" aria-hidden="true"></i>
+        <div class="val">18</div>
+        <div class="lab">Weeks</div>
+      </div>
+      <div class="benefit">
+        <i class="fa-solid fa-users" aria-hidden="true"></i>
+        <div class="val">500</div>
+        <div class="lab">Max Players</div>
+      </div>
+      <div class="benefit">
+        <i class="fa-regular fa-trophy" aria-hidden="true"></i>
+        <div class="val">$17,500</div>
+        <div class="lab">Max Payouts</div>
       </div>
     </div>
-    <div>
-      <a class="btn btn-secondary body-lg-bold" href="#top"><i class="fa-regular fa-share-nodes"></i> Share</a>
+  </section>
+
+  <!-- POOLS -->
+  <section class="section pools container" id="pools">
+    <div class="header">
+      <h2 class="title">Choose Your Pool</h2>
+      <p class="intro">Two ways to play—join one or both to boost your chances every week.</p>
     </div>
-  </div>
-</section>
 
-<footer class="copyright">© 2025 Pick'em Challenge</footer>
+    <div class="cards">
+      <!-- Otter -->
+      <article class="pool-card">
+        <div class="header">
+          <div class="brand">
+            <img class="pool-logo" src="otter-club.webp" alt="Otter Club logo" width="48" height="48">
+            <h3>Otter Club</h3>
+          </div>
+          <div class="pill">Casual</div>
+        </div>
+        <p class="desc">Straight-up picks. No spreads—just winners and losers. Rack up points for correct picks.</p>
+        <div class="price">
+          <div class="amt">$20</div><div class="meta">entry fee</div>
+        </div>
+        <div class="features">
+          <div class="feature"><i class="fa-solid fa-circle-chevron-right"></i> Beginner-friendly</div>
+          <div class="feature"><i class="fa-solid fa-circle-chevron-right"></i> Simple set-and-go picks</div>
+          <div class="feature"><i class="fa-solid fa-circle-chevron-right"></i> Up to $5,000 in payouts</div>
+        </div>
+        <div class="cta"><a class="btn btn-primary" href="#join">Sign Up</a></div>
+      </article>
 
-<script>
-/* ====================== CALCULATOR LOGIC ====================== */
-const membersEl = document.getElementById('members');
-const memberOut = document.getElementById('memberOut');
-const feeOut = document.getElementById('feeOut');
-const poolOut = document.getElementById('poolOut');
+      <!-- Shark -->
+      <article class="pool-card">
+        <div class="header">
+          <div class="brand">
+            <img class="pool-logo" src="shark-club.webp" alt="Shark Club logo" width="48" height="48">
+            <h3>Shark Club</h3>
+          </div>
+          <div class="pill">Advanced</div>
+        </div>
+        <p class="desc">Play against the spread. Perfect for seasoned players who want more of a challenge.</p>
+        <div class="price">
+          <div class="amt">$50</div><div class="meta">entry fee</div>
+        </div>
+        <div class="features">
+          <div class="feature"><i class="fa-solid fa-circle-chevron-right"></i> For savvy pros</div>
+          <div class="feature"><i class="fa-solid fa-circle-chevron-right"></i> Beat the line, not just the team</div>
+          <div class="feature"><i class="fa-solid fa-circle-chevron-right"></i> Up to $12,500 in payouts</div>
+        </div>
+        <div class="cta"><a class="btn btn-primary" href="#join">Sign Up</a></div>
+      </article>
+    </div>
+  </section>
 
-const segOtter = document.getElementById('seg-otter');
-const segShark = document.getElementById('seg-shark');
+  <!-- PAYOUT CALCULATOR -->
+  <section class="section calc container" id="calculator">
+    <div class="header">
+      <h2 class="title">Payouts Calculator</h2>
+      <p class="intro">The larger the player pool, the larger the prizes. Use the calculator to see how prizes scale.</p>
+    </div>
 
-let pool = 'otter'; // 'otter' => $20, 'shark' => $50
+    <div class="content">
+      <!-- Toggle -->
+      <div class="toggle" aria-label="Choose pool">
+        <button class="is-active" id="otterBtn" type="button">Otter Club</button>
+        <button class="is-inactive" id="sharkBtn" type="button">Shark Club</button>
+      </div>
 
-function currency(n){ return n.toLocaleString('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}); }
+      <!-- Info cards -->
+      <div class="info-cards">
+        <div class="info-card members">
+          <div class="label">Total Members</div>
+          <div class="slider-wrap">
+            <input id="members" type="range" min="0" max="250" value="140" aria-label="Total members">
+            <div class="value" id="memberVal">140</div>
+          </div>
+        </div>
+        <div class="info-card">
+          <div class="label">Entry Fee</div>
+          <div class="value" id="entry">$20</div>
+        </div>
+        <div class="info-card total">
+          <div class="label">Total Prize Pool</div>
+          <div class="value" id="total">$2,800</div>
+        </div>
+      </div>
 
-// Season splits by member tiers (percentages of the SEASON pool)
-function seasonSplit(count){
-  if (count <= 25) return [1,0,0,0,0];
-  if (count <= 50) return [0.70,0.20,0.10,0,0];
-  if (count <= 80) return [0.60,0.25,0.10,0.05,0];
-  if (count <= 100) return [0.50,0.24,0.15,0.08,0.03];
-  return [0.50,0.20,0.15,0.10,0.05]; // 101–250
-}
-// Weekly per-week split (always 3 places) of weekly-per-week pool
-const weeklySplit = [0.60,0.25,0.15];
+      <!-- Breakdown -->
+      <div class="breakdown" aria-labelledby="bdTitle">
+        <div class="header">
+          <i class="fa-regular fa-calculator icon" aria-hidden="true"></i>
+          <div id="bdTitle" class="h4">Prize Breakdown</div>
+        </div>
 
-function entryFee(){ return pool === 'otter' ? 20 : 50; }
+        <!-- Season -->
+        <div class="panel" aria-label="Season payouts">
+          <div class="label">Season&nbsp;Payouts</div>
+          <div class="prizes" id="seasonPrizes">
+            <!-- JS injects $ values; dividers persist -->
+            <div class="prize"><div class="place">1st Place</div><div class="amt" data-slot="s1">$0</div></div>
+            <div class="divider" aria-hidden="true"></div>
+            <div class="prize"><div class="place">2nd Place</div><div class="amt" data-slot="s2">$0</div></div>
+            <div class="divider" aria-hidden="true"></div>
+            <div class="prize"><div class="place">3rd Place</div><div class="amt" data-slot="s3">$0</div></div>
+            <div class="divider" aria-hidden="true"></div>
+            <div class="prize"><div class="place">4th Place</div><div class="amt" data-slot="s4">$0</div></div>
+            <div class="divider" aria-hidden="true"></div>
+            <div class="prize"><div class="place">5th Place</div><div class="amt" data-slot="s5">$0</div></div>
+          </div>
+        </div>
 
-function updateCalcs(){
-  const count = parseInt(membersEl.value,10);
-  memberOut.textContent = count;
-  const fee = entryFee();
-  feeOut.textContent = currency(fee);
+        <!-- Weekly -->
+        <div class="panel" aria-label="Weekly payouts">
+          <div class="label">Weekly&nbsp;Payouts</div>
+          <div class="prizes" id="weeklyPrizes">
+            <div class="prize"><div class="place">1st Place</div><div class="amt" data-slot="w1">$0</div></div>
+            <div class="divider" aria-hidden="true"></div>
+            <div class="prize"><div class="place">2nd Place</div><div class="amt" data-slot="w2">$0</div></div>
+            <div class="divider" aria-hidden="true"></div>
+            <div class="prize"><div class="place">3rd Place</div><div class="amt" data-slot="w3">$0</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  const total = fee * count;
-  poolOut.textContent = currency(total);
+  <!-- HOW IT WORKS -->
+  <section class="section how" id="how">
+    <div class="container">
+      <div class="header">
+        <h2 class="title">How It Works</h2>
+        <p class="intro">New to Pick’em or need a refresher? Three simple steps—join, play, win.</p>
+      </div>
 
-  const seasonTotal = total * 0.80;
-  const weeklyTotal = total * 0.20;
-  const perWeek = weeklyTotal / 18;
+      <div class="steps">
+        <div class="step">
+          <i class="fa-regular fa-circle-1" aria-hidden="true"></i>
+          <div>
+            <h4>Join a Pool</h4>
+            <p>Choose between Otter Club ($20, straight-up winners) and Shark Club ($50, against the spread), or join both for more action. After signing up, you’ll receive an email with your Sleeper invite link and Venmo details. Pay your entry fee via Venmo before kickoff of the first regular season game to secure your spot!</p>
+          </div>
+        </div>
 
-  const s = seasonSplit(count);
-  const seasonAmts = [0,1,2,3,4].map(i => s[i] ? Math.round(seasonTotal * s[i]) : 0);
-  ['s1','s2','s3','s4','s5'].forEach((id,idx)=>{ document.getElementById(id).textContent = currency(seasonAmts[idx]); });
+        <div class="step">
+          <i class="fa-regular fa-circle-2" aria-hidden="true"></i>
+          <div>
+            <h4>Make Your Picks Each Week</h4>
+            <p>Log in to Sleeper and open your pool to make picks before each game’s kickoff, with Thursday games locking first. In Otter Club, you’ll pick the outright winner; in Shark Club, you’ll pick against the spread. For the best experience, use the Sleeper app on Apple or Android.</p>
+          </div>
+        </div>
 
-  const w = weeklySplit;
-  const weeklyAmts = [0,1,2].map(i => Math.round(perWeek * w[i] || 0));
-  ['w1','w2','w3'].forEach((id,idx)=>{ document.getElementById(id).textContent = currency(weeklyAmts[idx]); });
+        <div class="step">
+          <i class="fa-regular fa-circle-3" aria-hidden="true"></i>
+          <div>
+            <h4>Win Weekly & Season Prizes</h4>
+            <p>Sleeper updates in real time and tracks your score automatically. Each week, the top three finishers are announced, and the overall leaderboard shows how you stack up across the season.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  updateSliderFill(); // keep thumb inside gradient
-}
+  <!-- JOIN -->
+  <section class="section" id="join">
+    <div class="container">
+      <div class="header">
+        <h2 class="title">Ready to Join?</h2>
+        <p class="intro">Complete the form below. We’ll email your Sleeper invite link and Venmo details.</p>
+      </div>
+      <div class="frame">
+        <iframe class="airtable-embed" src="https://airtable.com/embed/appjd8ASIv6Wa7cSN/pagKh4VOGMg5EHfAi/form" frameborder="0"></iframe>
+      </div>
+    </div>
+  </section>
 
-/* ---------- Segmented toggle ---------- */
-function setPool(p){
-  pool = p;
-  if(p==='otter'){
-    segOtter.classList.add('active');
-    segShark.classList.remove('active');
-    segOtter.setAttribute('aria-selected','true');
-    segShark.setAttribute('aria-selected','false');
-  }else{
-    segShark.classList.add('active');
-    segOtter.classList.remove('active');
-    segShark.setAttribute('aria-selected','true');
-    segOtter.setAttribute('aria-selected','false');
-  }
-  updateCalcs();
-}
-segOtter.addEventListener('click',()=>setPool('otter'));
-segShark.addEventListener('click',()=>setPool('shark'));
+  <!-- FAQ -->
+  <section class="section faq" id="faq">
+    <div class="container">
+      <div class="header">
+        <h2 class="title">FAQ</h2>
+        <p class="intro">Got questions? We’ve got answers. Everything you need to know to sign up and play Pick’em Challenge.</p>
+      </div>
 
-/* ---------- Slider: keep fill under thumb ---------- */
-function updateSliderFill(){
-  const rect = membersEl.getBoundingClientRect();
-  const trackW = rect.width;
-  const thumbW = 20; // CSS thumb size
-  const min = parseFloat(membersEl.min) || 0;
-  const max = parseFloat(membersEl.max) || 100;
-  const val = parseFloat(membersEl.value);
-  const pct = (val - min) / (max - min);            // 0..1
-  const offsetPct = (thumbW/2) / trackW;            // extra so fill reaches thumb center
-  const fillPct = Math.min(1, pct + offsetPct) * 100;
+      <div class="list">
+        <!-- 1 -->
+        <div class="item">
+          <div class="q" role="button" tabindex="0">
+            <i class="fa-regular fa-circle-question" aria-hidden="true"></i>
+            Can I play in both pools?
+            <i class="fa-regular fa-chevron-down chev" aria-hidden="true"></i>
+          </div>
+          <div class="a">
+            Yes! You can join either Otter Club (Straight picks), Shark Club (Spread picks), or both. Playing in both doubles your chances to win weekly and season-long prizes.
+          </div>
+        </div>
+        <!-- 2 -->
+        <div class="item">
+          <div class="q" role="button" tabindex="0">
+            <i class="fa-regular fa-circle-question" aria-hidden="true"></i>
+            How do payouts work?
+            <i class="fa-regular fa-chevron-down chev" aria-hidden="true"></i>
+          </div>
+          <div class="a">
+            Each pool’s total entry fees are split 20% for weekly winners and 80% for season-long standings. Payout amounts increase as more members join.
+          </div>
+        </div>
+        <!-- 3 -->
+        <div class="item">
+          <div class="q" role="button" tabindex="0">
+            <i class="fa-regular fa-circle-question" aria-hidden="true"></i>
+            Do I need a Sleeper account to play?
+            <i class="fa-regular fa-chevron-down chev" aria-hidden="true"></i>
+          </div>
+          <div class="a">
+            Yes. Sleeper is the platform we use to host both pools, manage picks, and track standings. If you don’t have an account, you can sign up for free at <a href="https://www.sleeper.com" target="_blank" rel="noopener">sleeper.com</a>.
+          </div>
+        </div>
+        <!-- 4 -->
+        <div class="item">
+          <div class="q" role="button" tabindex="0">
+            <i class="fa-regular fa-circle-question" aria-hidden="true"></i>
+            How do I make picks?
+            <i class="fa-regular fa-chevron-down chev" aria-hidden="true"></i>
+          </div>
+          <div class="a">
+            Log in to Sleeper and open the pool you’ve joined.
+            <ul>
+              <li>In Otter Club (Straight), pick the outright winner of each game. You earn a point for every correct prediction.</li>
+              <li>In Shark Club (Spread), pick against the listed point spread. You earn a point if your pick covers the spread based on Sleeper’s game lines.</li>
+            </ul>
+            You can change any pick up until that game’s scheduled kickoff — Thursday Night Football locks first each week.
+          </div>
+        </div>
+        <!-- 5 -->
+        <div class="item">
+          <div class="q" role="button" tabindex="0">
+            <i class="fa-regular fa-circle-question" aria-hidden="true"></i>
+            How are ties decided?
+            <i class="fa-regular fa-chevron-down chev" aria-hidden="true"></i>
+          </div>
+          <div class="a">
+            Weekly ties use Sleeper’s tiebreaker: guessing the total points scored in the Monday Night game. Closest to the actual total wins (over or under). If still tied, overall point total decides.
+          </div>
+        </div>
+        <!-- 6 -->
+        <div class="item">
+          <div class="q" role="button" tabindex="0">
+            <i class="fa-regular fa-circle-question" aria-hidden="true"></i>
+            When will winners be paid?
+            <i class="fa-regular fa-chevron-down chev" aria-hidden="true"></i>
+          </div>
+          <div class="a">
+            Weekly winners are paid after all games conclude for that week. Season-long payouts are made after the final regular season game.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  membersEl.style.background = `
-    linear-gradient(90deg, #26CB4D 0%, #6DDD88 100%) 0 / ${fillPct}% 100% no-repeat,
-    rgba(229,231,235,.3)
-  `;
-}
-membersEl.addEventListener('input', ()=>{ updateCalcs(); });
-window.addEventListener('resize', updateSliderFill);
+  <!-- ABOUT -->
+  <section class="about" id="about">
+    <div class="bg" aria-hidden="true"></div>
+    <div class="container">
+      <div class="content">
+        <img class="avatar" src="seth-avatar.webp" alt="Seth avatar">
+        <div>
+          <h3>About the Commissioner</h3>
+          <p>I’m Seth, your commissioner for the NFL Pick’em Challenge. I’m based in Southern California, a lifelong Chicago Bears fan, and I’ve been running these pools since 2024. I love football and enjoy bringing people together to compete, celebrate wins, and make every game more exciting.</p>
+          <a class="share" href="#" id="shareBtn"><i class="fa-regular fa-share-nodes"></i> Share</a>
+        </div>
+      </div>
+    </div>
+  </section>
 
-/* ---------- FAQ accordion ---------- */
-document.querySelectorAll('[data-item]').forEach(q=>{
-  q.addEventListener('click', ()=>{
-    q.parentElement.classList.toggle('open');
-  })
-});
+  <div class="copyright">© 2025 Pick'em Challenge</div>
 
-/* init */
-updateCalcs();
-</script>
+  <script>
+    // Sticky nav reveal
+    const nav = document.querySelector('.site-nav');
+    const revealAt = 120;
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > revealAt) nav.classList.add('nav--visible');
+      else nav.classList.remove('nav--visible');
+    });
+
+    // Smooth-scroll offset (ensures section titles aren't hidden by nav)
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', e=>{
+        const id = a.getAttribute('href');
+        if(id.length > 1){
+          const el = document.querySelector(id);
+          if(el){
+            e.preventDefault();
+            const y = el.getBoundingClientRect().top + window.scrollY - 88; // approx nav height
+            window.scrollTo({top:y, behavior:'smooth'});
+          }
+        }
+      });
+    });
+
+    // FAQ accordion
+    document.querySelectorAll('.faq .item .q').forEach(q=>{
+      q.addEventListener('click', ()=> q.parentElement.classList.toggle('open'));
+      q.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' ') { e.preventDefault(); q.click(); }});
+    });
+
+    // Share button (Web Share API fallback)
+    const shareBtn = document.getElementById('shareBtn');
+    if (shareBtn){
+      shareBtn.addEventListener('click', async (e)=>{
+        e.preventDefault();
+        const data = {title:"NFL Pick’em Challenge", text:"Join me in the NFL Pick’em Challenge!", url:location.href};
+        try{
+          if(navigator.share) await navigator.share(data);
+          else {
+            await navigator.clipboard.writeText(location.href);
+            shareBtn.textContent = 'Link copied!';
+            setTimeout(()=>shareBtn.innerHTML = '<i class="fa-regular fa-share-nodes"></i> Share', 1600);
+          }
+        }catch(_){}
+      });
+    }
+
+    // -------- Calculator logic (kept scoped) ----------
+    const state = {
+      pool:'otter', // 'otter' | 'shark'
+      entryFee:{ otter:20, shark:50 },
+      members:140
+    };
+
+    const membersInput = document.getElementById('members');
+    const memberVal = document.getElementById('memberVal');
+    const entryEl = document.getElementById('entry');
+    const totalEl = document.getElementById('total');
+
+    function setSliderFill(){
+      const max = parseFloat(membersInput.max)||250;
+      const f = Math.max(0.001, membersInput.value/max);
+      membersInput.style.setProperty('--fill', f);
+    }
+
+    function format(n){ return '$' + n.toLocaleString(undefined,{maximumFractionDigits:0}); }
+
+    function prizeSchedule(n){
+      // Fixed 80/20 split, five season slots & three weekly shown always
+      // Here we just split season pot with example weights like 40/16/12/8/4 (% of total pot)
+      // and weekly pot 3 places  (these are placeholders—adjust if your exact schedule differs)
+      // The important part is we always return 5 & 3 slots (zeros when not applicable).
+      // You had previously confirmed we keep 5/3 visible at all times.
+      let seasonPct = [0.4, 0.16, 0.12, 0.08, 0.04]; // sums 0.8
+      let weeklyPct = [0.6, 0.24, 0.16];            // sums 1.0 of weekly pot (0.2 of total), later /18 per week
+
+      // If you later want to vary by member ranges, you can inject that here.
+      return { seasonPct, weeklyPct };
+    }
+
+    function render(){
+      const fee = state.entryFee[state.pool];
+      const members = parseInt(state.members,10)||0;
+      const pot = fee*members;
+      const weeklyPool = pot*0.20;
+      const seasonPool = pot*0.80;
+
+      // UI
+      memberVal.textContent = members;
+      entryEl.textContent = format(fee);
+      totalEl.textContent = format(pot);
+
+      // Prizes
+      const {seasonPct, weeklyPct} = prizeSchedule(members);
+
+      // Season: 5 places always
+      const sVals = seasonPct.map(p=> Math.round(seasonPool*p));
+      ['s1','s2','s3','s4','s5'].forEach((slot, i)=>{
+        const el = document.querySelector(`[data-slot="${slot}"]`);
+        el.textContent = format(sVals[i] || 0);
+      });
+
+      // Weekly: 3 places per week (divide by 18)
+      const wVals = weeklyPct.map(p=> Math.round((weeklyPool*p)/18));
+      ['w1','w2','w3'].forEach((slot, i)=>{
+        const el = document.querySelector(`[data-slot="${slot}"]`);
+        el.textContent = format(wVals[i] || 0);
+      });
+
+      // slider fill
+      setSliderFill();
+    }
+
+    // Toggle
+    document.getElementById('otterBtn').addEventListener('click', ()=>{
+      state.pool='otter';
+      document.getElementById('otterBtn').className='is-active';
+      document.getElementById('sharkBtn').className='is-inactive';
+      render();
+    });
+    document.getElementById('sharkBtn').addEventListener('click', ()=>{
+      state.pool='shark';
+      document.getElementById('otterBtn').className='is-inactive';
+      document.getElementById('sharkBtn').className='is-active';
+      render();
+    });
+
+    membersInput.addEventListener('input', (e)=>{
+      state.members = e.target.value;
+      render();
+    });
+
+    // init
+    render();
+  </script>
 </body>
 </html>
