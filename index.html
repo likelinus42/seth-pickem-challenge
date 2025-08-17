@@ -12,7 +12,7 @@
 
   <style>
     :root{
-      /* core colors */
+      /* colors */
       --bg:#030816; --text:#e6ecf3; --muted:#9AA8BE; --line:#1a1f2c;
       --accent:#26CB4D; --accent-hover:#1FA13E; --accent-active:#188534;
       --navy:#0B2545; --offwhite:#F9FAFB; --neutral-200:#E5E7EB; --ring:#8EE4A2;
@@ -33,10 +33,9 @@
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
     body{margin:0; background:var(--bg); color:var(--text); font-family:'Urbanist',sans-serif}
-    /* WIDER container so 8-col area yields ~414px cards */
     .container{max-width:1280px; margin:0 auto; padding:0 20px}
 
-    /* Type utilities */
+    /* type */
     .h1{ font-size:var(--fs-h1); line-height:var(--lh-tight); font-weight:var(--fw-bold); margin:0;}
     .h2{ font-size:var(--fs-h2); line-height:var(--lh-tight); font-weight:var(--fw-bold); margin:0;}
     .h3{ font-size:var(--fs-h3); line-height:var(--lh-tight); font-weight:var(--fw-semibold); margin:0;}
@@ -48,11 +47,7 @@
 
     /* Section header + intro */
     .section-header{ text-align:center; }
-    .section-intro{
-      margin:16px auto 40px;              /* 16px gap from title */
-      max-width:608px;
-      color:rgba(249,250,251,0.60);       /* off-white 60% */
-    }
+    .section-intro{ margin:16px auto 40px; max-width:608px; color:rgba(249,250,251,0.60); }
 
     /* Buttons */
     .btn{
@@ -102,7 +97,7 @@
     @media (max-width:900px){ .benefits-grid{grid-template-columns:1fr; gap:16px;} }
     .benefit-card{
       width:100%; height:161px; padding:24px; border:1px solid var(--border-soft); border-radius:16px;
-      display:flex; flex-direction:column; align-items:center; gap:24px; background:var(--bg);
+      display:flex; flex-direction:column; align-items:center; gap:24px; background:transparent;
     }
     .benefit-icon{width:40px; height:40px; display:flex; align-items:center; justify-content:center; color:var(--accent); font-size:32px}
     .benefit-text{display:flex; flex-direction:column; align-items:center; gap:8px; width:192px}
@@ -115,7 +110,7 @@
     @media (max-width: 900px){ .pool-inner{ grid-template-columns:1fr; } }
     .card{
       width:100%; border:2px solid var(--border-soft); border-radius:16px;
-      background:var(--bg); padding:24px 24px 32px; display:flex; flex-direction:column; gap:32px;
+      background:transparent; padding:24px 24px 32px; display:flex; flex-direction:column; gap:32px;
     }
     .card-header{display:flex; align-items:center; justify-content:space-between; gap:32px; width:100%; height:48px;}
     .card-header-left{display:flex; align-items:center; gap:16px; margin-right:auto}
@@ -134,21 +129,29 @@
 
     /* ---------- CALCULATOR ---------- */
     .calculator{padding:80px 0}
+
+    /* segmented toggle (fill + outline) */
     .calc-tabs.segmented{
-      display:flex; gap:0; padding:2px; background:var(--panel);
-      border:1px solid var(--border-soft); border-radius:14px;
-      margin:0 auto 20px; max-width:640px;
+      display:flex; align-items:center; justify-content:center;
+      gap:0; margin:0 auto 20px; width:100%; max-width:816px;
     }
     .calc-tabs.segmented .tab{
-      flex:1; border:none; border-radius:12px; background:transparent; color:#E5E7EB;
-      padding:10px 16px; font-weight:600; cursor:pointer; transition:.18s;
+      width:50%; height:48px; padding:12px 16px; gap:8px;
+      border-radius:12px; font-weight:700; font-size:20px; line-height:140%;
+      border:2px solid var(--border-soft); background:transparent; color:var(--offwhite);
+      cursor:pointer; transition:.18s;
     }
-    .calc-tabs.segmented .tab.active{ background:#1a1f2c; border:1px solid var(--border-soft); color:var(--offwhite); }
+    .calc-tabs.segmented .tab:first-child{ border-radius:12px 0 0 12px; }
+    .calc-tabs.segmented .tab:last-child { border-radius:0 12px 12px 0; }
+    /* Active gets semi-fill; inactive stays outlined */
+    .calc-tabs.segmented .tab.active{ background:rgba(229,231,235,0.30); border-color:transparent; }
 
-    .calc-card{ border:1px solid var(--border-soft); border-radius:16px; background:transparent; padding:24px; display:flex; flex-direction:column; gap:24px; }
+    /* remove outer strokes around KPI+Breakdown wrapper */
+    .calc-card{ border:none; border-radius:16px; background:transparent; padding:0; display:flex; flex-direction:column; gap:24px; }
+
     .kpi-row{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:24px; }
     @media (max-width:900px){ .kpi-row{ grid-template-columns:1fr; } }
-    .kpi-card{ border:1px solid var(--border-soft); border-radius:16px; background:var(--panel); padding:20px; }
+    .kpi-card{ border:1px solid var(--border-soft); border-radius:16px; background:transparent; padding:20px; }
     .kpi-label{ opacity:.9; margin-bottom:10px }
     .kpi-value{ font-size:32px; font-weight:600 }
     .kpi-value.dim{ color:#9AA8BE }
@@ -157,19 +160,33 @@
     #members{ -webkit-appearance:none; appearance:none; width:100%; height:8px; border-radius:8px; background:#132033; outline:none; }
     #members::-webkit-slider-thumb{ -webkit-appearance:none; appearance:none; width:16px; height:16px; border-radius:50%; background:var(--accent); border:2px solid #0a1b2e; cursor:pointer; }
     #members::-moz-range-thumb{ width:16px; height:16px; border-radius:50%; background:var(--accent); border:2px solid #0a1b2e; cursor:pointer; }
-    #membersNumber{ width:84px; padding:10px 12px; background:var(--bg); color:var(--offwhite); border:1px solid var(--border-soft); border-radius:10px; text-align:right }
+    #membersNumber{ width:84px; padding:10px 12px; background:transparent; color:var(--offwhite); border:none; border-radius:10px; text-align:right }
 
-    .break-surface{ border:1px solid var(--border-soft); border-radius:16px; padding:20px; background:transparent; display:flex; flex-direction:column; gap:16px; }
-    .break-header{ display:flex; align-items:center; gap:10px; margin-bottom:4px }
+    /* Prize Breakdown surface (no outer border now) */
+    .break-surface{ border:none; border-radius:16px; padding:0; background:transparent; display:flex; flex-direction:column; gap:16px; }
+    .break-header{ display:flex; align-items:center; justify-content:center; gap:10px; margin:0 auto; }
     .break-header i{ color:var(--accent); font-size:20px }
-    .panel{ border:1px solid var(--border-soft); border-radius:14px; background:var(--panel); padding:18px; }
-    .panel-title{ opacity:.95; letter-spacing:.02em; margin-bottom:10px }
-    .panel-sub{ opacity:.75; margin:-6px 0 10px }
-    .payout-list{ list-style:none; margin:0; padding:6px 0; display:grid; grid-template-columns:repeat(auto-fit, minmax(120px, 1fr)); gap:18px; }
-    .payout-list li{ display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; text-align:center; padding:8px 6px; border:none; }
+
+    .panel{ border:1px solid var(--border-soft); border-radius:14px; background:var(--panel); padding:26px 18px; }
+    .panel-title{ opacity:.95; letter-spacing:.02em; margin:0 auto 16px; text-align:center; }
+
+    /* payout list with vertical separators */
+    .payout-list{
+      --cols: 5;
+      list-style:none; margin:0; padding:16px 8px;
+      display:grid; grid-template-columns:repeat(var(--cols), 1fr); gap:0;
+    }
+    .payout-list li{
+      position:relative; display:flex; flex-direction:column;
+      align-items:center; justify-content:center; gap:8px;
+      min-height:110px; padding:8px 18px;
+    }
+    .payout-list li:not(:last-child)::after{
+      content:""; position:absolute; right:0; top:50%; transform:translateY(-50%);
+      width:1px; height:64px; background:var(--border-soft);
+    }
     .payout-list .place{ font-size:14px; color:#C7D0DE }
     .payout-list strong{ font-size:22px; color:var(--brandBlue); font-weight:700 }
-    .bucket-note{ opacity:.8; margin-top:4px }
 
     /* ---------- HOW IT WORKS ---------- */
     .how{ padding:64px 0; background:rgba(30,41,59,0.30); }
@@ -187,7 +204,7 @@
     .embed-wrap iframe{width:100%; height:900px; border:0; background:#0d1526;}
     @media (max-width:720px){ .embed-wrap iframe{height:1100px;} }
 
-    /* ---------- FAQ (accordion) ---------- */
+    /* ---------- FAQ ---------- */
     .faq{ padding:80px 0; }
     .faq-list{ width:100%; }
     .faq-item{ padding:0; }
@@ -203,7 +220,7 @@
       max-height:0; overflow:hidden; opacity:0;
       transition:max-height .22s ease, opacity .18s ease, padding-bottom .18s ease;
       color:#E5E7EB;
-      padding:0 24px 0 76px; /* no bottom padding while closed */
+      padding:0 24px 0 76px;
     }
     .faq-answer ul{ margin:8px 0 0 16px; }
     .faq-answer li{ margin:4px 0; }
@@ -212,23 +229,17 @@
 
     /* ---------- ABOUT (footer hero) ---------- */
     .about{
-      position:relative;
-      display:flex; flex-direction:column;
-      background:url('footer-tunnel-desktop.webp') center 65% / cover no-repeat; /* shift image down */
-      min-height:736px;               /* +96px for more vertical space */
-      padding-top:72px;
+      position:relative; display:flex; flex-direction:column;
+      background:url('footer-tunnel-desktop.webp') center 65% / cover no-repeat;
+      min-height:736px; padding-top:72px;
     }
     .about-overlay{
       position:absolute; inset:0;
-      /* darker at the top for legibility */
       background:linear-gradient(to bottom, rgba(3,8,22,.78), rgba(3,8,22,.35) 45%, rgba(3,8,22,.65));
       pointer-events:none;
     }
     .about-inner{ position:relative; z-index:1; }
-    .about-row{
-      display:flex; align-items:flex-start; gap:16px;
-      max-width:740px; margin:0 auto 28px; padding:0 8px;
-    }
+    .about-row{ display:flex; align-items:flex-start; gap:16px; max-width:740px; margin:0 auto 28px; padding:0 8px; }
     .about-avatar{ width:72px; height:72px; border-radius:16px; flex:none; object-fit:cover; }
     .about-text{ max-width:640px; text-shadow:0 1px 2px rgba(0,0,0,.5); }
     .about-text .h3{ margin:0 0 10px; }
@@ -238,10 +249,7 @@
       .about-row{ flex-direction:column; align-items:center; text-align:center; }
       .about-actions{ margin-left:0; justify-content:center; }
     }
-    .about-footer{
-      margin-top:auto; padding:24px 20px; text-align:center; color:rgba(249,250,251,.7);
-      font-size:14px;
-    }
+    .about-footer{ margin-top:auto; padding:24px 20px; text-align:center; color:rgba(249,250,251,.7); font-size:14px; }
   </style>
 </head>
 <body>
@@ -375,20 +383,20 @@
             </p>
           </div>
 
+          <!-- segmented toggle -->
           <div class="calc-tabs segmented" role="tablist" aria-label="Choose pool">
             <button id="tab-otter" class="tab active" role="tab" aria-selected="true" aria-controls="calc-panel">Otter Club</button>
             <button id="tab-shark" class="tab" role="tab" aria-selected="false" aria-controls="calc-panel">Shark Club</button>
           </div>
 
           <div id="calc-panel" class="calc-card" role="region" aria-labelledby="tab-otter">
+            <!-- KPI cards -->
             <div class="kpi-row">
               <div class="kpi-card">
                 <div class="kpi-label utility">Total Members</div>
                 <div class="slider-wrap">
                   <input id="members" type="range" min="0" max="250" step="1" value="140" />
-                  <div class="slider-value" id="membersNumberWrap">
-                    <input id="membersNumber" type="number" min="0" max="250" step="1" value="140" />
-                  </div>
+                  <input id="membersNumber" type="number" min="0" max="250" step="1" value="140" aria-label="Total members numeric input" />
                 </div>
               </div>
 
@@ -403,6 +411,7 @@
               </div>
             </div>
 
+            <!-- Breakdown -->
             <div class="break-surface">
               <div class="break-header">
                 <i class="fa-solid fa-calculator"></i>
@@ -411,17 +420,15 @@
 
               <div class="panel">
                 <div class="panel-title utility">Season&nbsp;&nbsp;Payouts</div>
-                <ul class="payout-list" id="seasonList"></ul>
+                <ul class="payout-list" id="seasonList" style="--cols:5;"></ul>
               </div>
 
               <div class="panel">
                 <div class="panel-title utility">Weekly&nbsp;&nbsp;Payouts</div>
-                <div class="panel-sub utility">(per week × 18 weeks)</div>
-                <ul class="payout-list" id="weeklyList"></ul>
+                <ul class="payout-list" id="weeklyList" style="--cols:3;"></ul>
               </div>
-
-              <div class="bucket-note utility" id="bucketNote"></div>
             </div>
+
           </div>
 
         </div>
@@ -504,7 +511,7 @@
     </div>
   </section>
 
-  <!-- FAQ (now AFTER Join) -->
+  <!-- FAQ -->
   <section id="faq" class="faq">
     <div class="container">
       <div class="grid-12">
@@ -647,7 +654,6 @@
     const membersNumber = $('#membersNumber');
     const entryFeeEl = $('#entryFee');
     const totalPoolEl = $('#totalPool');
-    const bucketNote = $('#bucketNote');
     const seasonList = $('#seasonList');
     const weeklyList = $('#weeklyList');
     let currentPool = 'otter';
@@ -664,17 +670,18 @@
       totalPoolEl.textContent = fmt(totalPool);
 
       const b = findBucket(m);
-      bucketNote.textContent = (m < 1) ? 'Enter at least 1 member to see payout splits.' :
-                               (b ? `Using ${b.range} members payout schedule` : 'No payout schedule for this size');
 
       const seasonPot = totalPool * SPLIT.season;
       const weeklyTotal = totalPool * SPLIT.weekly;
       const weeklyPerWeek = weeklyTotal / 18;
 
+      // Season list
       seasonList.innerHTML = '';
       if (m < 1 || !b) {
+        seasonList.style.setProperty('--cols', 1);
         seasonList.innerHTML = `<li><span class="place">No payouts</span><strong>${fmt(0)}</strong></li>`;
       } else {
+        seasonList.style.setProperty('--cols', b.season.length);
         b.season.forEach((pct, i) => {
           const li = document.createElement('li');
           li.innerHTML = `<span class="place">${i+1}<sup>${suffix(i+1)}</sup> Place</span><strong>${fmt(seasonPot * pct)}</strong>`;
@@ -682,10 +689,13 @@
         });
       }
 
+      // Weekly list
       weeklyList.innerHTML = '';
       if (m < 1 || !b) {
+        weeklyList.style.setProperty('--cols', 1);
         weeklyList.innerHTML = `<li><span class="place">No payouts</span><strong>${fmt(0)}</strong></li>`;
       } else {
+        weeklyList.style.setProperty('--cols', b.weekly.length);
         b.weekly.forEach((pct, i) => {
           const li = document.createElement('li');
           li.innerHTML = `<span class="place">${i+1}<sup>${suffix(i+1)}</sup> Place</span><strong>${fmt(weeklyPerWeek * pct)}</strong>`;
@@ -696,8 +706,19 @@
 
     members.addEventListener('input', e => { syncMembers(e.target.value); render(); });
     membersNumber.addEventListener('input', e => { syncMembers(e.target.value); render(); });
-    tabOtter.addEventListener('click', ()=>{ currentPool = 'otter'; tabOtter.classList.add('active'); tabOtter.setAttribute('aria-selected','true'); tabShark.classList.remove('active'); tabShark.setAttribute('aria-selected','false'); render(); });
-    tabShark.addEventListener('click', ()=>{ currentPool = 'shark'; tabShark.classList.add('active'); tabShark.setAttribute('aria-selected','true'); tabOtter.classList.remove('active'); tabOtter.setAttribute('aria-selected','false'); render(); });
+
+    tabOtter.addEventListener('click', ()=>{
+      currentPool = 'otter';
+      tabOtter.classList.add('active'); tabOtter.setAttribute('aria-selected','true');
+      tabShark.classList.remove('active'); tabShark.setAttribute('aria-selected','false');
+      render();
+    });
+    tabShark.addEventListener('click', ()=>{
+      currentPool = 'shark';
+      tabShark.classList.add('active'); tabShark.setAttribute('aria-selected','true');
+      tabOtter.classList.remove('active'); tabOtter.setAttribute('aria-selected','false');
+      render();
+    });
 
     syncMembers(members.value); render();
   </script>
