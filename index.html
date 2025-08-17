@@ -175,21 +175,46 @@
     .payout-list strong{ font-size:22px; color:var(--brandBlue); font-weight:700 }
     .bucket-note{ opacity:.8; margin-top:4px }
 
-    /* HOW IT WORKS */
-    .how{ padding:80px 0 }
-    .steps{ display:grid; grid-template-columns:repeat(3, 1fr); gap:24px; }
-    @media (max-width:900px){ .steps{ grid-template-columns:1fr; } }
-    .step-card{
-      border:1px solid var(--border-soft); border-radius:16px; background:var(--bg);
-      padding:24px; display:flex; gap:16px; align-items:flex-start;
-    }
-    .step-icon{
-      width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center;
-      color:var(--accent); font-size:28px; flex:none;
-    }
-    .step-content{ display:flex; flex-direction:column; gap:8px }
-    .step-title{ font-weight:var(--fw-semibold); font-size:20px }
-    .step-text{ color:#E5E7EB }
+
+/* ---------- HOW IT WORKS (vertical stack, no cards) ---------- */
+.how{
+  padding:64px 0;
+  background:rgba(30,41,59,0.30); /* matches Figma overlay */
+}
+
+/* Header block */
+.how-header{
+  display:flex; flex-direction:column; align-items:center; gap:16px;
+  margin-bottom:64px;
+}
+.how-header .h2{ text-align:center; }
+.how-header-text{
+  text-align:center; max-width:608px; color:rgba(249,250,251,0.60);
+}
+
+/* Steps wrapper (centered, fixed max like Figma) */
+.how-steps{
+  display:flex; flex-direction:column; gap:48px;
+  max-width:816px; margin:0 auto;
+}
+
+/* Single step row */
+.how-step{
+  display:flex; flex-direction:row; align-items:flex-start;
+  gap:24px; padding:16px 0; /* spacing only; no border/fill */
+}
+
+/* Icon */
+.step-icon{
+  width:40px; height:40px; display:flex; align-items:center; justify-content:center;
+  color:var(--accent); font-size:32px; flex:none;
+}
+
+/* Text area */
+.step-content{ display:flex; flex-direction:column; gap:16px; padding-top:6px; width:100%; }
+.step-title{ color:#F9FAFB; } /* H4 already sized via your scale */
+.step-text{ color:rgba(249,250,251,0.70); } /* Body Large look from Figma */
+
 
     /* JOIN (Airtable) */
     #join{padding:80px 0;}
@@ -382,54 +407,69 @@
   </section>
 
   <!-- HOW IT WORKS -->
-  <section id="how" class="how">
-    <div class="container">
-      <div class="grid-12">
-        <div class="col-span-8-centered">
-          <h2 class="h2" style="text-align:center;">How It Works</h2>
-          <p class="body" style="text-align:center; color:var(--muted); max-width:720px; margin:12px auto 32px;">
-            New to Pick’em and spreads? It’s simple: choose a pool, make your picks weekly, and win prizes all season long.
+<section id="how" class="how">
+  <div class="container">
+    <div class="grid-12">
+      <div class="col-span-8-centered">
+
+        <!-- Header -->
+        <div class="how-header">
+          <h2 class="h2">How It Works</h2>
+          <p class="body-lg how-header-text">
+            New to Pick’em and spreads? It’s simple: choose a pool, make your
+            picks weekly, and win prizes all season long.
           </p>
+        </div>
 
-          <div class="steps">
-            <!-- Step 1 -->
-            <div class="step-card">
-              <div class="step-icon"><i class="fa-regular fa-circle-1"></i></div>
-              <div class="step-content">
-                <div class="step-title">Join a Pool</div>
-                <p class="step-text body">
-                  Choose between <strong>Otter Club ($20)</strong> (straight-up picks) and <strong>Shark Club ($50)</strong> (against the spread). You can join one or both.
-                </p>
-              </div>
+        <!-- Steps (vertical stack) -->
+        <div class="how-steps">
+          <!-- Step 1 -->
+          <div class="how-step">
+            <div class="step-icon">
+              <i class="fa-regular fa-circle-1" aria-hidden="true"></i>
             </div>
-
-            <!-- Step 2 -->
-            <div class="step-card">
-              <div class="step-icon"><i class="fa-regular fa-circle-2"></i></div>
-              <div class="step-content">
-                <div class="step-title">Make Your Picks Each Week</div>
-                <p class="step-text body">
-                  Log in to Sleeper and enter your picks before each game’s kickoff. Point values vary by pool. You can pick the whole slate or just your favorites.
-                </p>
-              </div>
-            </div>
-
-            <!-- Step 3 -->
-            <div class="step-card">
-              <div class="step-icon"><i class="fa-regular fa-circle-3"></i></div>
-              <div class="step-content">
-                <div class="step-title">Win Weekly & Season Prizes</div>
-                <p class="step-text body">
-                  Weekly payouts go to top finishers and season-end prizes reward consistency. The calculator above shows how pots increase with more members.
-                </p>
-              </div>
+            <div class="step-content">
+              <div class="h4 step-title">Join a Pool</div>
+              <p class="body-lg step-text">
+                Choose between <strong>Otter Club ($20)</strong> (straight-up picks)
+                and <strong>Shark Club ($50)</strong> (against the spread). You can join one or both.
+              </p>
             </div>
           </div>
 
+          <!-- Step 2 -->
+          <div class="how-step">
+            <div class="step-icon">
+              <i class="fa-regular fa-circle-2" aria-hidden="true"></i>
+            </div>
+            <div class="step-content">
+              <div class="h4 step-title">Make Your Picks Each Week</div>
+              <p class="body-lg step-text">
+                Log in to Sleeper and enter your picks before each game’s kickoff.
+                Point values vary by pool. Pick the whole slate or just your favorites.
+              </p>
+            </div>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="how-step">
+            <div class="step-icon">
+              <i class="fa-regular fa-circle-3" aria-hidden="true"></i>
+            </div>
+            <div class="step-content">
+              <div class="h4 step-title">Win Weekly & Season Prizes</div>
+              <p class="body-lg step-text">
+                Weekly payouts go to top finishers and season-end prizes reward consistency.
+                The calculator above shows how pots increase with more members.
+              </p>
+            </div>
+          </div>
         </div>
+
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
   <!-- JOIN (Airtable embed) -->
   <section id="join">
