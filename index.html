@@ -7,7 +7,6 @@
 
   <!-- Urbanist font -->
   <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
   <!-- Font Awesome (your kit) -->
   <script src="https://kit.fontawesome.com/91492d4fbf.js" crossorigin="anonymous"></script>
 
@@ -175,90 +174,99 @@
     .payout-list strong{ font-size:22px; color:var(--brandBlue); font-weight:700 }
     .bucket-note{ opacity:.8; margin-top:4px }
 
+    /* ---------- HOW IT WORKS (vertical stack, no cards) ---------- */
+    .how{
+      padding:64px 0;
+      background:rgba(30,41,59,0.30);
+    }
+    .how-header{
+      display:flex; flex-direction:column; align-items:center; gap:16px;
+      margin-bottom:64px;
+    }
+    .how-header .h2{ text-align:center; }
+    .how-header-text{
+      text-align:center; max-width:608px; color:rgba(249,250,251,0.60);
+    }
+    .how-steps{
+      display:flex; flex-direction:column; gap:48px;
+      max-width:816px; margin:0 auto;
+    }
+    .how-step{
+      display:flex; flex-direction:row; align-items:flex-start;
+      gap:24px; padding:16px 0;
+    }
+    .step-icon{
+      width:40px; height:40px; display:flex; align-items:center; justify-content:center;
+      color:var(--accent); font-size:32px; flex:none;
+    }
+    .step-content{ display:flex; flex-direction:column; gap:16px; padding-top:6px; width:100%; }
+    .step-title{ color:#F9FAFB; }
+    .step-text{ color:rgba(249,250,251,0.70); }
 
-/* ---------- HOW IT WORKS (vertical stack, no cards) ---------- */
-.how{
-  padding:64px 0;
-  background:rgba(30,41,59,0.30); /* matches Figma overlay */
-}
+    /* ---------- FAQ (accordion) ---------- */
+    .faq{ padding:80px 0; }
+    .faq-list{ width:100%; }
+    .faq-item{ padding:14px 0; }
+    .faq-item:not(:last-child){ border-bottom:1px solid var(--border-soft); }
 
-/* Header block */
-.how-header{
-  display:flex; flex-direction:column; align-items:center; gap:16px;
-  margin-bottom:64px;
-}
-.how-header .h2{ text-align:center; }
-.how-header-text{
-  text-align:center; max-width:608px; color:rgba(249,250,251,0.60);
-}
+    .faq-toggle{
+      width:100%; background:transparent; border:none; color:var(--offwhite);
+      display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:12px;
+      padding:8px 0; cursor:pointer; text-align:left;
+    }
+    .qmark{ color:var(--accent); font-size:20px; }
+    .chev{ color:rgba(229,231,235,0.30); transition: transform .18s ease; font-size:18px; }
+    .faq-answer{
+      max-height:0; overflow:hidden; opacity:0;
+      transition:max-height .22s ease, opacity .18s ease;
+      color:#E5E7EB; padding-right:24px;
+    }
+    .faq-answer ul{ margin:8px 0 0 16px; }
+    .faq-answer li{ margin:4px 0; }
+    .faq-item.open .chev{ transform:rotate(180deg); }
+    .faq-item.open .faq-answer{ max-height:1000px; opacity:1; margin-top:8px; }
 
-/* Steps wrapper (centered, fixed max like Figma) */
-.how-steps{
-  display:flex; flex-direction:column; gap:48px;
-  max-width:816px; margin:0 auto;
-}
-
-/* Single step row */
-.how-step{
-  display:flex; flex-direction:row; align-items:flex-start;
-  gap:24px; padding:16px 0; /* spacing only; no border/fill */
-}
-
-/* Icon */
-.step-icon{
-  width:40px; height:40px; display:flex; align-items:center; justify-content:center;
-  color:var(--accent); font-size:32px; flex:none;
-}
-
-/* Text area */
-.step-content{ display:flex; flex-direction:column; gap:16px; padding-top:6px; width:100%; }
-.step-title{ color:#F9FAFB; } /* H4 already sized via your scale */
-.step-text{ color:rgba(249,250,251,0.70); } /* Body Large look from Figma */
-
-
-/* ---------- FAQ (accordion) ---------- */
-.faq{ padding:80px 0; }
-
-.faq-list{ width:100%; }
-
-.faq-item{ padding:14px 0; }
-.faq-item:not(:last-child){ border-bottom:1px solid var(--border-soft); }
-
-.faq-toggle{
-  width:100%; background:transparent; border:none; color:var(--offwhite);
-  display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:12px;
-  padding:8px 0; cursor:pointer; text-align:left;
-}
-
-.qmark{ color:var(--accent); font-size:20px; }
-
-.faq-question{ display:block; }
-
-.chev{
-  color:rgba(229,231,235,0.30);
-  transition: transform .18s ease;
-  font-size:18px;
-}
-
-.faq-answer{
-  max-height:0; overflow:hidden; opacity:0;
-  transition:max-height .22s ease, opacity .18s ease;
-  color:#E5E7EB; padding-right:24px; /* keeps line length comfy */
-}
-.faq-answer ul{ margin:8px 0 0 16px; }
-.faq-answer li{ margin:4px 0; }
-
-/* open state */
-.faq-item.open .chev{ transform:rotate(180deg); } /* down → up */
-.faq-item.open .faq-answer{ max-height:1000px; opacity:1; margin-top:8px; }
-
-
-
-    /* JOIN (Airtable) */
+    /* ---------- JOIN (Airtable) ---------- */
     #join{padding:80px 0;}
     .embed-wrap{max-width:860px; margin:0 auto; border:1px solid var(--line); border-radius:16px; overflow:hidden; background:#0d1526;}
     .embed-wrap iframe{width:100%; height:900px; border:0; background:#0d1526;}
     @media (max-width:720px){ .embed-wrap iframe{height:1100px;} }
+
+    /* ---------- ABOUT (footer hero) ---------- */
+    .about{
+      position:relative;
+      display:flex; flex-direction:column;
+      background:url('footer-tunnel-desktop.webp') center/cover no-repeat;
+      min-height:640px; /* taller than content so text sits near top */
+      padding-top:56px;
+    }
+    .about-overlay{ /* optional subtle darken near top if needed */
+      position:absolute; inset:0; background:linear-gradient(to bottom, rgba(3,8,22,.35), rgba(3,8,22,.15) 40%, rgba(3,8,22,.35));
+      pointer-events:none;
+    }
+    .about-inner{ position:relative; z-index:1; }
+    .about-row{
+      display:flex; align-items:flex-start; gap:16px;
+      max-width:740px; margin:0 auto 28px; padding:0 8px;
+    }
+    .about-avatar{
+      width:72px; height:72px; border-radius:16px; flex:none; object-fit:cover;
+    }
+    .about-text{ max-width:640px; }
+    .about-text .h3{ margin:0 0 10px; }
+    .about-text p{ color:#E5E7EB; margin:0 0 18px; }
+
+    .about-actions{ display:flex; gap:12px; margin-left:88px; } /* aligns under text block */
+    @media (max-width:800px){
+      .about-row{ flex-direction:column; align-items:center; text-align:center; }
+      .about-actions{ margin-left:0; justify-content:center; }
+    }
+
+    .about-footer{
+      margin-top:auto; /* pins copyright to the bottom of the section */
+      padding:24px 20px; text-align:center; color:rgba(249,250,251,.7);
+      font-size:14px;
+    }
   </style>
 </head>
 <body>
@@ -444,72 +452,155 @@
     </div>
   </section>
 
- <!-- HOW IT WORKS -->
-<section id="how" class="how">
-  <div class="container">
-    <div class="grid-12">
-      <div class="col-span-8-centered">
+  <!-- HOW IT WORKS -->
+  <section id="how" class="how">
+    <div class="container">
+      <div class="grid-12">
+        <div class="col-span-8-centered">
+          <div class="how-header">
+            <h2 class="h2">How It Works</h2>
+            <p class="body-lg how-header-text">
+              New to Pick’em or just need a refresher? Here’s how to get started in three simple steps. Join, play, win.
+            </p>
+          </div>
 
-        <!-- Header -->
-        <div class="how-header">
-          <h2 class="h2">How It Works</h2>
-          <p class="body-lg how-header-text">
-            New to Pick’em or just need a refresher? Here’s how to get started in three simple steps. Join, play, win.
-          </p>
+          <div class="how-steps">
+            <div class="how-step">
+              <div class="step-icon"><i class="fa-regular fa-circle-1" aria-hidden="true"></i></div>
+              <div class="step-content">
+                <div class="h4 step-title">Join a Pool</div>
+                <p class="body-lg step-text">
+                  Choose between Otter Club ($20, straight-up winners) and Shark Club ($50, against the spread), or join both for more action.
+                  After signing up, you’ll receive an email with your Sleeper invite link and Venmo details. Pay your entry fee via Venmo before
+                  kickoff of the first regular season game to secure your spot!
+                </p>
+              </div>
+            </div>
+
+            <div class="how-step">
+              <div class="step-icon"><i class="fa-regular fa-circle-2" aria-hidden="true"></i></div>
+              <div class="step-content">
+                <div class="h4 step-title">Make Your Picks Each Week</div>
+                <p class="body-lg step-text">
+                  Log in to Sleeper and open your pool to make picks before each game’s kickoff, with Thursday games locking first.
+                  In Otter Club, you’ll pick the outright winner, while in Shark Club you’ll pick against the spread. For the best experience,
+                  use the Sleeper app, available on both Apple and Android devices.
+                </p>
+              </div>
+            </div>
+
+            <div class="how-step">
+              <div class="step-icon"><i class="fa-regular fa-circle-3" aria-hidden="true"></i></div>
+              <div class="step-content">
+                <div class="h4 step-title">Win Weekly &amp; Season Prizes</div>
+                <p class="body-lg step-text">
+                  Once your picks are locked in, you can sit back, relax, and enjoy the games! Sleeper updates in real time with the winning
+                  teams and automatically tracks your score. Each week, the top three finishers are announced, and the overall leaderboard
+                  shows how you stack up across the entire season.
+                </p>
+              </div>
+            </div>
+          </div>
+
         </div>
-
-        <!-- Steps (vertical stack) -->
-        <div class="how-steps">
-          <!-- Step 1 -->
-          <div class="how-step">
-            <div class="step-icon">
-              <i class="fa-regular fa-circle-1" aria-hidden="true"></i>
-            </div>
-            <div class="step-content">
-              <div class="h4 step-title">Join a Pool</div>
-              <p class="body-lg step-text">
-                Choose between Otter Club ($20, straight-up winners) and Shark Club ($50, against the spread), or join both for more action.
-                After signing up, you’ll receive an email with your Sleeper invite link and Venmo details. Pay your entry fee via Venmo before
-                kickoff of the first regular season game to secure your spot!
-              </p>
-            </div>
-          </div>
-
-          <!-- Step 2 -->
-          <div class="how-step">
-            <div class="step-icon">
-              <i class="fa-regular fa-circle-2" aria-hidden="true"></i>
-            </div>
-            <div class="step-content">
-              <div class="h4 step-title">Make Your Picks Each Week</div>
-              <p class="body-lg step-text">
-                Log in to Sleeper and open your pool to make picks before each game’s kickoff, with Thursday games locking first.
-                In Otter Club, you’ll pick the outright winner, while in Shark Club you’ll pick against the spread. For the best experience,
-                use the Sleeper app, available on both Apple and Android devices.
-              </p>
-            </div>
-          </div>
-
-          <!-- Step 3 -->
-          <div class="how-step">
-            <div class="step-icon">
-              <i class="fa-regular fa-circle-3" aria-hidden="true"></i>
-            </div>
-            <div class="step-content">
-              <div class="h4 step-title">Win Weekly &amp; Season Prizes</div>
-              <p class="body-lg step-text">
-                Once your picks are locked in, you can sit back, relax, and enjoy the games! Sleeper updates in real time with the winning
-                teams and automatically tracks your score. Each week, the top three finishers are announced, and the overall leaderboard
-                shows how you stack up across the entire season.
-              </p>
-            </div>
-          </div>
-        </div>
-
       </div>
     </div>
-  </div>
-</section>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="faq">
+    <div class="container">
+      <div class="grid-12">
+        <div class="col-span-8-centered">
+          <h2 class="h2" style="text-align:center;">FAQ</h2>
+          <p class="body" style="text-align:center; color:var(--muted); max-width:780px; margin:12px auto 32px;">
+            Got questions? We’ve got answers. Everything you need to know about how to sign up and play Pick’em Challenge.
+          </p>
+
+          <div class="faq-list" role="list">
+            <div class="faq-item" role="listitem">
+              <button class="faq-toggle" aria-expanded="false" aria-controls="faq-a1" id="faq-q1">
+                <i class="fa-regular fa-circle-question qmark" aria-hidden="true"></i>
+                <span class="faq-question body-lg">Can I play in both pools?</span>
+                <i class="fa-regular fa-chevron-down chev" aria-hidden="true"></i>
+              </button>
+              <div class="faq-answer body" id="faq-a1" role="region" aria-labelledby="faq-q1">
+                Yes! You can join either Otter Club (Straight picks), Shark Club (Spread picks), or both.
+                Playing in both doubles your chances to win weekly and season-long prizes.
+              </div>
+            </div>
+
+            <div class="faq-item" role="listitem">
+              <button class="faq-toggle" aria-expanded="false" aria-controls="faq-a2" id="faq-q2">
+                <i class="fa-regular fa-circle-question qmark" aria-hidden="true"></i>
+                <span class="faq-question body-lg">How do payouts work?</span>
+                <i class="fa-regular fa-chevron-down chev" aria-hidden="true"></i>
+              </button>
+              <div class="faq-answer body" id="faq-a2" role="region" aria-labelledby="faq-q2">
+                Each pool’s total entry fees are split <strong>20% for weekly winners</strong> and
+                <strong>80% for season-long standings</strong>. Payout amounts increase as more members join.
+              </div>
+            </div>
+
+            <div class="faq-item" role="listitem">
+              <button class="faq-toggle" aria-expanded="false" aria-controls="faq-a3" id="faq-q3">
+                <i class="fa-regular fa-circle-question qmark" aria-hidden="true"></i>
+                <span class="faq-question body-lg">Do I need a Sleeper account to play?</span>
+                <i class="fa-regular fa-chevron-down chev" aria-hidden="true"></i>
+              </button>
+              <div class="faq-answer body" id="faq-a3" role="region" aria-labelledby="faq-q3">
+                Yes. Sleeper is the platform we use to host both pools, manage picks, and track standings.
+                If you don’t have an account, you can sign up for free at
+                <a href="https://www.sleeper.com" target="_blank" rel="noopener noreferrer">sleeper.com</a>.
+              </div>
+            </div>
+
+            <div class="faq-item" role="listitem">
+              <button class="faq-toggle" aria-expanded="false" aria-controls="faq-a4" id="faq-q4">
+                <i class="fa-regular fa-circle-question qmark" aria-hidden="true"></i>
+                <span class="faq-question body-lg">How do I make picks?</span>
+                <i class="fa-regular fa-chevron-down chev" aria-hidden="true"></i>
+              </button>
+              <div class="faq-answer body" id="faq-a4" role="region" aria-labelledby="faq-q4">
+                Log in to Sleeper and open the pool you’ve joined.
+                <ul>
+                  <li><strong>Otter Club (Straight):</strong> pick the outright winner of each game. You earn a point for every correct prediction.</li>
+                  <li><strong>Shark Club (Spread):</strong> pick against the listed point spread. You earn a point if your pick “covers” the spread based on Sleeper’s game lines.</li>
+                </ul>
+                You can change any pick up until that game’s scheduled kickoff — Thursday Night Football locks first each week.
+              </div>
+            </div>
+
+            <div class="faq-item" role="listitem">
+              <button class="faq-toggle" aria-expanded="false" aria-controls="faq-a5" id="faq-q5">
+                <i class="fa-regular fa-circle-question qmark" aria-hidden="true"></i>
+                <span class="faq-question body-lg">How are ties decided?</span>
+                <i class="fa-regular fa-chevron-down chev" aria-hidden="true"></i>
+              </button>
+              <div class="faq-answer body" id="faq-a5" role="region" aria-labelledby="faq-q5">
+                Weekly ties use Sleeper’s tiebreaker: guessing the total points scored in the Monday Night game.
+                Whoever is closest to the actual total wins, regardless of whether the guess is over or under.
+                In the event there is still a tie, Sleeper will use the overall point total to determine the winner.
+              </div>
+            </div>
+
+            <div class="faq-item" role="listitem">
+              <button class="faq-toggle" aria-expanded="false" aria-controls="faq-a6" id="faq-q6">
+                <i class="fa-regular fa-circle-question qmark" aria-hidden="true"></i>
+                <span class="faq-question body-lg">When will winners be paid?</span>
+                <i class="fa-regular fa-chevron-down chev" aria-hidden="true"></i>
+              </button>
+              <div class="faq-answer body" id="faq-a6" role="region" aria-labelledby="faq-q6">
+                Weekly winners are paid after all games for that week have concluded.
+                Season-long payouts are made after the final regular season game.
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- JOIN (Airtable embed) -->
   <section id="join">
@@ -529,132 +620,47 @@
     </div>
   </section>
 
-
-  <!-- FAQ -->
-<section id="faq" class="faq">
-  <div class="container">
-    <div class="grid-12">
-      <div class="col-span-8-centered">
-        <h2 class="h2" style="text-align:center;">FAQ</h2>
-        <p class="body" style="text-align:center; color:var(--muted); max-width:780px; margin:12px auto 32px;">
-          Got questions? We’ve got answers. Everything you need to know about how to sign up and play Pick’em Challenge.
-        </p>
-
-        <div class="faq-list" role="list">
-          <!-- Q1 -->
-          <div class="faq-item" role="listitem">
-            <button class="faq-toggle" aria-expanded="false" aria-controls="faq-a1" id="faq-q1">
-              <i class="fa-regular fa-circle-question qmark" aria-hidden="true"></i>
-              <span class="faq-question body-lg">Can I play in both pools?</span>
-              <i class="fa-regular fa-chevron-down chev" aria-hidden="true"></i>
-            </button>
-            <div class="faq-answer body" id="faq-a1" role="region" aria-labelledby="faq-q1">
-              Yes! You can join either Otter Club (Straight picks), Shark Club (Spread picks), or both.
-              Playing in both doubles your chances to win weekly and season-long prizes.
-            </div>
-          </div>
-
-          <!-- Q2 -->
-          <div class="faq-item" role="listitem">
-            <button class="faq-toggle" aria-expanded="false" aria-controls="faq-a2" id="faq-q2">
-              <i class="fa-regular fa-circle-question qmark" aria-hidden="true"></i>
-              <span class="faq-question body-lg">How do payouts work?</span>
-              <i class="fa-regular fa-chevron-down chev" aria-hidden="true"></i>
-            </button>
-            <div class="faq-answer body" id="faq-a2" role="region" aria-labelledby="faq-q2">
-              Each pool’s total entry fees are split <strong>20% for weekly winners</strong> and
-              <strong>80% for season-long standings</strong>. Payout amounts increase as more members join.
-            </div>
-          </div>
-
-          <!-- Q3 -->
-          <div class="faq-item" role="listitem">
-            <button class="faq-toggle" aria-expanded="false" aria-controls="faq-a3" id="faq-q3">
-              <i class="fa-regular fa-circle-question qmark" aria-hidden="true"></i>
-              <span class="faq-question body-lg">Do I need a Sleeper account to play?</span>
-              <i class="fa-regular fa-chevron-down chev" aria-hidden="true"></i>
-            </button>
-            <div class="faq-answer body" id="faq-a3" role="region" aria-labelledby="faq-q3">
-              Yes. Sleeper is the platform we use to host both pools, manage picks, and track standings.
-              If you don’t have an account, you can sign up for free at
-              <a href="https://www.sleeper.com" target="_blank" rel="noopener noreferrer">sleeper.com</a>.
-            </div>
-          </div>
-
-          <!-- Q4 -->
-          <div class="faq-item" role="listitem">
-            <button class="faq-toggle" aria-expanded="false" aria-controls="faq-a4" id="faq-q4">
-              <i class="fa-regular fa-circle-question qmark" aria-hidden="true"></i>
-              <span class="faq-question body-lg">How do I make picks?</span>
-              <i class="fa-regular fa-chevron-down chev" aria-hidden="true"></i>
-            </button>
-            <div class="faq-answer body" id="faq-a4" role="region" aria-labelledby="faq-q4">
-              Log in to Sleeper and open the pool you’ve joined.
-              <ul>
-                <li><strong>Otter Club (Straight):</strong> pick the outright winner of each game. You earn a point for every correct prediction.</li>
-                <li><strong>Shark Club (Spread):</strong> pick against the listed point spread. You earn a point if your pick “covers” the spread based on Sleeper’s game lines.</li>
-              </ul>
-              You can change any pick up until that game’s scheduled kickoff — Thursday Night Football locks first each week.
-            </div>
-          </div>
-
-          <!-- Q5 -->
-          <div class="faq-item" role="listitem">
-            <button class="faq-toggle" aria-expanded="false" aria-controls="faq-a5" id="faq-q5">
-              <i class="fa-regular fa-circle-question qmark" aria-hidden="true"></i>
-              <span class="faq-question body-lg">How are ties decided?</span>
-              <i class="fa-regular fa-chevron-down chev" aria-hidden="true"></i>
-            </button>
-            <div class="faq-answer body" id="faq-a5" role="region" aria-labelledby="faq-q5">
-              Weekly ties use Sleeper’s tiebreaker: guessing the total points scored in the Monday Night game.
-              Whoever is closest to the actual total wins, regardless of whether the guess is over or under.
-              In the event there is still a tie, Sleeper will use the overall point total to determine the winner.
-            </div>
-          </div>
-
-          <!-- Q6 (last item has no bottom border) -->
-          <div class="faq-item" role="listitem">
-            <button class="faq-toggle" aria-expanded="false" aria-controls="faq-a6" id="faq-q6">
-              <i class="fa-regular fa-circle-question qmark" aria-hidden="true"></i>
-              <span class="faq-question body-lg">When will winners be paid?</span>
-              <i class="fa-regular fa-chevron-down chev" aria-hidden="true"></i>
-            </button>
-            <div class="faq-answer body" id="faq-a6" role="region" aria-labelledby="faq-q6">
-              Weekly winners are paid after all games for that week have concluded.
-              Season-long payouts are made after the final regular season game.
-            </div>
-          </div>
-
+  <!-- ABOUT / FOOTER HERO -->
+  <section id="about" class="about">
+    <div class="about-overlay" aria-hidden="true"></div>
+    <div class="about-inner container">
+      <div class="about-row">
+        <img src="seth-avatar.webp" alt="Seth avatar" class="about-avatar">
+        <div class="about-text">
+          <h3 class="h3">About the Commissioner</h3>
+          <p>
+            I’m Seth, your commissioner for the NFL Pick’em Challenge. I’m based in Southern California, a lifelong Chicago Bears fan, and
+            I’ve been running these pools since 2024. I love football and enjoy bringing people together to compete, celebrate wins, and make
+            every game more exciting.
+          </p>
         </div>
       </div>
+      <div class="about-actions">
+        <button id="shareBtn" class="btn btn-secondary body-lg">
+          <i class="fa-regular fa-share-nodes" aria-hidden="true"></i>
+          Share
+        </button>
+      </div>
     </div>
-  </div>
-</section>
 
+    <div class="about-footer">© 2025 Pick'em Challenge</div>
+  </section>
 
-  <!-- (About + Nav + Footer to be added next) -->
+  <!-- ====== SCRIPTS ====== -->
 
-  <!-- ====== CALCULATOR LOGIC ====== -->
+  <!-- Calculator logic -->
   <script>
-    // Entry fees by pool
     const ENTRY_FEES = { otter: 20, shark: 50 };
-
-    // Global split 80/20
     const SPLIT = { season: 0.80, weekly: 0.20 };
-
-    // Member buckets (inclusive)
     const BUCKETS = [
       { range: '1–20',    min: 1,   max: 20,  season: [0.70, 0.30],                                weekly: [1.00] },
       { range: '21–50',   min: 21,  max: 50,  season: [0.65, 0.25, 0.10],                          weekly: [1.00] },
       { range: '51–100',  min: 51,  max: 100, season: [0.50, 0.25, 0.15, 0.10],                    weekly: [0.70, 0.30] },
       { range: '101–250', min: 101, max: 250, season: [0.50, 0.20, 0.15, 0.10, 0.05],              weekly: [0.65, 0.25, 0.10] },
     ];
-
-    // DOM helpers
     const $ = (s) => document.querySelector(s);
     const fmt = (n) => n.toLocaleString('en-US', { style:'currency', currency:'USD', maximumFractionDigits:0 });
 
-    // Elements
     const tabOtter = $('#tab-otter');
     const tabShark = $('#tab-shark');
     const members = $('#members');
@@ -664,22 +670,12 @@
     const bucketNote = $('#bucketNote');
     const seasonList = $('#seasonList');
     const weeklyList = $('#weeklyList');
-
     let currentPool = 'otter';
 
-    function findBucket(m){
-      return BUCKETS.find(b => m >= b.min && m <= b.max) || null;
-    }
-    function suffix(n){
-      const v = n % 100;
-      if (v >= 11 && v <= 13) return 'th';
-      switch (n % 10) { case 1: return 'st'; case 2: return 'nd'; case 3: return 'rd'; default: return 'th'; }
-    }
-    function syncMembers(val){
-      const v = Math.max(0, Math.min(250, parseInt(val || 0, 10)));
-      members.value = v;
-      membersNumber.value = v;
-    }
+    function findBucket(m){ return BUCKETS.find(b => m >= b.min && m <= b.max) || null; }
+    function suffix(n){ const v = n % 100; if (v >= 11 && v <= 13) return 'th'; switch (n % 10) { case 1: return 'st'; case 2: return 'nd'; case 3: return 'rd'; default: return 'th'; } }
+    function syncMembers(val){ const v = Math.max(0, Math.min(250, parseInt(val || 0, 10))); members.value = v; membersNumber.value = v; }
+
     function render(){
       const m = parseInt(members.value, 10) || 0;
       const entryFee = ENTRY_FEES[currentPool];
@@ -695,99 +691,78 @@
       const weeklyTotal = totalPool * SPLIT.weekly;
       const weeklyPerWeek = weeklyTotal / 18;
 
-      // Season
       seasonList.innerHTML = '';
       if (m < 1 || !b) {
-        const li = document.createElement('li');
-        li.innerHTML = `<span class="place">No payouts</span><strong>${fmt(0)}</strong>`;
-        seasonList.appendChild(li);
+        seasonList.innerHTML = `<li><span class="place">No payouts</span><strong>${fmt(0)}</strong></li>`;
       } else {
         b.season.forEach((pct, i) => {
           const li = document.createElement('li');
-          li.innerHTML = `
-            <span class="place">${i+1}<sup>${suffix(i+1)}</sup> Place</span>
-            <strong>${fmt(seasonPot * pct)}</strong>
-          `;
+          li.innerHTML = `<span class="place">${i+1}<sup>${suffix(i+1)}</sup> Place</span><strong>${fmt(seasonPot * pct)}</strong>`;
           seasonList.appendChild(li);
         });
       }
 
-      // Weekly (per week)
       weeklyList.innerHTML = '';
       if (m < 1 || !b) {
-        const li = document.createElement('li');
-        li.innerHTML = `<span class="place">No payouts</span><strong>${fmt(0)}</strong>`;
-        weeklyList.appendChild(li);
+        weeklyList.innerHTML = `<li><span class="place">No payouts</span><strong>${fmt(0)}</strong></li>`;
       } else {
         b.weekly.forEach((pct, i) => {
           const li = document.createElement('li');
-          li.innerHTML = `
-            <span class="place">${i+1}<sup>${suffix(i+1)}</sup> Place</span>
-            <strong>${fmt(weeklyPerWeek * pct)}</strong>
-          `;
+          li.innerHTML = `<span class="place">${i+1}<sup>${suffix(i+1)}</sup> Place</span><strong>${fmt(weeklyPerWeek * pct)}</strong>`;
           weeklyList.appendChild(li);
         });
       }
     }
 
-    // Events
     members.addEventListener('input', e => { syncMembers(e.target.value); render(); });
     membersNumber.addEventListener('input', e => { syncMembers(e.target.value); render(); });
-    tabOtter.addEventListener('click', ()=>{
-      currentPool = 'otter';
-      tabOtter.classList.add('active'); tabOtter.setAttribute('aria-selected','true');
-      tabShark.classList.remove('active'); tabShark.setAttribute('aria-selected','false');
-      render();
-    });
-    tabShark.addEventListener('click', ()=>{
-      currentPool = 'shark';
-      tabShark.classList.add('active'); tabShark.setAttribute('aria-selected','true');
-      tabOtter.classList.remove('active'); tabOtter.setAttribute('aria-selected','false');
-      render();
-    });
+    tabOtter.addEventListener('click', ()=>{ currentPool = 'otter'; tabOtter.classList.add('active'); tabOtter.setAttribute('aria-selected','true'); tabShark.classList.remove('active'); tabShark.setAttribute('aria-selected','false'); render(); });
+    tabShark.addEventListener('click', ()=>{ currentPool = 'shark'; tabShark.classList.add('active'); tabShark.setAttribute('aria-selected','true'); tabOtter.classList.remove('active'); tabOtter.setAttribute('aria-selected','false'); render(); });
 
-    // Init
-    syncMembers(members.value);
-    render();
+    syncMembers(members.value); render();
   </script>
 
+  <!-- FAQ accordion script -->
   <script>
-  // FAQ Accordion (single-open; click to toggle)
-  (function(){
-    const items = document.querySelectorAll('.faq-item');
-
-    items.forEach((item) => {
-      const btn = item.querySelector('.faq-toggle');
-      const panel = item.querySelector('.faq-answer');
-
-      btn.addEventListener('click', () => {
-        const isOpen = item.classList.contains('open');
-
-        // close all
-        items.forEach(i => {
-          i.classList.remove('open');
-          const b = i.querySelector('.faq-toggle');
-          if (b) b.setAttribute('aria-expanded','false');
+    (function(){
+      const items = document.querySelectorAll('.faq-item');
+      items.forEach((item) => {
+        const btn = item.querySelector('.faq-toggle');
+        const panel = item.querySelector('.faq-answer');
+        btn.addEventListener('click', () => {
+          const isOpen = item.classList.contains('open');
+          items.forEach(i => { i.classList.remove('open'); const b=i.querySelector('.faq-toggle'); if(b) b.setAttribute('aria-expanded','false'); const p=i.querySelector('.faq-answer'); if(p) p.style.maxHeight='0px'; });
+          if (!isOpen) {
+            item.classList.add('open');
+            btn.setAttribute('aria-expanded','true');
+            requestAnimationFrame(() => { panel.style.maxHeight = panel.scrollHeight + 'px'; });
+          }
         });
-
-        // open current if it was closed
-        if (!isOpen) {
-          item.classList.add('open');
-          btn.setAttribute('aria-expanded','true');
-
-          // set a safe max-height for animation
-          requestAnimationFrame(() => {
-            panel.style.maxHeight = panel.scrollHeight + 'px';
-          });
-        } else {
-          btn.setAttribute('aria-expanded','false');
-          panel.style.maxHeight = '0px';
-        }
       });
-    });
-  })();
-</script>
+    })();
+  </script>
 
-
+  <!-- Share button (Web Share API with clipboard fallback) -->
+  <script>
+    (function(){
+      const shareBtn = document.getElementById('shareBtn');
+      if(!shareBtn) return;
+      shareBtn.addEventListener('click', async () => {
+        const shareData = {
+          title: "NFL Pick’em Challenge",
+          text: "Join Seth’s NFL Pick’em Challenge pools.",
+          url: window.location.href
+        };
+        try{
+          if(navigator.share){
+            await navigator.share(shareData);
+          }else{
+            await (navigator.clipboard && navigator.clipboard.writeText(window.location.href));
+            alert('Link copied to clipboard.');
+          }
+        }catch(e){ /* user cancelled */ }
+      });
+    })();
+  </script>
 </body>
 </html>
