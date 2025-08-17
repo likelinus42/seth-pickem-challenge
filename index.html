@@ -2,48 +2,42 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Seth's Pick'em Challenge</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Seth's Pick'em Challenge</title>
 
   <!-- Urbanist font -->
   <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-  <!-- FontAwesome -->
+  <!-- Font Awesome (your kit) -->
   <script src="https://kit.fontawesome.com/91492d4fbf.js" crossorigin="anonymous"></script>
 
   <style>
     :root{
-      /* colors */
+      /* core colors */
       --bg:#030816; --text:#e6ecf3; --muted:#9AA8BE; --line:#1a1f2c;
       --accent:#26CB4D; --accent-hover:#1FA13E; --accent-active:#188534;
       --navy:#0B2545; --offwhite:#F9FAFB; --neutral-200:#E5E7EB; --ring:#8EE4A2;
       --border-soft: rgba(229,231,235,0.30);
+      --panel:#0d1526;            /* dark card surface */
+      --brandBlue:#69A7FF;        /* amounts in calculator panels */
 
-      /* font weights */
+      /* type + spacing */
       --fw-light:300; --fw-regular:400; --fw-medium:500; --fw-semibold:600; --fw-bold:700;
-
-      /* line heights */
-      --lh-tight:1.2; --lh-snug:1.10; --lh-normal:1.4; --lh-body:1.4;
-
-      /* sizes */
+      --lh-tight:1.2; --lh-snug:1.10; --lh-body:1.4;
       --fs-h1: clamp(2.25rem, 6vw, 4rem);
       --fs-h2: clamp(1.75rem, 4vw, 3rem);
       --fs-h3: clamp(1.5rem, 3.2vw, 2.5rem);
-      --fs-h4: 24px;
-      --fs-body-lg: 20px;
-      --fs-body: 16px;
-      --fs-utility: 14px;
+      --fs-h4: 24px; --fs-body-lg: 20px; --fs-body: 16px; --fs-utility: 14px;
 
-      /* grid */
-      --gutter:24px;
+      --gutter:24px;  /* grid gap */
     }
 
     *{box-sizing:border-box}
-    html{scroll-behavior:smooth;}
+    html{scroll-behavior:smooth}
     body{margin:0; background:var(--bg); color:var(--text); font-family:'Urbanist',sans-serif}
     .container{max-width:1100px; margin:0 auto; padding:0 20px}
 
-    /* Type */
+    /* Type utilities */
     .h1{ font-size:var(--fs-h1); line-height:var(--lh-tight); font-weight:var(--fw-bold);}
     .h2{ font-size:var(--fs-h2); line-height:var(--lh-tight); font-weight:var(--fw-bold);}
     .h3{ font-size:var(--fs-h3); line-height:var(--lh-tight); font-weight:var(--fw-semibold);}
@@ -56,8 +50,9 @@
 
     /* Buttons */
     .btn{
-      display:inline-block; padding:12px 18px; border-radius:12px; text-decoration:none;
-      transition:background-color .18s ease,color .18s ease,border-color .18s ease,transform .08s ease;
+      display:inline-flex; align-items:center; justify-content:center;
+      padding:12px 18px; gap:8px; border-radius:12px; text-decoration:none;
+      transition:background-color .18s,color .18s,border-color .18s,transform .08s;
       cursor:pointer; user-select:none; border:1px solid transparent;
     }
     .btn-primary{ background:var(--accent); color:var(--navy); font-weight:var(--fw-bold);}
@@ -75,6 +70,14 @@
     .btn-text:active{ color:var(--offwhite); transform:translateY(1px);}
     .btn-text:focus-visible{ outline:2px solid var(--ring); outline-offset:2px;}
 
+    /* 12-col grid helpers */
+    .grid-12{ display:grid; grid-template-columns:repeat(12, minmax(0,1fr)); gap:var(--gutter); }
+    .col-span-8-centered{ grid-column:3 / span 8; }
+    @media (max-width: 900px){
+      .grid-12{ grid-template-columns:repeat(6, minmax(0,1fr)); }
+      .col-span-8-centered{ grid-column:1 / -1; }
+    }
+
     /* HERO */
     .hero{
       position:relative; text-align:center; height:640px;
@@ -87,181 +90,112 @@
     .hero h1{margin:0 0 24px;}
     .hero .actions{ display:flex; gap:24px; justify-content:center; flex-wrap:wrap; margin-top:24px;}
 
-    /* ---------- LIGHT 12-COL GRID ---------- */
-    .grid-12{ display:grid; grid-template-columns:repeat(12, minmax(0,1fr)); gap:var(--gutter); }
-    .col-span-8-centered{ grid-column:3 / span 8; }
-    @media (max-width: 900px){
-      .grid-12{ grid-template-columns:repeat(6, minmax(0,1fr)); }
-      .col-span-8-centered{ grid-column:1 / -1; }
-    }
-
-    /* ---------- BENEFITS (3 cards) ---------- */
+    /* BENEFITS */
     .benefits-wrap{padding:48px 0 24px;}
-    .benefits-grid{ display:grid; grid-template-columns:repeat(3, 1fr); gap:32px; }
-    @media (max-width: 900px){ .benefits-grid{ grid-template-columns:1fr; gap:16px; } }
-
+    .benefits-grid{width:100%; display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:32px;}
+    @media (max-width:900px){ .benefits-grid{grid-template-columns:1fr; gap:16px;} }
     .benefit-card{
-      width:100%; height:161px;
-      padding:24px; border:1px solid var(--border-soft); border-radius:16px;
-      display:flex; flex-direction:column; align-items:center; gap:24px;
-      background:transparent; /* removed fill */
+      width:100%; height:161px; padding:24px; border:1px solid var(--border-soft); border-radius:16px;
+      display:flex; flex-direction:column; align-items:center; gap:24px; background:var(--bg);
     }
-    .benefit-icon{
-      width:40px; height:40px; display:flex; align-items:center; justify-content:center;
-      color:var(--accent); font-size:32px; line-height:32px;
-    }
-    .benefit-text{ display:flex; flex-direction:column; align-items:center; gap:8px; width:192px; }
-    .benefit-value{ font-size:24px; line-height:110%; font-weight:var(--fw-semibold); text-align:center; color:#FFFFFF; }
-    .benefit-label{ font-size:14px; line-height:110%; font-weight:var(--fw-light); text-align:center; color:rgba(255,255,255,0.8); }
+    .benefit-icon{width:40px; height:40px; display:flex; align-items:center; justify-content:center; color:var(--accent); font-size:32px}
+    .benefit-text{display:flex; flex-direction:column; align-items:center; gap:8px; width:192px}
+    .benefit-value{font-size:24px; line-height:110%; font-weight:var(--fw-semibold); color:#fff; text-align:center}
+    .benefit-label{font-size:14px; line-height:110%; font-weight:var(--fw-light); color:rgba(255,255,255,.8); text-align:center}
 
-    /* ---------- POOLS (cards) ---------- */
+    /* POOLS */
     .pools{padding:80px 0}
-    .pool-inner{ display:grid; grid-template-columns:repeat(2, 1fr); gap:24px; }
+    .pool-inner{width:100%; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:24px; align-items:stretch}
     @media (max-width: 900px){ .pool-inner{ grid-template-columns:1fr; } }
-
     .card{
-      border:2px solid var(--border-soft); border-radius:16px;
-      background:transparent; /* removed fill */
-      padding:24px 24px 32px; /* extra bottom padding so button clears border */
-      display:flex; flex-direction:column; align-items:flex-start; gap:32px;
-      min-width:224px; height:446px;
+      width:100%; border:2px solid var(--border-soft); border-radius:16px;
+      background:var(--bg); padding:24px 24px 32px; display:flex; flex-direction:column; gap:32px;
     }
-
-    /* header row */
     .card-header{display:flex; align-items:center; justify-content:space-between; gap:32px; width:100%; height:48px;}
-    .card-header-left{display:flex; align-items:center; gap:16px; margin:0 auto 0 0;}
+    .card-header-left{display:flex; align-items:center; gap:16px; margin-right:auto}
     .card-header img{width:48px; height:48px; border-radius:8px;}
     .card-title{font-weight:var(--fw-bold); font-size:20px; line-height:140%; color:var(--offwhite); display:flex; align-items:center;}
     .badge{padding:4px 16px; border:1px solid var(--border-soft); border-radius:32px; font-size:16px; line-height:140%; color:#FFFFFF;}
-
-    /* content column */
     .card-content{display:flex; flex-direction:column; gap:32px; width:100%;}
     .card-desc{color:#E5E7EB; display:flex; align-items:center;}
     .price-row{display:flex; align-items:baseline; gap:6px;}
     .price{font-size:40px; line-height:110%; font-weight:var(--fw-semibold); color:var(--accent);}
     .price small{font-size:16px; line-height:140%; color:rgba(255,255,255,0.55);}
-
-    /* features */
     .features{display:flex; flex-direction:column; gap:8px; padding:0; margin:0; list-style:none;}
     .feature{display:flex; align-items:center; gap:4px; color:rgba(249,250,251,0.7);}
     .feature i{font-size:12px; color:var(--accent); width:15px; height:15px; display:flex; align-items:center; justify-content:center;}
+    .card .btn{align-self:stretch; height:52px; display:flex; align-items:center; justify-content:center; margin-top:auto;}
 
-    /* card button full width, 52px tall + ensure breathing room at bottom */
-    .card .btn{
-      align-self:stretch; height:52px; display:flex; align-items:center; justify-content:center;
-      margin-top:auto; /* pushes button to bottom with gap above */
+    /* ---------- PAYOUTS CALCULATOR (polished UI) ---------- */
+    .calculator{padding:80px 0}
+
+    /* segmented tabs */
+    .calc-tabs.segmented{
+      display:flex; gap:0; padding:2px; background:var(--panel);
+      border:1px solid var(--border-soft); border-radius:14px;
+      margin:0 auto 20px; max-width:640px;
     }
+    .calc-tabs.segmented .tab{
+      flex:1; border:none; border-radius:12px; background:transparent; color:#E5E7EB;
+      padding:10px 16px; font-weight:600; cursor:pointer; transition:.18s;
+    }
+    .calc-tabs.segmented .tab.active{ background:#1a1f2c; border:1px solid var(--border-soft); color:var(--offwhite); }
 
-/* ---------- PAYOUTS CALCULATOR (UI polish) ---------- */
-.calculator{padding:80px 0}
+    .calc-card{ border:1px solid var(--border-soft); border-radius:16px; background:transparent; padding:24px; display:flex; flex-direction:column; gap:24px; }
 
-:root{
-  --panel:#0d1526;
-  --brandBlue:#69A7FF;     /* used for dollar amounts in panels (mock’s blue) */
-}
+    /* KPI row */
+    .kpi-row{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:24px; }
+    @media (max-width:900px){ .kpi-row{ grid-template-columns:1fr; } }
+    .kpi-card{ border:1px solid var(--border-soft); border-radius:16px; background:var(--panel); padding:20px; }
+    .kpi-label{ opacity:.9; margin-bottom:10px }
+    .kpi-value{ font-size:32px; font-weight:600 }
+    .kpi-value.dim{ color:#9AA8BE }
+    .kpi-value.accent{ color:var(--accent) }
 
-/* Segmented control */
-.segmented{
-  display:flex; gap:0; padding:2px;
-  background:var(--panel);
-  border:1px solid var(--border-soft);
-  border-radius:14px; 
-  margin:0 auto 20px; max-width:640px;
-}
-.segmented .tab{
-  flex:1; border:none; border-radius:12px;
-  background:transparent; color:#E5E7EB; 
-  padding:10px 16px; font-weight:600; cursor:pointer; transition:.18s;
-}
-.segmented .tab.active{
-  background:#1a1f2c; border:1px solid var(--border-soft);
-  color:var(--offwhite);
-}
+    /* slider */
+    .slider-wrap{display:flex; align-items:center; gap:14px}
+    #members{ -webkit-appearance:none; appearance:none; width:100%; height:8px; border-radius:8px; background:#132033; outline:none; }
+    #members::-webkit-slider-thumb{ -webkit-appearance:none; appearance:none; width:16px; height:16px; border-radius:50%; background:var(--accent); border:2px solid #0a1b2e; cursor:pointer; }
+    #members::-moz-range-thumb{ width:16px; height:16px; border-radius:50%; background:var(--accent); border:2px solid #0a1b2e; cursor:pointer; }
+    #membersNumber{ width:84px; padding:10px 12px; background:var(--bg); color:var(--offwhite); border:1px solid var(--border-soft); border-radius:10px; text-align:right }
 
-/* Card container */
-.calc-card{
-  border:1px solid var(--border-soft); border-radius:16px;
-  background:transparent; padding:24px; display:flex; flex-direction:column; gap:24px;
-}
+    /* breakdown */
+    .break-surface{ border:1px solid var(--border-soft); border-radius:16px; padding:20px; background:transparent; display:flex; flex-direction:column; gap:16px; }
+    .break-header{ display:flex; align-items:center; gap:10px; margin-bottom:4px }
+    .break-header i{ color:var(--accent); font-size:20px }
 
-/* KPI row */
-.kpi-row{
-  display:grid; grid-template-columns:1fr 1fr 1fr; gap:24px;
-}
-@media (max-width:900px){ .kpi-row{grid-template-columns:1fr} }
+    .panel{ border:1px solid var(--border-soft); border-radius:14px; background:var(--panel); padding:18px; }
+    .panel-title{ opacity:.95; letter-spacing:.02em; margin-bottom:10px }
+    .panel-sub{ opacity:.75; margin:-6px 0 10px }
 
-.kpi-card{
-  border:1px solid var(--border-soft); border-radius:16px;
-  background:var(--panel); padding:20px;
-}
-.kpi-label{opacity:.9; margin-bottom:10px}
-.kpi-value{font-size:32px; font-weight:600}
-.kpi-value.dim{color:#9AA8BE}
-.kpi-value.accent{color:var(--accent)}
+    .payout-list{ list-style:none; margin:0; padding:6px 0; display:grid; grid-template-columns:repeat(auto-fit, minmax(120px, 1fr)); gap:18px; }
+    .payout-list li{ display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; text-align:center; padding:8px 6px; border:none; }
+    .payout-list .place{ font-size:14px; color:#C7D0DE }
+    .payout-list .pct{ display:none } /* hidden per mock */
+    .payout-list strong{ font-size:22px; color:var(--brandBlue); font-weight:700 }
+    .bucket-note{ opacity:.8; margin-top:4px }
 
-/* Slider look */
-.slider-wrap{display:flex; align-items:center; gap:14px}
-#members{
-  -webkit-appearance:none; appearance:none; width:100%; height:8px; border-radius:8px;
-  background:#132033; outline:none;
-}
-#members::-webkit-slider-thumb{
-  -webkit-appearance:none; appearance:none; width:16px; height:16px; border-radius:50%;
-  background:var(--accent); border:2px solid #0a1b2e; cursor:pointer;
-}
-#members::-moz-range-thumb{
-  width:16px; height:16px; border-radius:50%; background:var(--accent); border:2px solid #0a1b2e; cursor:pointer;
-}
-/* numeric input next to slider */
-#membersNumber{width:84px; padding:10px 12px; background:var(--bg); color:var(--offwhite);
-  border:1px solid var(--border-soft); border-radius:10px; text-align:right}
+    /* HOW IT WORKS */
+    .how{ padding:80px 0 }
+    .steps{ display:grid; grid-template-columns:repeat(3, 1fr); gap:24px; }
+    @media (max-width:900px){ .steps{ grid-template-columns:1fr; } }
+    .step-card{
+      border:1px solid var(--border-soft); border-radius:16px; background:var(--bg);
+      padding:24px; display:flex; gap:16px; align-items:flex-start;
+    }
+    .step-icon{
+      width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+      color:var(--accent); font-size:28px; flex:none;
+    }
+    .step-content{ display:flex; flex-direction:column; gap:8px }
+    .step-title{ font-weight:var(--fw-semibold); font-size:20px }
+    .step-text{ color:#E5E7EB }
 
-/* Breakdown surface */
-.break-surface{
-  border:1px solid var(--border-soft); border-radius:16px; padding:20px;
-  background:transparent; display:flex; flex-direction:column; gap:16px;
-}
-.break-header{display:flex; align-items:center; gap:10px; margin-bottom:4px}
-.break-header i{color:var(--accent); font-size:20px}
-
-/* Panels */
-.panel{
-  border:1px solid var(--border-soft); border-radius:14px;
-  background:var(--panel); padding:18px;
-}
-.panel-title{opacity:.95; letter-spacing:.02em; margin-bottom:10px}
-.panel-sub{opacity:.75; margin:-6px 0 10px}
-
-/* Payout lists – grid, centered columns */
-.payout-list{
-  list-style:none; margin:0; padding:6px 0;
-  display:grid; grid-template-columns:repeat(auto-fit, minmax(120px, 1fr)); gap:18px;
-}
-.payout-list li{
-  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px;
-  text-align:center; padding:8px 6px;
-  border:none; /* remove dividers */
-}
-.payout-list .place{font-size:14px; color:#C7D0DE}
-.payout-list .pct{display:none}                 /* hide % text per mock */
-.payout-list strong{font-size:22px; color:var(--brandBlue); font-weight:700}
-
-/* bucket note at bottom */
-.bucket-note{opacity:.8; margin-top:4px}
-
-
-
-    /* Join (Airtable) */
+    /* JOIN (Airtable) */
     #join{padding:80px 0;}
     .embed-wrap{max-width:860px; margin:0 auto; border:1px solid var(--line); border-radius:16px; overflow:hidden; background:#0d1526;}
     .embed-wrap iframe{width:100%; height:900px; border:0; background:#0d1526;}
-
-    /* Mobile tweaks */
-    @media (max-width:720px){
-      .hero{height:auto; padding:88px 16px 110px;}
-      .pill{height:34px}
-      .embed-wrap iframe{height:1100px;}
-    }
+    @media (max-width:720px){ .embed-wrap iframe{height:1100px;} }
   </style>
 </head>
 <body>
@@ -278,155 +212,226 @@
     </div>
   </section>
 
-  /* ---------- BENEFITS (3 cards) ---------- */
-.benefits-wrap{padding:48px 0 24px;}
-.benefits-grid{
-  width:100%;
-  display:grid;
-  grid-template-columns:repeat(3, minmax(0,1fr));
-  gap:32px;
-}
-@media (max-width: 900px){
-  .benefits-grid{ grid-template-columns:1fr; gap:16px; }
-}
-.benefit-card{
-  width:100%;
-  height:161px;
-  padding:24px;
-  border:1px solid var(--border-soft);
-  border-radius:16px;
-  display:flex; flex-direction:column; align-items:center; gap:24px;
-  background:var(--bg);                 /* transparent look, same as page */
-}
-.benefit-icon{
-  width:40px; height:40px;
-  display:flex; align-items:center; justify-content:center;
-  color:var(--accent); font-size:32px; line-height:32px;
-}
-.benefit-text{ display:flex; flex-direction:column; align-items:center; gap:8px; width:192px; }
-.benefit-value{ font-size:24px; line-height:110%; font-weight:600; text-align:center; color:#fff; }
-.benefit-label{ font-size:14px; line-height:110%; font-weight:300; text-align:center; color:rgba(255,255,255,.8); }
-
-
-/* ---------- POOLS (cards) ---------- */
-.pools{padding:80px 0}
-.pool-inner{
-  width:100%;
-  display:grid;
-  grid-template-columns:repeat(2, minmax(0,1fr));
-  gap:24px;
-  align-items:stretch;
-}
-@media (max-width: 900px){ .pool-inner{ grid-template-columns:1fr; } }
-
-.card{
-  width:100%;
-  border:2px solid var(--border-soft);
-  border-radius:16px;
-  background:var(--bg);                 /* transparent look, same as page */
-  padding:24px 24px 32px;               /* extra bottom padding */
-  display:flex; flex-direction:column; align-items:flex-start; gap:32px;
-  /* remove fixed height so the button never overflows */
-}
-
-.card-header{display:flex; align-items:center; justify-content:space-between; gap:32px; width:100%; height:48px;}
-.card-header-left{display:flex; align-items:center; gap:16px; margin:0 auto 0 0;}
-.card-header img{width:48px; height:48px; border-radius:8px;}
-.card-title{font-weight:700; font-size:20px; line-height:140%; color:var(--offwhite); display:flex; align-items:center;}
-.badge{padding:4px 16px; border:1px solid var(--border-soft); border-radius:32px; font-size:16px; line-height:140%; color:#fff;}
-
-.card-content{display:flex; flex-direction:column; gap:32px; width:100%;}
-.card-desc{color:#E5E7EB; display:flex; align-items:center;}
-.price-row{display:flex; align-items:baseline; gap:6px;}
-.price{font-size:40px; line-height:110%; font-weight:600; color:var(--accent);}
-.price small{font-size:16px; line-height:140%; color:rgba(255,255,255,.55);}
-
-.features{display:flex; flex-direction:column; gap:8px; padding:0; margin:0; list-style:none;}
-.feature{display:flex; align-items:center; gap:4px; color:rgba(249,250,251,.7);}
-.feature i{font-size:12px; color:var(--accent); width:15px; height:15px; display:flex; align-items:center; justify-content:center;}
-
-.card .btn{
-  align-self:stretch; height:52px;
-  display:flex; align-items:center; justify-content:center;
-  margin-top:auto;                      /* stick to bottom INSIDE the card */
-}
-
-
-<section id="calculator" class="calculator">
-  <div class="container">
-    <div class="grid-12">
-      <div class="col-span-8-centered">
-
-        <h2 class="h2" style="text-align:center;">Payouts Calculator</h2>
-        <p class="body" style="text-align:center; color:var(--muted); max-width:720px; margin:12px auto 28px;">
-          The larger the player pool the larger the prizes. Use the calculator
-          below to see how prizes scale with more members.
-        </p>
-
-        <!-- Segmented tabs -->
-        <div class="calc-tabs segmented" role="tablist" aria-label="Choose pool">
-          <button id="tab-otter" class="tab active" role="tab" aria-selected="true" aria-controls="calc-panel">Otter Club</button>
-          <button id="tab-shark" class="tab" role="tab" aria-selected="false" aria-controls="calc-panel">Shark Club</button>
+  <!-- BENEFITS -->
+  <section class="benefits-wrap">
+    <div class="container">
+      <div class="grid-12">
+        <div class="col-span-8-centered">
+          <div class="benefits-grid">
+            <div class="benefit-card">
+              <div class="benefit-icon"><i class="fa-regular fa-calendar-days"></i></div>
+              <div class="benefit-text">
+                <div class="benefit-value">18</div>
+                <div class="benefit-label">Weeks</div>
+              </div>
+            </div>
+            <div class="benefit-card">
+              <div class="benefit-icon"><i class="fa-solid fa-users"></i></div>
+              <div class="benefit-text">
+                <div class="benefit-value">500</div>
+                <div class="benefit-label">Max Players</div>
+              </div>
+            </div>
+            <div class="benefit-card">
+              <div class="benefit-icon"><i class="fa-regular fa-trophy"></i></div>
+              <div class="benefit-text">
+                <div class="benefit-value">$17,500</div>
+                <div class="benefit-label">Max Payouts</div>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
+    </div>
+  </section>
 
-        <div id="calc-panel" class="calc-card" role="region" aria-labelledby="tab-otter">
-          <!-- KPI row -->
-          <div class="kpi-row">
-            <!-- Members -->
-            <div class="kpi-card">
-              <div class="kpi-label utility">Total Members</div>
-              <div class="slider-wrap">
-                <input id="members" type="range" min="0" max="250" step="1" value="140" />
-                <div class="slider-value" id="membersNumberWrap">
-                  <input id="membersNumber" type="number" min="0" max="250" step="1" value="140" />
+  <!-- POOLS -->
+  <section id="pools" class="pools">
+    <div class="container">
+      <div class="grid-12">
+        <div class="col-span-8-centered">
+          <h2 class="h2" style="text-align:center;">Choose Your Pool</h2>
+          <p class="body" style="text-align:center; color:var(--muted); max-width:700px; margin:12px auto 40px;">
+            Two ways to play based on your comfort level. Join one or both to increase your chances of winning hard, cold cash!
+          </p>
+
+          <div class="pool-inner">
+            <!-- Otter Club -->
+            <div class="card">
+              <div class="card-header">
+                <div class="card-header-left">
+                  <img src="otter-icon.webp" alt="Otter Club logo">
+                  <div class="card-title">Otter Club</div>
                 </div>
+                <span class="badge">Casual</span>
+              </div>
+
+              <div class="card-content">
+                <p class="body card-desc">Straight-up picks. No spreads, just winners and losers. Rack up points for correct picks.</p>
+                <div class="price-row">
+                  <div class="price">$20</div>
+                  <small>entry fee</small>
+                </div>
+                <ul class="features">
+                  <li class="feature"><i class="fa-solid fa-chevron-right"></i> Beginner-friendly</li>
+                  <li class="feature"><i class="fa-solid fa-chevron-right"></i> Simple set-and-go picks</li>
+                  <li class="feature"><i class="fa-solid fa-chevron-right"></i> Up to $5,000 in payouts</li>
+                </ul>
+              </div>
+
+              <a href="#join" class="btn btn-primary body-lg">Sign Up</a>
+            </div>
+
+            <!-- Shark Club -->
+            <div class="card">
+              <div class="card-header">
+                <div class="card-header-left">
+                  <img src="shark-icon.webp" alt="Shark Club logo">
+                  <div class="card-title">Shark Club</div>
+                </div>
+                <span class="badge">Advanced</span>
+              </div>
+
+              <div class="card-content">
+                <p class="body card-desc">Play against the spread. Perfect for seasoned players that want more of a challenge.</p>
+                <div class="price-row">
+                  <div class="price">$50</div>
+                  <small>entry fee</small>
+                </div>
+                <ul class="features">
+                  <li class="feature"><i class="fa-solid fa-chevron-right"></i> For savvy pros</li>
+                  <li class="feature"><i class="fa-solid fa-chevron-right"></i> Beat the line, not just the team</li>
+                  <li class="feature"><i class="fa-solid fa-chevron-right"></i> Up to $12,500 in payouts</li>
+                </ul>
+              </div>
+
+              <a href="#join" class="btn btn-primary body-lg">Sign Up</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAYOUTS CALCULATOR -->
+  <section id="calculator" class="calculator">
+    <div class="container">
+      <div class="grid-12">
+        <div class="col-span-8-centered">
+
+          <h2 class="h2" style="text-align:center;">Payouts Calculator</h2>
+          <p class="body" style="text-align:center; color:var(--muted); max-width:720px; margin:12px auto 28px;">
+            The larger the player pool the larger the prizes. Use the calculator
+            below to see how prizes scale with more members.
+          </p>
+
+          <div class="calc-tabs segmented" role="tablist" aria-label="Choose pool">
+            <button id="tab-otter" class="tab active" role="tab" aria-selected="true" aria-controls="calc-panel">Otter Club</button>
+            <button id="tab-shark" class="tab" role="tab" aria-selected="false" aria-controls="calc-panel">Shark Club</button>
+          </div>
+
+          <div id="calc-panel" class="calc-card" role="region" aria-labelledby="tab-otter">
+            <!-- KPI row -->
+            <div class="kpi-row">
+              <div class="kpi-card">
+                <div class="kpi-label utility">Total Members</div>
+                <div class="slider-wrap">
+                  <input id="members" type="range" min="0" max="250" step="1" value="140" />
+                  <div class="slider-value" id="membersNumberWrap">
+                    <input id="membersNumber" type="number" min="0" max="250" step="1" value="140" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="kpi-card">
+                <div class="kpi-label utility">Entry Fee</div>
+                <div class="kpi-value dim" id="entryFee">$20</div>
+              </div>
+
+              <div class="kpi-card">
+                <div class="kpi-label utility">Total Prize Pool</div>
+                <div class="kpi-value accent" id="totalPool">$2,800</div>
               </div>
             </div>
 
-            <!-- Entry Fee -->
-            <div class="kpi-card">
-              <div class="kpi-label utility">Entry Fee</div>
-              <div class="kpi-value dim" id="entryFee">$20</div>
-            </div>
+            <!-- Breakdown -->
+            <div class="break-surface">
+              <div class="break-header">
+                <i class="fa-solid fa-calculator"></i>
+                <span class="h4">Prize Breakdown</span>
+              </div>
 
-            <!-- Total Pool -->
-            <div class="kpi-card">
-              <div class="kpi-label utility">Total Prize Pool</div>
-              <div class="kpi-value accent" id="totalPool">$2,800</div>
+              <div class="panel">
+                <div class="panel-title utility">Season&nbsp;&nbsp;Payouts</div>
+                <ul class="payout-list" id="seasonList"></ul>
+              </div>
+
+              <div class="panel">
+                <div class="panel-title utility">Weekly&nbsp;&nbsp;Payouts</div>
+                <div class="panel-sub utility">(per week × 18 weeks)</div>
+                <ul class="payout-list" id="weeklyList"></ul>
+              </div>
+
+              <div class="bucket-note utility" id="bucketNote"></div>
             </div>
           </div>
 
-          <!-- Prize Breakdown -->
-          <div class="break-surface">
-            <div class="break-header">
-              <i class="fa-solid fa-calculator"></i>
-              <span class="h4">Prize Breakdown</span>
-            </div>
-
-            <!-- Season panel -->
-            <div class="panel">
-              <div class="panel-title utility">Season&nbsp;&nbsp;Payouts</div>
-              <ul class="payout-list" id="seasonList"></ul>
-            </div>
-
-            <!-- Weekly panel -->
-            <div class="panel">
-              <div class="panel-title utility">Weekly&nbsp;&nbsp;Payouts</div>
-              <div class="panel-sub utility">(per week × 18 weeks)</div>
-              <ul class="payout-list" id="weeklyList"></ul>
-            </div>
-
-            <div class="bucket-note utility" id="bucketNote"></div>
-          </div>
         </div>
-
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
+  <!-- HOW IT WORKS -->
+  <section id="how" class="how">
+    <div class="container">
+      <div class="grid-12">
+        <div class="col-span-8-centered">
+          <h2 class="h2" style="text-align:center;">How It Works</h2>
+          <p class="body" style="text-align:center; color:var(--muted); max-width:720px; margin:12px auto 32px;">
+            New to Pick’em and spreads? It’s simple: choose a pool, make your picks weekly, and win prizes all season long.
+          </p>
 
-  <!-- Join (Airtable embed) -->
+          <div class="steps">
+            <!-- Step 1 -->
+            <div class="step-card">
+              <div class="step-icon"><i class="fa-regular fa-circle-1"></i></div>
+              <div class="step-content">
+                <div class="step-title">Join a Pool</div>
+                <p class="step-text body">
+                  Choose between <strong>Otter Club ($20)</strong> (straight-up picks) and <strong>Shark Club ($50)</strong> (against the spread). You can join one or both.
+                </p>
+              </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="step-card">
+              <div class="step-icon"><i class="fa-regular fa-circle-2"></i></div>
+              <div class="step-content">
+                <div class="step-title">Make Your Picks Each Week</div>
+                <p class="step-text body">
+                  Log in to Sleeper and enter your picks before each game’s kickoff. Point values vary by pool. You can pick the whole slate or just your favorites.
+                </p>
+              </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="step-card">
+              <div class="step-icon"><i class="fa-regular fa-circle-3"></i></div>
+              <div class="step-content">
+                <div class="step-title">Win Weekly & Season Prizes</div>
+                <p class="step-text body">
+                  Weekly payouts go to top finishers and season-end prizes reward consistency. The calculator above shows how pots increase with more members.
+                </p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- JOIN (Airtable embed) -->
   <section id="join">
     <div class="container">
       <h2 class="h2" style="text-align:center;">Ready to Join?</h2>
@@ -434,7 +439,7 @@
         Fill out the form below to lock in your spot. You can join Otter, Shark, or both.
       </p>
       <div class="embed-wrap">
-        <iframe 
+        <iframe
           class="airtable-embed"
           src="https://airtable.com/embed/appjd8ASIv6Wa7cSN/pagKh4VOGMg5EHfAi/form"
           title="NFL Pick'em Challenge Signup"
@@ -444,129 +449,123 @@
     </div>
   </section>
 
+  <!-- (FAQ + About + Nav + Footer to be added next) -->
+
+  <!-- ====== CALCULATOR LOGIC ====== -->
   <script>
-  // Entry fees by pool
-  const ENTRY_FEES = { otter: 20, shark: 50 };
+    // Entry fees by pool
+    const ENTRY_FEES = { otter: 20, shark: 50 };
 
-  // Global split
-  const SPLIT = { season: 0.80, weekly: 0.20 };
+    // Global split 80/20
+    const SPLIT = { season: 0.80, weekly: 0.20 };
 
-  // Member buckets (inclusive ranges)
-  const BUCKETS = [
-    { range: '1–20',   min: 1,   max: 20,  season: [0.70, 0.30],            weekly: [1.00] },
-    { range: '21–50',  min: 21,  max: 50,  season: [0.65, 0.25, 0.10],      weekly: [1.00] },
-    { range: '51–100', min: 51,  max: 100, season: [0.50, 0.25, 0.15, 0.10],weekly: [0.70, 0.30] },
-    { range: '101–250',min: 101, max: 250, season: [0.50, 0.20, 0.15, 0.10, 0.05], weekly: [0.65, 0.25, 0.10] },
-  ];
+    // Member buckets (inclusive)
+    const BUCKETS = [
+      { range: '1–20',    min: 1,   max: 20,  season: [0.70, 0.30],                                weekly: [1.00] },
+      { range: '21–50',   min: 21,  max: 50,  season: [0.65, 0.25, 0.10],                          weekly: [1.00] },
+      { range: '51–100',  min: 51,  max: 100, season: [0.50, 0.25, 0.15, 0.10],                    weekly: [0.70, 0.30] },
+      { range: '101–250', min: 101, max: 250, season: [0.50, 0.20, 0.15, 0.10, 0.05],              weekly: [0.65, 0.25, 0.10] },
+    ];
 
-  // DOM helpers
-  const $ = (s) => document.querySelector(s);
-  const fmt = (n) => n.toLocaleString('en-US', { style:'currency', currency:'USD', maximumFractionDigits:0 });
+    // DOM helpers
+    const $ = (s) => document.querySelector(s);
+    const fmt = (n) => n.toLocaleString('en-US', { style:'currency', currency:'USD', maximumFractionDigits:0 });
 
-  // Elements
-  const tabOtter = $('#tab-otter');
-  const tabShark = $('#tab-shark');
-  const members = $('#members');
-  const membersNumber = $('#membersNumber');
-  const entryFeeEl = $('#entryFee');
-  const totalPoolEl = $('#totalPool');
-  const bucketNote = $('#bucketNote');
-  const seasonList = $('#seasonList');
-  const weeklyList = $('#weeklyList');
+    // Elements
+    const tabOtter = $('#tab-otter');
+    const tabShark = $('#tab-shark');
+    const members = $('#members');
+    const membersNumber = $('#membersNumber');
+    const entryFeeEl = $('#entryFee');
+    const totalPoolEl = $('#totalPool');
+    const bucketNote = $('#bucketNote');
+    const seasonList = $('#seasonList');
+    const weeklyList = $('#weeklyList');
 
-  let currentPool = 'otter';
+    let currentPool = 'otter';
 
-  function findBucket(m){
-    return BUCKETS.find(b => m >= b.min && m <= b.max) || null;
-  }
+    function findBucket(m){
+      return BUCKETS.find(b => m >= b.min && m <= b.max) || null;
+    }
+    function suffix(n){
+      const v = n % 100;
+      if (v >= 11 && v <= 13) return 'th';
+      switch (n % 10) { case 1: return 'st'; case 2: return 'nd'; case 3: return 'rd'; default: return 'th'; }
+    }
+    function syncMembers(val){
+      const v = Math.max(0, Math.min(250, parseInt(val || 0, 10)));
+      members.value = v;
+      membersNumber.value = v;
+    }
+    function render(){
+      const m = parseInt(members.value, 10) || 0;
+      const entryFee = ENTRY_FEES[currentPool];
+      const totalPool = entryFee * m;
+      entryFeeEl.textContent = fmt(entryFee);
+      totalPoolEl.textContent = fmt(totalPool);
 
-  function suffix(n){
-    const v = n % 100;
-    if (v >= 11 && v <= 13) return 'th';
-    switch (n % 10) { case 1: return 'st'; case 2: return 'nd'; case 3: return 'rd'; default: return 'th'; }
-  }
+      const b = findBucket(m);
+      bucketNote.textContent = (m < 1) ? 'Enter at least 1 member to see payout splits.' :
+                               (b ? `Using ${b.range} members payout schedule` : 'No payout schedule for this size');
 
-  function syncMembers(val){
-    const v = Math.max(0, Math.min(250, parseInt(val || 0, 10)));
-    members.value = v;
-    membersNumber.value = v;
-  }
+      const seasonPot = totalPool * SPLIT.season;
+      const weeklyTotal = totalPool * SPLIT.weekly;
+      const weeklyPerWeek = weeklyTotal / 18;
 
-  function render(){
-    const m = parseInt(members.value, 10) || 0;
-    const entryFee = ENTRY_FEES[currentPool];
-    const totalPool = entryFee * m;
-    entryFeeEl.textContent = fmt(entryFee);
-    totalPoolEl.textContent = fmt(totalPool);
-
-    const b = findBucket(m);
-    bucketNote.textContent = (m < 1) ? 'Enter at least 1 member to see payout splits.' :
-                             (b ? `Using ${b.range} members payout schedule` : 'No payout schedule for this size');
-
-    // Pots
-    const seasonPot = totalPool * SPLIT.season;
-    const weeklyTotal = totalPool * SPLIT.weekly;
-    const weeklyPerWeek = weeklyTotal / 18;
-
-    // Season list
-    seasonList.innerHTML = '';
-    if (m < 1 || !b) {
-      const li = document.createElement('li');
-      li.innerHTML = `<span class="muted">No payouts</span><strong>${fmt(0)}</strong>`;
-      seasonList.appendChild(li);
-    } else {
-      b.season.forEach((pct, i) => {
+      // Season
+      seasonList.innerHTML = '';
+      if (m < 1 || !b) {
         const li = document.createElement('li');
-        li.innerHTML = `
-          <span class="place">${i+1}<sup>${suffix(i+1)}</sup> Place <span class="pct">(${Math.round(pct*100)}%)</span></span>
-          <strong>${fmt(seasonPot * pct)}</strong>
-        `;
+        li.innerHTML = `<span class="place">No payouts</span><strong>${fmt(0)}</strong>`;
         seasonList.appendChild(li);
-      });
-    }
+      } else {
+        b.season.forEach((pct, i) => {
+          const li = document.createElement('li');
+          li.innerHTML = `
+            <span class="place">${i+1}<sup>${suffix(i+1)}</sup> Place</span>
+            <strong>${fmt(seasonPot * pct)}</strong>
+          `;
+          seasonList.appendChild(li);
+        });
+      }
 
-    // Weekly list (per week)
-    weeklyList.innerHTML = '';
-    if (m < 1 || !b) {
-      const li = document.createElement('li');
-      li.innerHTML = `<span class="muted">No payouts</span><strong>${fmt(0)}</strong>`;
-      weeklyList.appendChild(li);
-    } else {
-      b.weekly.forEach((pct, i) => {
+      // Weekly (per week)
+      weeklyList.innerHTML = '';
+      if (m < 1 || !b) {
         const li = document.createElement('li');
-        li.innerHTML = `
-          <span class="place">${i+1}<sup>${suffix(i+1)}</sup> Place <span class="pct">(${Math.round(pct*100)}%)</span></span>
-          <strong>${fmt(weeklyPerWeek * pct)}</strong>
-        `;
+        li.innerHTML = `<span class="place">No payouts</span><strong>${fmt(0)}</strong>`;
         weeklyList.appendChild(li);
-      });
+      } else {
+        b.weekly.forEach((pct, i) => {
+          const li = document.createElement('li');
+          li.innerHTML = `
+            <span class="place">${i+1}<sup>${suffix(i+1)}</sup> Place</span>
+            <strong>${fmt(weeklyPerWeek * pct)}</strong>
+          `;
+          weeklyList.appendChild(li);
+        });
+      }
     }
-  }
 
-  // Events
-  members.addEventListener('input', e => { syncMembers(e.target.value); render(); });
-  membersNumber.addEventListener('input', e => { syncMembers(e.target.value); render(); });
+    // Events
+    members.addEventListener('input', e => { syncMembers(e.target.value); render(); });
+    membersNumber.addEventListener('input', e => { syncMembers(e.target.value); render(); });
+    tabOtter.addEventListener('click', ()=>{
+      currentPool = 'otter';
+      tabOtter.classList.add('active'); tabOtter.setAttribute('aria-selected','true');
+      tabShark.classList.remove('active'); tabShark.setAttribute('aria-selected','false');
+      render();
+    });
+    tabShark.addEventListener('click', ()=>{
+      currentPool = 'shark';
+      tabShark.classList.add('active'); tabShark.setAttribute('aria-selected','true');
+      tabOtter.classList.remove('active'); tabOtter.setAttribute('aria-selected','false');
+      render();
+    });
 
-  tabOtter.addEventListener('click', ()=>{
-    currentPool = 'otter';
-    tabOtter.classList.add('active'); tabOtter.setAttribute('aria-selected','true');
-    tabShark.classList.remove('active'); tabShark.setAttribute('aria-selected','false');
+    // Init
+    syncMembers(members.value);
     render();
-  });
-
-  tabShark.addEventListener('click', ()=>{
-    currentPool = 'shark';
-    tabShark.classList.add('active'); tabShark.setAttribute('aria-selected','true');
-    tabOtter.classList.remove('active'); tabOtter.setAttribute('aria-selected','false');
-    render();
-  });
-
-  // Init
-  syncMembers(members.value);
-  render();
-</script>
-
-
-
+  </script>
 </body>
 </html>
