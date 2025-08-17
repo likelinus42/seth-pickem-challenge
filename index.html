@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Seth's Pick'em Challenge</title>
 
-  <!-- Urbanist font -->
+  <!-- Urbanist -->
   <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <!-- Font Awesome (your kit) -->
   <script src="https://kit.fontawesome.com/91492d4fbf.js" crossorigin="anonymous"></script>
@@ -33,7 +33,8 @@
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
     body{margin:0; background:var(--bg); color:var(--text); font-family:'Urbanist',sans-serif}
-    .container{max-width:1100px; margin:0 auto; padding:0 20px}
+    /* WIDER container so 8-col area yields ~414px cards */
+    .container{max-width:1280px; margin:0 auto; padding:0 20px}
 
     /* Type utilities */
     .h1{ font-size:var(--fs-h1); line-height:var(--lh-tight); font-weight:var(--fw-bold); margin:0;}
@@ -45,12 +46,12 @@
     .utility{ font-size:var(--fs-utility); line-height:1.1; font-weight:var(--fw-light); margin:0;}
     .highlight{color:var(--accent)}
 
-    /* Shared section intro (title + paragraph) */
+    /* Section header + intro */
     .section-header{ text-align:center; }
     .section-intro{
-      margin:16px auto 40px;          /* 16px gap from title */
+      margin:16px auto 40px;              /* 16px gap from title */
       max-width:608px;
-      color:rgba(249,250,251,0.60);   /* off-white @ 60% */
+      color:rgba(249,250,251,0.60);       /* off-white 60% */
     }
 
     /* Buttons */
@@ -75,7 +76,7 @@
     .btn-text:active{ color:var(--offwhite); transform:translateY(1px);}
     .btn-text:focus-visible{ outline:2px solid var(--ring); outline-offset:2px;}
 
-    /* 12-col grid helpers */
+    /* 12-col helpers */
     .grid-12{ display:grid; grid-template-columns:repeat(12, minmax(0,1fr)); gap:var(--gutter); }
     .col-span-8-centered{ grid-column:3 / span 8; }
     @media (max-width: 900px){
@@ -97,7 +98,7 @@
 
     /* BENEFITS */
     .benefits-wrap{padding:48px 0 24px;}
-    .benefits-grid{width:100%; display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:32px;}
+    .benefits-grid{display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:32px;}
     @media (max-width:900px){ .benefits-grid{grid-template-columns:1fr; gap:16px;} }
     .benefit-card{
       width:100%; height:161px; padding:24px; border:1px solid var(--border-soft); border-radius:16px;
@@ -110,7 +111,7 @@
 
     /* POOLS */
     .pools{padding:80px 0}
-    .pool-inner{width:100%; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:24px; align-items:stretch}
+    .pool-inner{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:24px; align-items:stretch}
     @media (max-width: 900px){ .pool-inner{ grid-template-columns:1fr; } }
     .card{
       width:100%; border:2px solid var(--border-soft); border-radius:16px;
@@ -119,7 +120,7 @@
     .card-header{display:flex; align-items:center; justify-content:space-between; gap:32px; width:100%; height:48px;}
     .card-header-left{display:flex; align-items:center; gap:16px; margin-right:auto}
     .card-header img{width:48px; height:48px; border-radius:8px;}
-    .card-title{font-weight:var(--fw-bold); font-size:20px; line-height:140%; color:var(--offwhite); display:flex; align-items:center;}
+    .card-title{font-weight:var(--fw-bold); font-size:20px; line-height:140%; color:var(--offwhite); display:flex; align-items:center; white-space:nowrap;}
     .badge{padding:4px 16px; border:1px solid var(--border-soft); border-radius:32px; font-size:16px; line-height:140%; color:#FFFFFF;}
     .card-content{display:flex; flex-direction:column; gap:32px; width:100%;}
     .card-desc{color:#E5E7EB; display:flex; align-items:center;}
@@ -131,9 +132,8 @@
     .feature i{font-size:12px; color:var(--accent); width:15px; height:15px; display:flex; align-items:center; justify-content:center;}
     .card .btn{align-self:stretch; height:52px; display:flex; align-items:center; justify-content:center; margin-top:auto;}
 
-    /* ---------- PAYOUTS CALCULATOR (UI) ---------- */
+    /* ---------- CALCULATOR ---------- */
     .calculator{padding:80px 0}
-
     .calc-tabs.segmented{
       display:flex; gap:0; padding:2px; background:var(--panel);
       border:1px solid var(--border-soft); border-radius:14px;
@@ -146,7 +146,6 @@
     .calc-tabs.segmented .tab.active{ background:#1a1f2c; border:1px solid var(--border-soft); color:var(--offwhite); }
 
     .calc-card{ border:1px solid var(--border-soft); border-radius:16px; background:transparent; padding:24px; display:flex; flex-direction:column; gap:24px; }
-
     .kpi-row{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:24px; }
     @media (max-width:900px){ .kpi-row{ grid-template-columns:1fr; } }
     .kpi-card{ border:1px solid var(--border-soft); border-radius:16px; background:var(--panel); padding:20px; }
@@ -154,7 +153,6 @@
     .kpi-value{ font-size:32px; font-weight:600 }
     .kpi-value.dim{ color:#9AA8BE }
     .kpi-value.accent{ color:var(--accent) }
-
     .slider-wrap{display:flex; align-items:center; gap:14px}
     #members{ -webkit-appearance:none; appearance:none; width:100%; height:8px; border-radius:8px; background:#132033; outline:none; }
     #members::-webkit-slider-thumb{ -webkit-appearance:none; appearance:none; width:16px; height:16px; border-radius:50%; background:var(--accent); border:2px solid #0a1b2e; cursor:pointer; }
@@ -164,18 +162,16 @@
     .break-surface{ border:1px solid var(--border-soft); border-radius:16px; padding:20px; background:transparent; display:flex; flex-direction:column; gap:16px; }
     .break-header{ display:flex; align-items:center; gap:10px; margin-bottom:4px }
     .break-header i{ color:var(--accent); font-size:20px }
-
     .panel{ border:1px solid var(--border-soft); border-radius:14px; background:var(--panel); padding:18px; }
     .panel-title{ opacity:.95; letter-spacing:.02em; margin-bottom:10px }
     .panel-sub{ opacity:.75; margin:-6px 0 10px }
-
     .payout-list{ list-style:none; margin:0; padding:6px 0; display:grid; grid-template-columns:repeat(auto-fit, minmax(120px, 1fr)); gap:18px; }
     .payout-list li{ display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; text-align:center; padding:8px 6px; border:none; }
     .payout-list .place{ font-size:14px; color:#C7D0DE }
     .payout-list strong{ font-size:22px; color:var(--brandBlue); font-weight:700 }
     .bucket-note{ opacity:.8; margin-top:4px }
 
-    /* ---------- HOW IT WORKS (vertical) ---------- */
+    /* ---------- HOW IT WORKS ---------- */
     .how{ padding:64px 0; background:rgba(30,41,59,0.30); }
     .how-header{ display:flex; flex-direction:column; align-items:center; margin-bottom:64px; }
     .how-steps{ display:flex; flex-direction:column; gap:48px; max-width:816px; margin:0 auto; }
@@ -183,31 +179,7 @@
     .step-icon{ width:40px; height:40px; display:flex; align-items:center; justify-content:center; color:var(--accent); font-size:32px; flex:none; }
     .step-content{ display:flex; flex-direction:column; gap:16px; padding-top:6px; width:100%; }
     .step-title{ color:#F9FAFB; }
-    .step-text{ color:rgba(249,250,251,0.70); } /* body font size via .body class in HTML */
-
-    /* ---------- FAQ (accordion) ---------- */
-    .faq{ padding:80px 0; }
-    .faq-list{ width:100%; }
-    .faq-item{ padding:0; }
-    .faq-item:not(:last-child){ border-bottom:1px solid var(--border-soft); }
-
-    .faq-toggle{
-      width:100%; background:transparent; border:none; color:var(--offwhite);
-      display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:12px;
-      padding:24px; cursor:pointer; text-align:left; /* 24px internal padding */
-    }
-    .qmark{ color:var(--accent); font-size:20px; }
-    .chev{ color:rgba(229,231,235,0.30); transition: transform .18s ease; font-size:18px; }
-    .faq-answer{
-      max-height:0; overflow:hidden; opacity:0;
-      transition:max-height .22s ease, opacity .18s ease;
-      color:#E5E7EB;
-      padding:0 24px 24px 76px; /* indent under icon + 24px padding */
-    }
-    .faq-answer ul{ margin:8px 0 0 16px; }
-    .faq-answer li{ margin:4px 0; }
-    .faq-item.open .chev{ transform:rotate(180deg); }
-    .faq-item.open .faq-answer{ max-height:1000px; opacity:1; margin-top:0; }
+    .step-text{ color:rgba(249,250,251,0.70); }
 
     /* ---------- JOIN (Airtable) ---------- */
     #join{padding:80px 0;}
@@ -215,16 +187,41 @@
     .embed-wrap iframe{width:100%; height:900px; border:0; background:#0d1526;}
     @media (max-width:720px){ .embed-wrap iframe{height:1100px;} }
 
+    /* ---------- FAQ (accordion) ---------- */
+    .faq{ padding:80px 0; }
+    .faq-list{ width:100%; }
+    .faq-item{ padding:0; }
+    .faq-item:not(:last-child){ border-bottom:1px solid var(--border-soft); }
+    .faq-toggle{
+      width:100%; background:transparent; border:none; color:var(--offwhite);
+      display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:12px;
+      padding:24px; cursor:pointer; text-align:left;
+    }
+    .qmark{ color:var(--accent); font-size:20px; }
+    .chev{ color:rgba(229,231,235,0.30); transition: transform .18s ease; font-size:18px; }
+    .faq-answer{
+      max-height:0; overflow:hidden; opacity:0;
+      transition:max-height .22s ease, opacity .18s ease, padding-bottom .18s ease;
+      color:#E5E7EB;
+      padding:0 24px 0 76px; /* no bottom padding while closed */
+    }
+    .faq-answer ul{ margin:8px 0 0 16px; }
+    .faq-answer li{ margin:4px 0; }
+    .faq-item.open .chev{ transform:rotate(180deg); }
+    .faq-item.open .faq-answer{ max-height:1000px; opacity:1; padding-bottom:24px; }
+
     /* ---------- ABOUT (footer hero) ---------- */
     .about{
       position:relative;
       display:flex; flex-direction:column;
-      background:url('footer-tunnel-desktop.webp') center/cover no-repeat;
-      min-height:736px;              /* +96px from 640 */
-      padding-top:72px;              /* slight extra top air */
+      background:url('footer-tunnel-desktop.webp') center 65% / cover no-repeat; /* shift image down */
+      min-height:736px;               /* +96px for more vertical space */
+      padding-top:72px;
     }
     .about-overlay{
-      position:absolute; inset:0; background:linear-gradient(to bottom, rgba(3,8,22,.35), rgba(3,8,22,.15) 40%, rgba(3,8,22,.35));
+      position:absolute; inset:0;
+      /* darker at the top for legibility */
+      background:linear-gradient(to bottom, rgba(3,8,22,.78), rgba(3,8,22,.35) 45%, rgba(3,8,22,.65));
       pointer-events:none;
     }
     .about-inner{ position:relative; z-index:1; }
@@ -233,7 +230,7 @@
       max-width:740px; margin:0 auto 28px; padding:0 8px;
     }
     .about-avatar{ width:72px; height:72px; border-radius:16px; flex:none; object-fit:cover; }
-    .about-text{ max-width:640px; }
+    .about-text{ max-width:640px; text-shadow:0 1px 2px rgba(0,0,0,.5); }
     .about-text .h3{ margin:0 0 10px; }
     .about-text p{ color:#E5E7EB; margin:0 0 18px; }
     .about-actions{ display:flex; gap:12px; margin-left:88px; }
@@ -384,7 +381,6 @@
           </div>
 
           <div id="calc-panel" class="calc-card" role="region" aria-labelledby="tab-otter">
-            <!-- KPI row -->
             <div class="kpi-row">
               <div class="kpi-card">
                 <div class="kpi-label utility">Total Members</div>
@@ -407,7 +403,6 @@
               </div>
             </div>
 
-            <!-- Breakdown -->
             <div class="break-surface">
               <div class="break-header">
                 <i class="fa-solid fa-calculator"></i>
@@ -489,7 +484,27 @@
     </div>
   </section>
 
-  <!-- FAQ -->
+  <!-- JOIN -->
+  <section id="join">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="h2">Ready to Join?</h2>
+        <p class="body-lg section-intro">
+          Fill out the form below to lock in your spot. You can join Otter, Shark, or both.
+        </p>
+      </div>
+      <div class="embed-wrap">
+        <iframe
+          class="airtable-embed"
+          src="https://airtable.com/embed/appjd8ASIv6Wa7cSN/pagKh4VOGMg5EHfAi/form"
+          title="NFL Pick'em Challenge Signup"
+          loading="lazy">
+        </iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ (now AFTER Join) -->
   <section id="faq" class="faq">
     <div class="container">
       <div class="grid-12">
@@ -579,29 +594,9 @@
                 Season-long payouts are made after the final regular season game.
               </div>
             </div>
-
           </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- JOIN (Airtable embed) -->
-  <section id="join">
-    <div class="container">
-      <div class="section-header">
-        <h2 class="h2">Ready to Join?</h2>
-        <p class="body-lg section-intro">
-          Fill out the form below to lock in your spot. You can join Otter, Shark, or both.
-        </p>
-      </div>
-      <div class="embed-wrap">
-        <iframe
-          class="airtable-embed"
-          src="https://airtable.com/embed/appjd8ASIv6Wa7cSN/pagKh4VOGMg5EHfAi/form"
-          title="NFL Pick'em Challenge Signup"
-          loading="lazy">
-        </iframe>
+        </div>
       </div>
     </div>
   </section>
@@ -628,7 +623,6 @@
         </button>
       </div>
     </div>
-
     <div class="about-footer">© 2025 Pick'em Challenge</div>
   </section>
 
@@ -708,7 +702,7 @@
     syncMembers(members.value); render();
   </script>
 
-  <!-- FAQ accordion script -->
+  <!-- FAQ accordion -->
   <script>
     (function(){
       const items = document.querySelectorAll('.faq-item');
@@ -717,7 +711,7 @@
         const panel = item.querySelector('.faq-answer');
         btn.addEventListener('click', () => {
           const isOpen = item.classList.contains('open');
-          items.forEach(i => { i.classList.remove('open'); const b=i.querySelector('.faq-toggle'); if(b) b.setAttribute('aria-expanded','false'); const p=i.querySelector('.faq-answer'); if(p) p.style.maxHeight='0px'; });
+          items.forEach(i => { i.classList.remove('open'); const b=i.querySelector('.faq-toggle'); if(b) b.setAttribute('aria-expanded','false'); const p=i.querySelector('.faq-answer'); if(p){ p.style.maxHeight='0px'; } });
           if (!isOpen) {
             item.classList.add('open');
             btn.setAttribute('aria-expanded','true');
@@ -742,11 +736,11 @@
         try{
           if(navigator.share){
             await navigator.share(shareData);
-          }else{
-            await (navigator.clipboard && navigator.clipboard.writeText(window.location.href));
+          }else if(navigator.clipboard){
+            await navigator.clipboard.writeText(window.location.href);
             alert('Link copied to clipboard.');
           }
-        }catch(e){ /* cancelled */ }
+        }catch(e){ /* user cancelled */ }
       });
     })();
   </script>
