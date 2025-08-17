@@ -133,7 +133,7 @@
     /* segmented toggle (fill + outline) */
     .calc-tabs.segmented{
       display:flex; align-items:center; justify-content:center;
-      gap:0; margin:0 auto 20px; width:100%; max-width:816px;
+      gap:0; margin:0 auto 48px; width:100%; max-width:816px;
     }
     .calc-tabs.segmented .tab{
       width:50%; height:48px; padding:12px 16px; gap:8px;
@@ -143,32 +143,62 @@
     }
     .calc-tabs.segmented .tab:first-child{ border-radius:12px 0 0 12px; }
     .calc-tabs.segmented .tab:last-child { border-radius:0 12px 12px 0; }
-    /* Active gets semi-fill; inactive stays outlined */
     .calc-tabs.segmented .tab.active{ background:rgba(229,231,235,0.30); border-color:transparent; }
 
-    /* remove outer strokes around KPI+Breakdown wrapper */
-    .calc-card{ border:none; border-radius:16px; background:transparent; padding:0; display:flex; flex-direction:column; gap:24px; }
+    /* wrapper spacing */
+    .calc-card{ border:none; border-radius:16px; background:transparent; padding:0; display:flex; flex-direction:column; gap:48px; }
 
     .kpi-row{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:24px; }
     @media (max-width:900px){ .kpi-row{ grid-template-columns:1fr; } }
-    .kpi-card{ border:1px solid var(--border-soft); border-radius:16px; background:transparent; padding:20px; }
-    .kpi-label{ opacity:.9; margin-bottom:10px }
+    .kpi-card{ border:1px solid var(--border-soft); border-radius:16px; background:transparent; padding:24px; display:flex; flex-direction:column; gap:16px; align-items:center; }
+    .kpi-label{ opacity:.9; margin-bottom:4px }
     .kpi-value{ font-size:32px; font-weight:600 }
     .kpi-value.dim{ color:#9AA8BE }
     .kpi-value.accent{ color:var(--accent) }
-    .slider-wrap{display:flex; align-items:center; gap:14px}
-    #members{ -webkit-appearance:none; appearance:none; width:100%; height:8px; border-radius:8px; background:#132033; outline:none; }
-    #members::-webkit-slider-thumb{ -webkit-appearance:none; appearance:none; width:16px; height:16px; border-radius:50%; background:var(--accent); border:2px solid #0a1b2e; cursor:pointer; }
-    #members::-moz-range-thumb{ width:16px; height:16px; border-radius:50%; background:var(--accent); border:2px solid #0a1b2e; cursor:pointer; }
-    #membersNumber{ width:84px; padding:10px 12px; background:transparent; color:var(--offwhite); border:none; border-radius:10px; text-align:right }
 
-    /* Prize Breakdown surface (no outer border now) */
+    /* Slider block (Figma-like) */
+    .slider-wrap{
+      display:flex; align-items:center; gap:16px;
+      width:196px; height:28px; margin:0 auto; position:relative;
+    }
+    #members{
+      --p: 0%;
+      -webkit-appearance:none; appearance:none;
+      width:150px; height:12px; border-radius:20px;
+      background: linear-gradient(to right, #26CB4D, #6DDD88) 0 0 / var(--p) 100% no-repeat,
+                  rgba(229,231,235,0.30);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.1);
+      outline:none;
+    }
+    /* WebKit track/thumb */
+    #members::-webkit-slider-runnable-track{
+      height:12px; border-radius:20px; background:transparent;
+    }
+    #members::-webkit-slider-thumb{
+      -webkit-appearance:none; appearance:none;
+      width:10px; height:10px; border-radius:20px; background:#0B2545; margin-top:1px; /* centers thumb */
+    }
+    /* Firefox */
+    #members::-moz-range-track{ height:12px; border-radius:20px; background:transparent; }
+    #members::-moz-range-thumb{ width:10px; height:10px; border-radius:20px; background:#0B2545; border:none; }
+
+    #membersNumber{
+      width:56px; height:28px; background:transparent; color:rgba(255,255,255,0.8);
+      border:none; border-radius:10px; text-align:center;
+      font-size:var(--fs-body-lg); font-weight:700;
+    }
+
+    /* Prize Breakdown surface (no outer border) */
     .break-surface{ border:none; border-radius:16px; padding:0; background:transparent; display:flex; flex-direction:column; gap:16px; }
     .break-header{ display:flex; align-items:center; justify-content:center; gap:10px; margin:0 auto; }
     .break-header i{ color:var(--accent); font-size:20px }
 
     .panel{ border:1px solid var(--border-soft); border-radius:14px; background:var(--panel); padding:26px 18px; }
-    .panel-title{ opacity:.95; letter-spacing:.02em; margin:0 auto 16px; text-align:center; }
+    .panel-title{
+      text-align:center; margin:0 auto 16px;
+      font-size:var(--fs-body-lg); line-height:var(--lh-body); font-weight:700;
+      color:rgba(249,250,251,0.80);
+    }
 
     /* payout list with vertical separators */
     .payout-list{
@@ -392,7 +422,7 @@
           <div id="calc-panel" class="calc-card" role="region" aria-labelledby="tab-otter">
             <!-- KPI cards -->
             <div class="kpi-row">
-              <div class="kpi-card">
+              <div class="kpi-card" style="width:100%;">
                 <div class="kpi-label utility">Total Members</div>
                 <div class="slider-wrap">
                   <input id="members" type="range" min="0" max="250" step="1" value="140" />
@@ -419,12 +449,12 @@
               </div>
 
               <div class="panel">
-                <div class="panel-title utility">Season&nbsp;&nbsp;Payouts</div>
+                <div class="panel-title">Season&nbsp;&nbsp;Payouts</div>
                 <ul class="payout-list" id="seasonList" style="--cols:5;"></ul>
               </div>
 
               <div class="panel">
-                <div class="panel-title utility">Weekly&nbsp;&nbsp;Payouts</div>
+                <div class="panel-title">Weekly&nbsp;&nbsp;Payouts</div>
                 <ul class="payout-list" id="weeklyList" style="--cols:3;"></ul>
               </div>
             </div>
@@ -660,7 +690,12 @@
 
     function findBucket(m){ return BUCKETS.find(b => m >= b.min && m <= b.max) || null; }
     function suffix(n){ const v = n % 100; if (v >= 11 && v <= 13) return 'th'; switch (n % 10) { case 1: return 'st'; case 2: return 'nd'; case 3: return 'rd'; default: return 'th'; } }
-    function syncMembers(val){ const v = Math.max(0, Math.min(250, parseInt(val || 0, 10))); members.value = v; membersNumber.value = v; }
+    function syncMembers(val){
+      const v = Math.max(0, Math.min(250, parseInt(val || 0, 10)));
+      members.value = v; membersNumber.value = v;
+      const p = (v / 250) * 100;
+      members.style.setProperty('--p', p + '%');
+    }
 
     function render(){
       const m = parseInt(members.value, 10) || 0;
@@ -675,32 +710,26 @@
       const weeklyTotal = totalPool * SPLIT.weekly;
       const weeklyPerWeek = weeklyTotal / 18;
 
-      // Season list
+      // Always show 5 season places (fill $0 where unused)
+      const seasonSplits = [0,0,0,0,0].map((_,i)=> (b && b.season[i]) ? b.season[i] : 0);
+      seasonList.style.setProperty('--cols', 5);
       seasonList.innerHTML = '';
-      if (m < 1 || !b) {
-        seasonList.style.setProperty('--cols', 1);
-        seasonList.innerHTML = `<li><span class="place">No payouts</span><strong>${fmt(0)}</strong></li>`;
-      } else {
-        seasonList.style.setProperty('--cols', b.season.length);
-        b.season.forEach((pct, i) => {
-          const li = document.createElement('li');
-          li.innerHTML = `<span class="place">${i+1}<sup>${suffix(i+1)}</sup> Place</span><strong>${fmt(seasonPot * pct)}</strong>`;
-          seasonList.appendChild(li);
-        });
+      for (let i=0;i<5;i++){
+        const pct = seasonSplits[i] || 0;
+        const li = document.createElement('li');
+        li.innerHTML = `<span class="place">${i+1}<sup>${suffix(i+1)}</sup> Place</span><strong>${fmt(seasonPot * pct)}</strong>`;
+        seasonList.appendChild(li);
       }
 
-      // Weekly list
+      // Always show 3 weekly places
+      const weeklySplits = [0,0,0].map((_,i)=> (b && b.weekly[i]) ? b.weekly[i] : 0);
+      weeklyList.style.setProperty('--cols', 3);
       weeklyList.innerHTML = '';
-      if (m < 1 || !b) {
-        weeklyList.style.setProperty('--cols', 1);
-        weeklyList.innerHTML = `<li><span class="place">No payouts</span><strong>${fmt(0)}</strong></li>`;
-      } else {
-        weeklyList.style.setProperty('--cols', b.weekly.length);
-        b.weekly.forEach((pct, i) => {
-          const li = document.createElement('li');
-          li.innerHTML = `<span class="place">${i+1}<sup>${suffix(i+1)}</sup> Place</span><strong>${fmt(weeklyPerWeek * pct)}</strong>`;
-          weeklyList.appendChild(li);
-        });
+      for (let i=0;i<3;i++){
+        const pct = weeklySplits[i] || 0;
+        const li = document.createElement('li');
+        li.innerHTML = `<span class="place">${i+1}<sup>${suffix(i+1)}</sup> Place</span><strong>${fmt(weeklyPerWeek * pct)}</strong>`;
+        weeklyList.appendChild(li);
       }
     }
 
@@ -720,6 +749,7 @@
       render();
     });
 
+    // init
     syncMembers(members.value); render();
   </script>
 
