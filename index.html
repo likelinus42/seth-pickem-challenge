@@ -164,7 +164,8 @@
     .pool-card-header{display:flex; align-items:center; justify-content:space-between; gap:var(--space-32); width:100%; height:var(--space-48);}
     .pool-card-header-left{display:flex; align-items:center; gap:var(--space-16); margin-right:auto}
     .pool-card-header img{width:var(--space-48); height:var(--space-48); border-radius:var(--radius-sm);}
-    .pool-card-title{font-weight:var(--fw-bold); font-size:20px; line-height:var(--lh-140); color:var(--offwhite); display:flex; align-items:center; white-space:nowrap;}
+    .pool-card-title{font-weight:var(--fw-bold); font-size:20px; line-height:var(--lh-140); color:var(--offwhite); display:flex; align-items:center;}
+    @media (max-width: 600px) { .pool-card-title { white-space: normal; word-break: break-word; } }
     .pool-card-badge{padding:var(--space-4) var(--space-16); border:1px solid var(--border-soft); border-radius:var(--radius-full); font-size:16px; line-height:var(--lh-140); color:var(--white);}
     .pool-card-content{display:flex; flex-direction:column; gap:var(--space-32); width:100%;}
     .pool-card-desc{color:var(--gray-200); display:flex; align-items:center;}
@@ -249,13 +250,13 @@
     /* ========================================== */
     /* PRIZE BREAKDOWN COMPONENTS                */
     /* ========================================== */
-    .break-surface{ border:1px solid var(--border-soft); border-radius:var(--radius-lg); padding:var(--space-24); background:transparent; display:flex; flex-direction:column; gap:var(--space-48); }
+    .break-surface{ border:1px solid var(--border-soft); border-radius:var(--radius-lg); padding:var(--space-16); background:transparent; display:flex; flex-direction:column; gap:var(--space-48); }
     .break-header{ display:flex; align-items:center; justify-content:center; gap:var(--space-10); margin:0 auto; }
     .break-header i{ color:var(--accent); font-size:20px }
 
-    .panel{ border:none; border-radius:14px; background:var(--panel); padding:26px var(--space-18); }
+    .panel{ border:none; border-radius:14px; background:var(--panel); padding:var(--space-16); }
     .panel-title{
-      text-align:center; margin:0 auto var(--space-16);
+      text-align:center; margin:0 auto 24px;
       font-size:var(--fs-body-lg); line-height:var(--lh-body); font-weight:700;
       color:var(--text-white-80);
     }
