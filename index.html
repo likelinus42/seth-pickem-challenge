@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="robots" content="noindex, nofollow">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Seth's Pick'em Challenge</title>
 
   <!-- Urbanist -->
@@ -25,10 +24,10 @@
       
       /* Extended Color Palette */
       --white:#FFFFFF; --gray-200:#E5E7EB; --gray-300:#C7D0DE;
-      --toggle-active-fill:#484C56; --toggle-active-border:#484C56;
+      --toggle-active-fill:#474C57; --toggle-active-border:#474C57;
       --text-white-55: rgba(255,255,255,0.55); --text-white-60: rgba(249,250,251,0.60);
       --text-white-70: rgba(249,250,251,0.70); --text-white-80: rgba(255,255,255,0.8);
-      --overlay-dark: rgba(3,8,22,.55); --overlay-about: rgba(3,8,22,.78);
+      --overlay-dark: rgba(3,8,22,.35); --overlay-about: rgba(3,8,22,.78);
       --overlay-about-mid: rgba(3,8,22,.35); --overlay-about-bottom: rgba(3,8,22,.65);
       --bg-how: rgba(30,41,59,0.30); --bg-active: rgba(229,231,235,0.30);
       --text-muted-60: rgba(229,231,235,0.6); --chevron-color: rgba(229,231,235,0.30);
@@ -183,26 +182,32 @@
     /* ========================================== */
     .calculator{padding:var(--space-80) 0}
 
-    /* Calculator Tabs */
+    /* ===== Calculator Tabs (fixed) ===== */
     .calc-tabs.segmented{
       display:flex; align-items:center; justify-content:center;
-      gap:0; margin:0 auto var(--space-48); width:100%; max-width:816px;
+      gap:0; margin:0 auto var(--space-48);
+      width:100%; max-width:816px;
+      /* Put the stroke on the container, not buttons */
+      border:2px solid var(--border-soft);
+      border-radius:12px;
+      overflow:hidden; /* clean corners */
+      background:transparent;
     }
     .calc-tabs.segmented .tab{
-      width:50%; height:var(--space-48); padding:var(--space-12) var(--space-16); gap:var(--space-8);
-      border-radius:var(--radius-md); font-weight:700; font-size:20px; line-height:var(--lh-140);
-      border:2px solid var(--border-soft); background:transparent; color:var(--offwhite);
-      cursor:pointer; transition:all .3s ease;
-      display:flex; align-items:center; justify-content:center;
+      flex:1 1 50%;
+      height:48px;
+      padding:12px 16px;
+      font-weight:700; font-size:20px; line-height:var(--lh-140);
+      background:transparent; border:none; color:var(--offwhite);
+      cursor:pointer; transition:background .25s ease, color .2s ease, transform .2s ease;
     }
-    .calc-tabs.segmented .tab:first-child{ border-radius:var(--radius-md) 0 0 var(--radius-md); }
-    .calc-tabs.segmented .tab:last-child { border-radius:0 var(--radius-md) var(--radius-md) 0; }
-    .calc-tabs.segmented .tab.active{ 
-      background:var(--toggle-active-fill); 
-      border-color:var(--toggle-active-border) !important; 
-      transform:scale(1.02);
-      box-shadow:0 2px 8px rgba(38, 203, 77, 0.15);
+    .calc-tabs.segmented .tab.active{
+      /* Figma: subtle fill for active */
+      background: rgba(229,231,235,0.30);
+      transform: translateZ(0);
     }
+    /* Remove the old gradient overlay that caused the odd stroke */
+    .calc-tabs.segmented .tab::before{ content:none !important; }
 
     /* Calculator Card Layout */
     .calc-card{ border:none; border-radius:var(--radius-lg); background:transparent; padding:0; display:flex; flex-direction:column; gap:var(--space-48); }
@@ -216,31 +221,39 @@
     .kpi-value.dim{ color:var(--muted) }
     .kpi-value.accent{ color:var(--accent) }
 
-    /* Slider Component */
+    /* === CSS-only slider (solid progress), 16px track, ~14px thumb === */
     .slider-wrap{
       display:flex; align-items:center; gap:var(--space-16);
-      width:196px; height:var(--space-28); margin:0 auto; position:relative;
+      width:196px; height:28px; margin:0 auto; position:relative;
     }
+
     .slider-input{
-      --p: 0%;
       -webkit-appearance:none; appearance:none;
-      width:150px; height:var(--space-12); border-radius:var(--space-20);
-      background: linear-gradient(to right, var(--accent), var(--accent-light)) 0 0 / var(--p) 100% no-repeat,
-                  var(--bg-active);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.1);
-      outline:none;
+      width:150px; height:16px; border-radius:16px;
+      background: var(--bg-active); /* base track */
+      overflow:hidden; cursor:pointer; outline:0;
     }
-    /* WebKit track/thumb */
+
     .slider-input::-webkit-slider-runnable-track{
-      height:var(--space-12); border-radius:var(--space-20); background:transparent;
+      height:16px; border-radius:16px; background: var(--bg-active);
     }
+    .slider-input::-moz-range-track{
+      height:16px; border-radius:16px; background: var(--bg-active);
+    }
+
+    /* Thumb same height as track so the box-shadow progress ends round under it */
     .slider-input::-webkit-slider-thumb{
       -webkit-appearance:none; appearance:none;
-      width:var(--space-10); height:var(--space-10); border-radius:var(--space-20); background:var(--navy); margin-top:1px; /* centers thumb */
+      width:16px; height:16px; border-radius:50%;
+      background:#fff; border:1px solid var(--accent);
+      box-shadow:-999px 0 0 999px var(--accent); /* solid progress fill */
+      margin-top:0; /* centered on 16px track */
     }
-    /* Firefox */
-    .slider-input::-moz-range-track{ height:var(--space-12); border-radius:var(--space-20); background:transparent; }
-    .slider-input::-moz-range-thumb{ width:var(--space-10); height:var(--space-10); border-radius:var(--space-20); background:var(--navy); border:none; }
+    .slider-input::-moz-range-thumb{
+      width:16px; height:16px; border-radius:50%;
+      background:#fff; border:1px solid var(--accent);
+      box-shadow:-999px 0 0 999px var(--accent);
+    }
 
     .slider-number{
       width:56px; height:var(--space-28); background:transparent; color:var(--text-white-80);
@@ -257,7 +270,7 @@
 
     .panel{ border:none; border-radius:14px; background:var(--panel); padding:var(--space-16); }
     .panel-title{
-      text-align:center; margin:0 auto 24px;
+      text-align:center; margin:0 auto 0; /* was 24px */
       font-size:var(--fs-body-lg); line-height:var(--lh-body); font-weight:700;
       color:var(--text-white-80);
     }
@@ -267,6 +280,25 @@
       --cols: 5;
       list-style:none; margin:0; padding:var(--space-16) var(--space-8);
       display:grid; grid-template-columns:repeat(var(--cols), 1fr); gap:0;
+    }
+
+    /* Desktop defaults are already set via inline --cols (5/3). Keep them. */
+
+    /* Tablet & down: allow wrapping and hide vertical separators */
+    @media (max-width: 900px){
+      .payout-list{
+        /* Let the grid wrap nicely while keeping good min widths */
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        row-gap: var(--space-16);
+      }
+      .payout-list li::after{ display:none; } /* hide vertical separators on wrap */
+    }
+
+    /* Very small phones: narrower min width to prevent overflow */
+    @media (max-width: 480px){
+      .payout-list{
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      }
     }
     .payout-list li{
       position:relative; display:flex; flex-direction:column;
@@ -304,9 +336,13 @@
     /* FAQ SECTION                               */
     /* ========================================== */
     .faq{ padding:var(--space-80) 0; }
-    .faq-list{ width:100%; }
-    .faq-item{ padding:0; }
+
+    /* Container and rows */
+    .faq-list { width: 100%; }
+    .faq-item { padding: 0; transition: background-color .2s ease; }
     .faq-item:not(:last-child){ border-bottom:1px solid var(--border-soft); }
+
+    /* Toggle row */
     .faq-toggle{
       width:100%; background:transparent; border:none; color:var(--offwhite);
       display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:var(--space-12);
@@ -314,18 +350,39 @@
     }
     .qmark{ color:var(--accent); font-size:20px; }
     .chev{ color:var(--chevron-color); transition: transform .18s ease; font-size:18px; }
+
+    /* GRID accordion: 0fr -> 1fr so height is fully auto (no max-height hacks) */
+    .faq-panel{
+      display:grid;
+      grid-template-rows:0fr;
+      transition:grid-template-rows 240ms ease;
+    }
+
+    /* Inner content that actually collapses */
     .faq-answer{
-      max-height:0; overflow:hidden; opacity:0;
-      transition:max-height .22s ease, opacity .18s ease;
+      overflow:hidden;  /* required with 0fr */
+      /* left indent aligns under question text; right padding matches design */
+      padding:0 var(--space-24) 0 76px; 
       color:var(--gray-200);
-      padding:0 var(--space-24) 0 76px;
+      opacity:0;
+      transition: opacity 200ms ease, padding 240ms ease;
     }
     .faq-answer ul{ margin:var(--space-8) 0 0 var(--space-16); }
     .faq-answer li{ margin:var(--space-4) 0; }
+
+    /* Open state */
+    .faq-item.open .faq-panel{ grid-template-rows:1fr; }
+    .faq-item.open .faq-answer{
+      opacity:1;
+      /* top 8px, bottom 24px per spec */
+      padding:8px var(--space-24) 24px 76px;
+    }
     .faq-item.open .chev{ transform:rotate(180deg); }
-    .faq-item.open .faq-answer{ 
-      opacity:1; 
-      padding:0 var(--space-24) var(--space-16) 76px; 
+
+    /* Mobile: reduce left indent so text doesn't squash */
+    @media (max-width:600px){
+      .faq-answer{ padding-left: var(--space-24); }
+      .faq-item.open .faq-answer{ padding-left: var(--space-24); }
     }
 
     /* ========================================== */
@@ -1026,9 +1083,12 @@
                 <span class="faq-question body-lg">Can I play in both pools?</span>
                 <i class="fa-regular fa-chevron-down chev" aria-hidden="true"></i>
               </button>
-              <div class="faq-answer body" id="faq-a1" role="region" aria-labelledby="faq-q1">
-                Yes! You can join either Otter Club (Straight picks), Shark Club (Spread picks), or both.
-                Playing in both doubles your chances to win weekly and season-long prizes.
+              <!-- NEW WRAPPER -->
+              <div class="faq-panel">
+                <div class="faq-answer body" id="faq-a1" role="region" aria-labelledby="faq-q1">
+                  Yes! You can join either Otter Club (Straight picks), Shark Club (Spread picks), or both.
+                  Playing in both doubles your chances to win weekly and season-long prizes.
+                </div>
               </div>
             </div>
 
@@ -1038,9 +1098,12 @@
                 <span class="faq-question body-lg">How do payouts work?</span>
                 <i class="fa-regular fa-chevron-down chev" aria-hidden="true"></i>
               </button>
-              <div class="faq-answer body" id="faq-a2" role="region" aria-labelledby="faq-q2">
-                Each pool's total entry fees are split <strong>20% for weekly winners</strong> and
-                <strong>80% for season-long standings</strong>. Payout amounts increase as more members join.
+              <!-- NEW WRAPPER -->
+              <div class="faq-panel">
+                <div class="faq-answer body" id="faq-a2" role="region" aria-labelledby="faq-q2">
+                  Each pool's total entry fees are split <strong>20% for weekly winners</strong> and
+                  <strong>80% for season-long standings</strong>. Payout amounts increase as more members join.
+                </div>
               </div>
             </div>
 
@@ -1050,10 +1113,13 @@
                 <span class="faq-question body-lg">Do I need a Sleeper account to play?</span>
                 <i class="fa-regular fa-chevron-down chev" aria-hidden="true"></i>
               </button>
-              <div class="faq-answer body" id="faq-a3" role="region" aria-labelledby="faq-q3">
-                Yes. Sleeper is the platform we use to host both pools, manage picks, and track standings.
-                If you don't have an account, you can sign up for free at
-                <a href="https://www.sleeper.com" target="_blank" rel="noopener noreferrer">sleeper.com</a>.
+              <!-- NEW WRAPPER -->
+              <div class="faq-panel">
+                <div class="faq-answer body" id="faq-a3" role="region" aria-labelledby="faq-q3">
+                  Yes. Sleeper is the platform we use to host both pools, manage picks, and track standings.
+                  If you don't have an account, you can sign up for free at
+                  <a href="https://www.sleeper.com" target="_blank" rel="noopener noreferrer">sleeper.com</a>.
+                </div>
               </div>
             </div>
 
@@ -1063,13 +1129,16 @@
                 <span class="faq-question body-lg">How do I make picks?</span>
                 <i class="fa-regular fa-chevron-down chev" aria-hidden="true"></i>
               </button>
-              <div class="faq-answer body" id="faq-a4" role="region" aria-labelledby="faq-q4">
-                Log in to Sleeper and open the pool you've joined.
-                <ul>
-                  <li><strong>Otter Club (Straight):</strong> pick the outright winner of each game. You earn a point for every correct prediction.</li>
-                  <li><strong>Shark Club (Spread):</strong> pick against the listed point spread. You earn a point if your pick "covers" the spread based on Sleeper's game lines.</li>
-                </ul>
-                You can change any pick up until that game's scheduled kickoff — Thursday Night Football locks first each week.
+              <!-- NEW WRAPPER -->
+              <div class="faq-panel">
+                <div class="faq-answer body" id="faq-a4" role="region" aria-labelledby="faq-q4">
+                  Log in to Sleeper and open the pool you've joined.
+                  <ul>
+                    <li><strong>Otter Club (Straight):</strong> pick the outright winner of each game. You earn a point for every correct prediction.</li>
+                    <li><strong>Shark Club (Spread):</strong> pick against the listed point spread. You earn a point if your pick "covers" the spread based on Sleeper's game lines.</li>
+                  </ul>
+                  You can change any pick up until that game's scheduled kickoff — Thursday Night Football locks first each week.
+                </div>
               </div>
             </div>
 
@@ -1079,10 +1148,13 @@
                 <span class="faq-question body-lg">How are ties decided?</span>
                 <i class="fa-regular fa-chevron-down chev" aria-hidden="true"></i>
               </button>
-              <div class="faq-answer body" id="faq-a5" role="region" aria-labelledby="faq-q5">
-                Weekly ties use Sleeper's tiebreaker: guessing the total points scored in the Monday Night game.
-                Whoever is closest to the actual total wins, regardless of whether the guess is over or under.
-                In the event there is still a tie, Sleeper will use the overall point total to determine the winner.
+              <!-- NEW WRAPPER -->
+              <div class="faq-panel">
+                <div class="faq-answer body" id="faq-a5" role="region" aria-labelledby="faq-q5">
+                  Weekly ties use Sleeper's tiebreaker: guessing the total points scored in the Monday Night game.
+                  Whoever is closest to the actual total wins, regardless of whether the guess is over or under.
+                  In the event there is still a tie, Sleeper will use the overall point total to determine the winner.
+                </div>
               </div>
             </div>
 
@@ -1092,9 +1164,12 @@
                 <span class="faq-question body-lg">When will winners be paid?</span>
                 <i class="fa-regular fa-chevron-down chev" aria-hidden="true"></i>
               </button>
-              <div class="faq-answer body" id="faq-a6" role="region" aria-labelledby="faq-q6">
-                Weekly winners are paid after all games for that week have concluded.
-                Season-long payouts are made after the final regular season game.
+              <!-- NEW WRAPPER -->
+              <div class="faq-panel">
+                <div class="faq-answer body" id="faq-a6" role="region" aria-labelledby="faq-q6">
+                  Weekly winners are paid after all games for that week have concluded.
+                  Season-long payouts are made after the final regular season game.
+                </div>
               </div>
             </div>
           </div>
@@ -1159,8 +1234,6 @@
     function syncMembers(val){
       const v = Math.max(0, Math.min(250, parseInt(val || 0, 10)));
       members.value = v; membersNumber.value = v;
-      const p = (v / 250) * 100;
-      members.style.setProperty('--p', p + '%');
     }
 
     function render(){
@@ -1219,28 +1292,27 @@
     syncMembers(members.value); render();
   </script>
 
-  <!-- FAQ accordion -->
+  <!-- FAQ accordion (single source of truth) -->
   <script>
     (function(){
       const items = document.querySelectorAll('.faq-item');
-      items.forEach((item) => {
+
+      function closeAll(){
+        items.forEach(i=>{
+          i.classList.remove('open');
+          const b = i.querySelector('.faq-toggle');
+          if (b) b.setAttribute('aria-expanded','false');
+        });
+      }
+
+      items.forEach(item=>{
         const btn = item.querySelector('.faq-toggle');
-        const panel = item.querySelector('.faq-answer');
-        btn.addEventListener('click', () => {
-          const isOpen = item.classList.contains('open');
-          items.forEach(i => { 
-            i.classList.remove('open'); 
-            const b=i.querySelector('.faq-toggle'); 
-            if(b) b.setAttribute('aria-expanded','false'); 
-            const p=i.querySelector('.faq-answer'); 
-            if(p){ p.style.maxHeight='0px'; } 
-          });
-          if (!isOpen) {
+        btn.addEventListener('click', ()=>{
+          const wasOpen = item.classList.contains('open');
+          closeAll();
+          if (!wasOpen){
             item.classList.add('open');
             btn.setAttribute('aria-expanded','true');
-            requestAnimationFrame(() => { 
-              panel.style.maxHeight = (panel.scrollHeight + 16) + 'px'; // Add 16px for bottom padding
-            });
           }
         });
       });
@@ -1347,23 +1419,6 @@
         });
       });
 
-      // === ENHANCED FAQ ANIMATIONS ===
-      document.querySelectorAll('.faq-toggle').forEach(toggle => {
-        toggle.addEventListener('click', function() {
-          const item = this.closest('.faq-item');
-          const answer = item.querySelector('.faq-answer');
-          const isOpen = item.classList.contains('open');
-          
-          if (!isOpen) {
-            const height = answer.scrollHeight;
-            answer.style.maxHeight = height + 'px';
-            item.classList.add('open');
-          } else {
-            answer.style.maxHeight = '0';
-            item.classList.remove('open');
-          }
-        });
-      });
 
       // === LOADING STATES FOR FORM INTERACTIONS ===
       document.querySelectorAll('a[href="#join"]').forEach(link => {
