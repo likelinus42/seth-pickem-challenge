@@ -23,13 +23,14 @@
     --focus:#F2EFEA;
   }
   *{box-sizing:border-box; margin:0; padding:0;}
-  html{scroll-behavior:smooth;}
+  html{scroll-behavior:smooth; overflow-x:hidden;}
   body{
     background:var(--bg);
     color:var(--ink);
     font-family:'Inter',sans-serif;
     line-height:1.5;
     -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
   }
   a{color:inherit;}
   .display{font-family:'Oswald',sans-serif; font-weight:700; text-transform:uppercase; letter-spacing:0.02em;}
@@ -197,9 +198,9 @@
   }
   input:focus{border-color:var(--amber);}
   .field{margin-bottom:14px;}
-  .pool-select{display:flex; gap:10px; margin-bottom:24px;}
+  .pool-select{display:flex; gap:10px; margin-bottom:24px; flex-wrap:wrap;}
   .pool-check{
-    flex:1; border:1px solid var(--line); border-radius:8px; padding:14px; cursor:pointer;
+    flex:1 1 140px; min-width:0; border:1px solid var(--line); border-radius:8px; padding:14px; cursor:pointer;
     display:flex; align-items:center; gap:10px; font-size:14px;
   }
   .pool-check img{width:28px; height:28px; border-radius:7px; flex-shrink:0;}
