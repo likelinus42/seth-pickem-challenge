@@ -140,7 +140,8 @@ exports.handler = async (event) => {
     if (!member) {
       member = await createMember(payload);
     }
-    await createPoolMemberships(member.id, `${firstName} ${lastName}`, validPools);
+    const memberFullName = (member.fields && member.fields['Full Name']) || `${firstName} ${lastName}`;
+    await createPoolMemberships(member.id, memberFullName, validPools);
 
     return {
       statusCode: 200,
