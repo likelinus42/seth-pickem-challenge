@@ -32,11 +32,15 @@ const MEMBER_FIELDS = {
 };
 
 const MEMBERSHIP_FIELDS = {
+  membershipId: 'fldexW08IUJJPljkw',
   member: 'fld6QvLxJGih7QhtT',
   pool: 'fldkikHKen2nnrnHW',
   season: 'fldCJ9bwL4kJtpKiD',
   amountPaid: 'fldWeE9S8l6gjekW4',
 };
+
+const POOL_NAMES = { otter: 'Otter Club', shark: 'Shark Club' };
+const SEASON_LABEL = '2026';
 
 // 2026 Season record and Pool records — created when the base was set up.
 // Update these if a new season/pool record is ever added.
@@ -90,9 +94,10 @@ async function createMember(payload) {
   return data.records[0];
 }
 
-async function createPoolMemberships(memberId, pools) {
+async function createPoolMemberships(memberId, fullName, pools) {
   const records = pools.map((poolKey) => ({
     fields: {
+      [MEMBERSHIP_FIELDS.membershipId]: `${fullName} \u2014 ${POOL_NAMES[poolKey]} (${SEASON_LABEL})`,
       [MEMBERSHIP_FIELDS.member]: [memberId],
       [MEMBERSHIP_FIELDS.pool]: [POOL_RECORD_IDS[poolKey]],
       [MEMBERSHIP_FIELDS.season]: [SEASON_2026_RECORD_ID],
@@ -135,7 +140,7 @@ exports.handler = async (event) => {
     if (!member) {
       member = await createMember(payload);
     }
-    await createPoolMemberships(member.id, validPools);
+    await createPoolMemberships(member.id, `${firstName} ${lastName}`, validPools);
 
     return {
       statusCode: 200,
