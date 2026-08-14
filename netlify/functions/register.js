@@ -117,21 +117,45 @@ async function createPoolMemberships(memberId, fullName, pools) {
   return res.json();
 }
 
+const POOL_LOGOS = {
+  otter: 'https://pickem-challenge.netlify.app/assets/otter-logo.png',
+  shark: 'https://pickem-challenge.netlify.app/assets/shark-logo.png',
+};
+const POOL_COLORS = { otter: '#e8a23d', shark: '#3ddce8' };
+const SITE_URL = 'https://pickem-challenge.netlify.app';
+
 async function sendWelcomeEmail(payload, pools) {
   const total = pools.reduce((sum, p) => sum + POOL_FEES[p], 0);
+  const headerColor = pools.length === 1 ? POOL_COLORS[pools[0]] : '#e8a23d';
+
   const poolLines = pools.map((p) => `
     <tr>
-      <td style="padding:6px 0; color:#1a1a1a; font-size:15px;">${POOL_NAMES[p]}</td>
-      <td style="padding:6px 0; color:#1a1a1a; font-size:15px; text-align:right;">$${POOL_FEES[p]}</td>
+      <td style="padding:10px 0; border-bottom:1px solid #eee;">
+        <table role="presentation"><tr>
+          <td style="padding-right:10px;"><img src="${POOL_LOGOS[p]}" width="32" height="32" alt="${POOL_NAMES[p]} logo" style="display:block; border-radius:7px;"></td>
+          <td style="color:#1a1a1a; font-size:15px; font-weight:bold;">${POOL_NAMES[p]}</td>
+        </tr></table>
+      </td>
+      <td style="padding:10px 0; border-bottom:1px solid #eee; color:#1a1a1a; font-size:15px; text-align:right;">$${POOL_FEES[p]}</td>
     </tr>`).join('');
+
+  const venmoNote = `NFL Pick'em Challenge 2026 - ${pools.map((p) => POOL_NAMES[p]).join(' + ')}`;
+  const venmoUrl = `https://venmo.com/?txn=pay&audience=friends&recipients=${encodeURIComponent(VENMO_HANDLE.replace('@', ''))}&amount=${total}&note=${encodeURIComponent(venmoNote)}`;
 
   const html = `
   <div style="background:#f2efea; padding:32px 16px; font-family:Arial, Helvetica, sans-serif;">
     <table role="presentation" width="100%" style="max-width:480px; margin:0 auto; background:#ffffff; border-radius:10px; overflow:hidden; border:1px solid #e5e1d8;">
       <tr>
-        <td style="background:#0b0e14; padding:24px 32px;">
-          <span style="color:#e8a23d; font-weight:bold; font-size:13px; letter-spacing:1px; text-transform:uppercase;">2026 Season</span>
-          <h1 style="color:#f2efea; font-size:22px; margin:8px 0 0;">You're in, ${payload.firstName}!</h1>
+        <td style="background:#0b0e14; padding:0; border-top:4px solid ${headerColor};">
+          <table role="presentation" width="100%"><tr>
+            <td style="padding:24px 32px;">
+              <span style="color:${headerColor}; font-weight:bold; font-size:13px; letter-spacing:1px; text-transform:uppercase;">2026 Season</span>
+              <h1 style="color:#f2efea; font-size:22px; margin:8px 0 0;">You're in, ${payload.firstName}!</h1>
+            </td>
+            <td style="padding:24px 32px 24px 0; text-align:right; white-space:nowrap;">
+              ${pools.map((p) => `<img src="${POOL_LOGOS[p]}" width="44" height="44" alt="${POOL_NAMES[p]} logo" style="display:inline-block; border-radius:9px; margin-left:6px;">`).join('')}
+            </td>
+          </tr></table>
         </td>
       </tr>
       <tr>
@@ -139,22 +163,40 @@ async function sendWelcomeEmail(payload, pools) {
           <p style="color:#333; font-size:15px; line-height:1.6; margin:0 0 20px;">
             Thanks for joining the NFL Pick'em Challenge. Here's what you signed up for:
           </p>
-          <table role="presentation" width="100%" style="border-top:1px solid #eee; border-bottom:1px solid #eee; margin-bottom:20px;">
+          <table role="presentation" width="100%" style="margin-bottom:24px;">
             ${poolLines}
             <tr>
-              <td style="padding:10px 0 0; color:#1a1a1a; font-size:15px; font-weight:bold;">Total due</td>
-              <td style="padding:10px 0 0; color:#1a1a1a; font-size:15px; font-weight:bold; text-align:right;">$${total}</td>
+              <td style="padding:12px 0 0; color:#1a1a1a; font-size:16px; font-weight:bold;">Total due</td>
+              <td style="padding:12px 0 0; color:#1a1a1a; font-size:16px; font-weight:bold; text-align:right;">$${total}</td>
             </tr>
           </table>
-          <p style="color:#333; font-size:15px; line-height:1.6; margin:0 0 12px;">
-            <strong>Pay your entry fee via Venmo</strong> to <strong>${VENMO_HANDLE}</strong> before kickoff of Week 1.
+
+          <table role="presentation" width="100%" style="margin-bottom:24px;">
+            <tr>
+              <td align="center" style="border-radius:8px; background:${headerColor};">
+                <a href="${venmoUrl}" style="display:block; padding:14px 24px; color:#171006; font-size:15px; font-weight:bold; text-decoration:none; font-family:Arial, Helvetica, sans-serif;">
+                  Pay $${total} on Venmo &rarr;
+                </a>
+              </td>
+            </tr>
+          </table>
+          <p style="color:#999; font-size:12px; line-height:1.5; margin:0 0 24px; text-align:center;">
+            Opens Venmo with ${VENMO_HANDLE} and $${total} pre-filled. Please pay before kickoff of Week 1.
           </p>
+
           <p style="color:#333; font-size:15px; line-height:1.6; margin:0 0 20px;">
             Next, you'll get a separate invite to join the pool(s) in Sleeper, that's where you'll make your weekly picks. Hang tight for that.
           </p>
           <p style="color:#666; font-size:13px; line-height:1.6; margin:24px 0 0;">
             Questions? Just reply to this email.
           </p>
+        </td>
+      </tr>
+      <tr>
+        <td style="background:#f8f7f4; padding:18px 32px; text-align:center; border-top:1px solid #eee;">
+          <a href="${SITE_URL}" style="color:#999; font-size:12px; text-decoration:none;">NFL Pick'em Challenge</a>
+          <span style="color:#ccc; font-size:12px;"> &middot; </span>
+          <span style="color:#999; font-size:12px;">Not affiliated with the NFL or Sleeper</span>
         </td>
       </tr>
     </table>
@@ -192,8 +234,8 @@ exports.handler = async (event) => {
     return { statusCode: 400, body: 'Invalid JSON' };
   }
 
-  const { firstName, lastName, email, sleeperUsername, pools } = payload;
-  if (!firstName || !lastName || !email || !sleeperUsername || !Array.isArray(pools) || pools.length === 0) {
+  const { firstName, lastName, email, sleeperUsername, venmoUsername, pools } = payload;
+  if (!firstName || !lastName || !email || !sleeperUsername || !venmoUsername || !Array.isArray(pools) || pools.length === 0) {
     return { statusCode: 400, body: 'Missing required fields' };
   }
   const validPools = pools.filter((p) => POOL_RECORD_IDS[p]);
