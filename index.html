@@ -72,7 +72,7 @@
     font-family:'JetBrains Mono',monospace; font-weight:700; font-size:30px;
     color:var(--ink);
   }
-  .flap.flip .flap-char{ animation: flapdown 0.28s ease-in; }
+  .flap.flip .flap-char{ animation: flapdown 0.55s cubic-bezier(0.22, 0.61, 0.36, 1); }
   @keyframes flapdown{
     0%{ transform:rotateX(80deg); opacity:0.3; }
     100%{ transform:rotateX(0deg); opacity:1; }
@@ -241,6 +241,8 @@
     h1{letter-spacing:-0.01em;}
     .stat-board{gap:22px;}
     .pool-toggle{flex-wrap:wrap;}
+    .pool-select{flex-direction:column;}
+    .pool-check{flex:1 1 auto;}
   }
 </style>
 </head>
@@ -495,20 +497,23 @@ function buildFlap(container, digitCount){
   return groups;
 }
 
-function setFlapValue(container, str, digitCount){
+function setFlapValue(container, str, digitCount, staggerMs = 0){
   const padded = str.padStart(digitCount, ' ');
   let flaps = container.querySelectorAll('.flap');
   if(flaps.length !== digitCount){ flaps = buildFlap(container, digitCount); }
   else { flaps = Array.from(flaps); }
   padded.split('').forEach((ch, i) => {
-    const flap = flaps[i];
-    const charEl = flap.querySelector('.flap-char');
-    if(charEl.textContent !== ch){
-      flap.classList.remove('flip');
-      void flap.offsetWidth;
-      charEl.textContent = ch;
-      flap.classList.add('flip');
-    }
+    const applyFlip = () => {
+      const flap = flaps[i];
+      const charEl = flap.querySelector('.flap-char');
+      if(charEl.textContent !== ch){
+        flap.classList.remove('flip');
+        void flap.offsetWidth;
+        charEl.textContent = ch;
+        flap.classList.add('flip');
+      }
+    };
+    if(staggerMs > 0){ setTimeout(applyFlip, i * staggerMs); } else { applyFlip(); }
   });
 }
 
@@ -520,7 +525,7 @@ function formatDollars(n){
 document.querySelectorAll('#statBoard [data-flap-value]').forEach((el, idx) => {
   const digits = parseInt(el.dataset.digits, 10);
   buildFlap(el, digits);
-  setTimeout(() => setFlapValue(el, el.dataset.flapValue, digits), 300 + idx * 220);
+  setTimeout(() => setFlapValue(el, el.dataset.flapValue, digits, 110), 500 + idx * 550);
 });
 
 // ---------- PAYOUT CALCULATOR ----------
