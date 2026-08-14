@@ -40,7 +40,11 @@ const MEMBERSHIP_FIELDS = {
 };
 
 const POOL_NAMES = { otter: 'Otter Club', shark: 'Shark Club' };
+const POOL_FEES = { otter: 20, shark: 50 };
 const SEASON_LABEL = '2026';
+const VENMO_HANDLE = '@Seth-Suntha';
+const BREVO_SENDER = { name: "NFL Pick'em Challenge", email: 'seth@pickem-challenge.com' };
+const BREVO_REPLY_TO = { email: 'likelinus42@gmail.com', name: 'Seth' };
 
 // 2026 Season record and Pool records — created when the base was set up.
 // Update these if a new season/pool record is ever added.
@@ -114,6 +118,69 @@ async function createPoolMemberships(memberId, fullName, pools) {
   return res.json();
 }
 
+async function sendWelcomeEmail(payload, pools) {
+  const total = pools.reduce((sum, p) => sum + POOL_FEES[p], 0);
+  const poolLines = pools.map((p) => `
+    <tr>
+      <td style="padding:6px 0; color:#1a1a1a; font-size:15px;">${POOL_NAMES[p]}</td>
+      <td style="padding:6px 0; color:#1a1a1a; font-size:15px; text-align:right;">$${POOL_FEES[p]}</td>
+    </tr>`).join('');
+
+  const html = `
+  <div style="background:#f2efea; padding:32px 16px; font-family:Arial, Helvetica, sans-serif;">
+    <table role="presentation" width="100%" style="max-width:480px; margin:0 auto; background:#ffffff; border-radius:10px; overflow:hidden; border:1px solid #e5e1d8;">
+      <tr>
+        <td style="background:#0b0e14; padding:24px 32px;">
+          <span style="color:#e8a23d; font-weight:bold; font-size:13px; letter-spacing:1px; text-transform:uppercase;">2026 Season</span>
+          <h1 style="color:#f2efea; font-size:22px; margin:8px 0 0;">You're in, ${payload.firstName}!</h1>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding:32px;">
+          <p style="color:#333; font-size:15px; line-height:1.6; margin:0 0 20px;">
+            Thanks for joining the NFL Pick'em Challenge. Here's what you signed up for:
+          </p>
+          <table role="presentation" width="100%" style="border-top:1px solid #eee; border-bottom:1px solid #eee; margin-bottom:20px;">
+            ${poolLines}
+            <tr>
+              <td style="padding:10px 0 0; color:#1a1a1a; font-size:15px; font-weight:bold;">Total due</td>
+              <td style="padding:10px 0 0; color:#1a1a1a; font-size:15px; font-weight:bold; text-align:right;">$${total}</td>
+            </tr>
+          </table>
+          <p style="color:#333; font-size:15px; line-height:1.6; margin:0 0 12px;">
+            <strong>Pay your entry fee via Venmo</strong> to <strong>${VENMO_HANDLE}</strong> before kickoff of Week 1.
+          </p>
+          <p style="color:#333; font-size:15px; line-height:1.6; margin:0 0 20px;">
+            Next, you'll get a separate invite to join the pool(s) in Sleeper, that's where you'll make your weekly picks. Hang tight for that.
+          </p>
+          <p style="color:#666; font-size:13px; line-height:1.6; margin:24px 0 0;">
+            Questions? Just reply to this email.
+          </p>
+        </td>
+      </tr>
+    </table>
+  </div>`;
+
+  const res = await fetch('https://api.brevo.com/v3/smtp/email', {
+    method: 'POST',
+    headers: {
+      'api-key': process.env.BREVO_API_KEY,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      sender: BREVO_SENDER,
+      to: [{ email: payload.email, name: `${payload.firstName} ${payload.lastName}` }],
+      replyTo: BREVO_REPLY_TO,
+      subject: `You're in for the NFL Pick'em Challenge, ${payload.firstName}!`,
+      htmlContent: html,
+    }),
+  });
+  if (!res.ok) {
+    const errText = await res.text();
+    throw new Error(`Brevo send failed: ${res.status} ${errText}`);
+  }
+}
+
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: 'Method not allowed' };
@@ -142,6 +209,13 @@ exports.handler = async (event) => {
     }
     const memberFullName = (member.fields && member.fields['Full Name']) || `${firstName} ${lastName}`;
     await createPoolMemberships(member.id, memberFullName, validPools);
+
+    try {
+      await sendWelcomeEmail(payload, validPools);
+    } catch (emailErr) {
+      // Don't fail the whole signup just because the email didn't send.
+      console.error('Welcome email failed:', emailErr);
+    }
 
     return {
       statusCode: 200,
