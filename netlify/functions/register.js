@@ -53,7 +53,6 @@ const POOL_RECORD_IDS = {
   otter: 'recVps4a7FWV6SVh8',
   shark: 'recazz9kolIMBkgcD',
 };
-const POOL_FEES = { otter: 20, shark: 50 };
 
 const AIRTABLE_API = `https://api.airtable.com/v0/${BASE_ID}`;
 
