@@ -122,7 +122,28 @@ const POOL_LOGOS = {
   shark: 'https://pickem-challenge.netlify.app/assets/shark-logo.png',
 };
 const POOL_COLORS = { otter: '#e8a23d', shark: '#3ddce8' };
+const POOL_INVITE_LINKS = {
+  otter: 'https://sleeper.com/i/j7ebBN2DoV1ow',
+  shark: 'https://sleeper.com/i/LVlz4Q5G5wDQw',
+};
 const SITE_URL = 'https://pickem-challenge.netlify.app';
+const SHARE_URL = 'https://pickem-challenge.com';
+
+function referralBlock() {
+  return `
+    <tr>
+      <td style="padding:0 32px 28px;">
+        <table role="presentation" width="100%" style="background:#f8f7f4; border-radius:8px;">
+          <tr>
+            <td style="padding:16px; color:#666; font-size:13px; line-height:1.6; text-align:center;">
+              Know anyone who'd be interested in joining this pool? Feel free to share this link.<br>
+              <a href="${SHARE_URL}" style="color:#e8a23d; font-weight:bold; text-decoration:none;">${SHARE_URL.replace('https://', '')}</a>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>`;
+}
 
 async function sendWelcomeEmail(payload, pools) {
   const total = pools.reduce((sum, p) => sum + POOL_FEES[p], 0);
@@ -139,8 +160,8 @@ async function sendWelcomeEmail(payload, pools) {
       <td style="padding:10px 0; border-bottom:1px solid #eee; color:#1a1a1a; font-size:15px; text-align:right;">$${POOL_FEES[p]}</td>
     </tr>`).join('');
 
-  const venmoNote = `NFL Pick'em Challenge 2026 - ${pools.map((p) => POOL_NAMES[p]).join(' + ')}`;
-  const venmoUrl = `https://venmo.com/?txn=pay&audience=friends&recipients=${encodeURIComponent(VENMO_HANDLE.replace('@', ''))}&amount=${total}&note=${encodeURIComponent(venmoNote)}`;
+  const poolLabel = pools.length === 2 ? 'Otter & Shark Club' : POOL_NAMES[pools[0]];
+  const venmoUrl = `https://venmo.com/?txn=pay&audience=friends&recipients=${encodeURIComponent(VENMO_HANDLE.replace('@', ''))}&amount=${total}&note=${encodeURIComponent(poolLabel)}`;
 
   const html = `
   <div style="background:#f2efea; padding:32px 16px; font-family:Arial, Helvetica, sans-serif;">
@@ -185,13 +206,14 @@ async function sendWelcomeEmail(payload, pools) {
           </p>
 
           <p style="color:#333; font-size:15px; line-height:1.6; margin:0 0 20px;">
-            Next, you'll get a separate invite to join the pool(s) in Sleeper, that's where you'll make your weekly picks. Hang tight for that.
+            You'll also get a separate email any second now with your Sleeper invite link(s), that's where you'll actually join the pool and start making picks.
           </p>
           <p style="color:#666; font-size:13px; line-height:1.6; margin:24px 0 0;">
             Questions? Just reply to this email.
           </p>
         </td>
       </tr>
+      ${referralBlock()}
       <tr>
         <td style="background:#f8f7f4; padding:18px 32px; text-align:center; border-top:1px solid #eee;">
           <a href="${SITE_URL}" style="color:#999; font-size:12px; text-decoration:none;">NFL Pick'em Challenge</a>
@@ -213,6 +235,85 @@ async function sendWelcomeEmail(payload, pools) {
       to: [{ email: payload.email, name: `${payload.firstName} ${payload.lastName}` }],
       replyTo: BREVO_REPLY_TO,
       subject: `You're in for the NFL Pick'em Challenge, ${payload.firstName}!`,
+      htmlContent: html,
+    }),
+  });
+  if (!res.ok) {
+    const errText = await res.text();
+    throw new Error(`Brevo send failed: ${res.status} ${errText}`);
+  }
+}
+
+async function sendSleeperInviteEmail(payload, pools) {
+  const inviteButtons = pools.map((p) => `
+    <table role="presentation" width="100%" style="margin-bottom:12px;">
+      <tr>
+        <td align="center" style="border-radius:8px; background:${POOL_COLORS[p]};">
+          <a href="${POOL_INVITE_LINKS[p]}" style="display:block; padding:15px 24px; color:${p === 'otter' ? '#171006' : '#071617'}; font-size:15px; font-weight:bold; text-decoration:none; font-family:Arial, Helvetica, sans-serif;">
+            Join ${POOL_NAMES[p]} in Sleeper &rarr;
+          </a>
+        </td>
+      </tr>
+    </table>`).join('');
+
+  const html = `
+  <div style="background:#f2efea; padding:32px 16px; font-family:Arial, Helvetica, sans-serif;">
+    <table role="presentation" width="100%" style="max-width:480px; margin:0 auto; background:#ffffff; border-radius:10px; overflow:hidden; border:1px solid #e5e1d8;">
+      <tr>
+        <td style="background:#0b0e14; padding:0; border-top:4px solid #3ddce8;">
+          <table role="presentation" width="100%"><tr>
+            <td style="padding:28px 32px 24px;">
+              <table role="presentation" style="margin-bottom:16px;"><tr>
+                <td><img src="https://pickem-challenge.netlify.app/assets/email-wordmark.png" width="124" height="20" alt="Pick'em Challenge" style="display:block;"></td>
+                <td style="padding:0 10px; color:#555; font-size:14px;">&middot;</td>
+                <td style="color:#3ddce8; font-weight:bold; font-size:13px; letter-spacing:1px; text-transform:uppercase;">One last step</td>
+              </tr></table>
+              <h1 style="color:#f2efea; font-size:24px; line-height:1.25; margin:0;">${payload.firstName}, tap in to join your pool</h1>
+            </td>
+          </tr></table>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding:32px;">
+          <p style="color:#333; font-size:15px; line-height:1.6; margin:0 0 24px;">
+            Almost there. You're not officially in until you accept your Sleeper invite below, so don't skip this part.
+          </p>
+          ${inviteButtons}
+          <p style="color:#333; font-size:15px; line-height:1.6; margin:24px 0 12px; font-weight:bold;">
+            Quick reminders:
+          </p>
+          <table role="presentation" width="100%" style="margin-bottom:8px;">
+            <tr><td style="padding:6px 0; color:#333; font-size:14px; line-height:1.5;">&bull;&nbsp; Make your picks before each game locks, Thursday night games lock first</td></tr>
+            <tr><td style="padding:6px 0; color:#333; font-size:14px; line-height:1.5;">&bull;&nbsp; No picks entered before lock means no points for that game</td></tr>
+            <tr><td style="padding:6px 0; color:#333; font-size:14px; line-height:1.5;">&bull;&nbsp; Weekly and season-long prizes, so every week counts</td></tr>
+          </table>
+          <p style="color:#666; font-size:13px; line-height:1.6; margin:20px 0 0;">
+            Questions? Just reply to this email.
+          </p>
+        </td>
+      </tr>
+      ${referralBlock()}
+      <tr>
+        <td style="background:#f8f7f4; padding:18px 32px; text-align:center; border-top:1px solid #eee;">
+          <a href="${SITE_URL}" style="color:#999; font-size:12px; text-decoration:none;">NFL Pick'em Challenge</a>
+          <span style="color:#ccc; font-size:12px;"> &middot; </span>
+          <span style="color:#999; font-size:12px;">Not affiliated with the NFL or Sleeper</span>
+        </td>
+      </tr>
+    </table>
+  </div>`;
+
+  const res = await fetch('https://api.brevo.com/v3/smtp/email', {
+    method: 'POST',
+    headers: {
+      'api-key': process.env.BREVO_API_KEY,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      sender: BREVO_SENDER,
+      to: [{ email: payload.email, name: `${payload.firstName} ${payload.lastName}` }],
+      replyTo: BREVO_REPLY_TO,
+      subject: `${payload.firstName}, one more step to join your pool`,
       htmlContent: html,
     }),
   });
@@ -254,8 +355,13 @@ exports.handler = async (event) => {
     try {
       await sendWelcomeEmail(payload, validPools);
     } catch (emailErr) {
-      // Don't fail the whole signup just because the email didn't send.
       console.error('Welcome email failed:', emailErr);
+    }
+
+    try {
+      await sendSleeperInviteEmail(payload, validPools);
+    } catch (emailErr) {
+      console.error('Sleeper invite email failed:', emailErr);
     }
 
     return {
