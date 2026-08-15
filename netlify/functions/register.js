@@ -118,16 +118,15 @@ async function createPoolMemberships(memberId, fullName, pools) {
 }
 
 const POOL_LOGOS = {
-  otter: 'https://pickem-challenge.netlify.app/assets/otter-logo.png',
-  shark: 'https://pickem-challenge.netlify.app/assets/shark-logo.png',
+  otter: 'https://pickem-challenge.com/assets/otter-logo.png',
+  shark: 'https://pickem-challenge.com/assets/shark-logo.png',
 };
 const POOL_COLORS = { otter: '#e8a23d', shark: '#3ddce8' };
 const POOL_INVITE_LINKS = {
   otter: 'https://sleeper.com/i/j7ebBN2DoV1ow',
   shark: 'https://sleeper.com/i/LVlz4Q5G5wDQw',
 };
-const SITE_URL = 'https://pickem-challenge.netlify.app';
-const SHARE_URL = 'https://pickem-challenge.com';
+const SITE_URL = 'https://pickem-challenge.com';
 
 function referralBlock() {
   return `
@@ -137,7 +136,7 @@ function referralBlock() {
           <tr>
             <td style="padding:16px; color:#666; font-size:13px; line-height:1.6; text-align:center;">
               Know anyone who'd be interested in joining this pool? Feel free to share this link.<br>
-              <a href="${SHARE_URL}" style="color:#e8a23d; font-weight:bold; text-decoration:none;">${SHARE_URL.replace('https://', '')}</a>
+              <a href="${SITE_URL}" style="color:#e8a23d; font-weight:bold; text-decoration:none;">${SITE_URL.replace('https://', '')}</a>
             </td>
           </tr>
         </table>
@@ -264,7 +263,7 @@ async function sendSleeperInviteEmail(payload, pools) {
           <table role="presentation" width="100%"><tr>
             <td style="padding:28px 32px 24px;">
               <table role="presentation" style="margin-bottom:16px;"><tr>
-                <td><img src="https://pickem-challenge.netlify.app/assets/email-wordmark.png" width="124" height="20" alt="Pick'em Challenge" style="display:block;"></td>
+                <td><img src="https://pickem-challenge.com/assets/email-wordmark.png" width="124" height="20" alt="Pick'em Challenge" style="display:block;"></td>
                 <td style="padding:0 10px; color:#555; font-size:14px;">&middot;</td>
                 <td style="color:#3ddce8; font-weight:bold; font-size:13px; letter-spacing:1px; text-transform:uppercase;">One last step</td>
               </tr></table>
